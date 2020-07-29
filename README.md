@@ -10,5 +10,5 @@
 
 - Recursos para aprender `R`
   - Introducción al lenguaje `R` basal: [click here](pre_calculo.pdf)
-  - Manipulación de bases de datos con `tidyverse`: [click here](pre_calculo.pdf), [click here](pre_calculo.pdf), y [click here](pre_calculo.pdf).
+  - Manipulación de bases de datos con `tidyverse`: [`[click here]`](pre_calculo.pdf), [click here](pre_calculo.pdf), y [click here](pre_calculo.pdf).
   
