@@ -1,0 +1,308 @@
+---
+title: "Análisis de Datos Categóricos (SOL3070)"
+subtitle: "Clase #4"
+author: "<br> Mauricio Bucca<br> Profesor Asistente, Sociología UC"
+date: "[github.com/mebucca](https://github.com/mebucca)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default","default-fonts","gentle-r.css"]
+    df_print: default
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+editor_options: 
+  chunk_output_type: console
+---
+
+class: inverse, center, middle
+
+#Valor Esperado y Varianza de variables discretas
+
+---
+## Valor Esperado
+
+El valor esperado de una v.a. es el análogo teórico de un promedio. Los posibles valores de la variable se ponderan por su probabilidad de ocurrencia:
+
+<br>
+--
+
+\begin{align}
+\mathbb{E}(X) &= \sum_{i} x_{i} \times \mathbb{P}(X=x_{i}) \\
+&\equiv  \sum_{i} x_{i} \times f_{X}(x_{i})
+\end{align}
+
+<br>
+--
+Es teórico porque esta información la podemos saber *a priori*, sin necesidad de datos. 
+
+---
+## Valor Esperado
+
+Por ejemplo, supongamos que $Y$ es una variable que resulta de tirar un dado "justo".  ¿Cuál es el valor esperado de $Y$?
+
+<br>
+--
+
+\begin{align}
+\mathbb{E}(Y) &= \sum_{i}y_{i} \times \mathbb{P}(Y=y_{i})  \\ \\
+     &=  1 \times  \frac{1}{6}+ 2 \times \frac{1}{6} + \dots + 6 \times \frac{1}{6}  \\ \\
+     &= 3.5
+\end{align}
+
+---
+## Valor Esperado
+
+### Valor esperado de una variable Bernoulli
+
+Si X es una variable Bernoulli, su valor esperado viene dado por:
+
+\begin{align}
+\mathbb{E}(X) = \sum_{i} x_{i} \times \mathbb{P}(X=x_{i}) &= \sum_{i} x_{i} \times p^{x_{i}}(1-p)^{1 - x_{i}} \\ 
+     &= 1 \times p + 0 \times (1-p) \\ 
+     &= p
+\end{align}
+
+--
+
+### Valor esperado de una variable Binomial
+
+Si X es una variable Binomial, su valor esperado viene dado por:
+
+\begin{align}
+\mathbb{E}(X) = np
+\end{align}
+
+--
+.bold[Pregunta]: ¿Cuántas "Caras" debo esperar si tiro 200 monedas "justas"?
+
+--
+
+.bold[Respuesta]: $np = 200 \times 0.5 = 100$
+
+
+---
+## Varianza 
+
+La varianza de una variable aleatoria es el análogo teórico de la varianza de los datos.
+--
+ Mide cuánta dispersión existe entonce al centro (la media). Formalmente:
+ 
+$$\mathbb{Var}(X) = \sum_{i} \bigg( x_{i} - \mathbb{E}(X) \bigg)^{2} \times f_{X}(x_{i})$$
+--
+
+Por ejemplo, supongamos que $Y$ es una variable que resulta de tirar un dado "justo".  ¿Cuál es la varianza de $Y$?
+
+<br>
+--
+
+\begin{align}
+\mathbb{Var}(Y) &= \sum_{i} \bigg( y_{i} - \mathbb{E}(Y) \bigg)^{2} \times f_{Y}(y_{i})   \\ \\
+     &=  (1 - 3.5)^{2} \times  \frac{1}{6} + (2-3.5)^{2} \times \frac{1}{6} + \dots + (6-3.5)^{2} \times \frac{1}{6}  \\ \\
+     &= 2.91
+\end{align}
+
+---
+
+### Varianza de una variable Bernoulli
+
+Si X es una variable Bernoulli, su varianza viene dada por:
+
+\begin{align}
+\mathbb{Var} = \sum_{i} \bigg( x_{i} - E(X) \bigg)^{2} \times f_{X}(x_{i}) &= (1 - p)^{2} \times p +  (0 - p)^{2} \times (1-p) \\ 
+ &=p^{2} − p^{3} + p − 2p^{2} + p^{3} \\ \\
+ &=p(1-p)
+\end{align}
+
+--
+
+### Varianza de una variable Binomial
+
+Si X es una variable Binomial, su varianza viene dada por:
+
+\begin{align}
+\mathbb{Var}(X) = n \times p(1-p)
+\end{align}
+
+<br>
+--
+.bold[Pregunta]: ¿Cuánta variabilidad debo esperar en el número de "Caras" si tiro 200 monedas "justas"?
+
+--
+
+.bold[Respuesta]: varianza es $n \times p(1-p) = 200 \times 0.5 \times 0.5 = 50$. La desviación estándar es $\sqrt{50} = 7.01$.
+
+---
+class: inverse, center, middle
+
+#Estimación
+##Maximum Likelihood Estimation (MLE)
+
+---
+
+##Estimación 
+
+.bold[Modelos de probabilidad]: ¿Cuál es la probabilidad del observar los *datos* dado los *parámetros* que conocemos?
+
+E.j. ¿Cuán probable es que obtengamos 9 "Caras" (1) si lanzamos una moneda 'justa' ( $p=0.5$ ) 10 veces? 
+
+```{r}
+dbinom(x=9,size=10,prob=0.5)
+```
+
+---
+##Estimación 
+
+.bold[Modelos estadísticos]:  ¿Cuáles son los *parámetros* más probables que podrían generar los *datos* que observamos? 
+
+
+E.j. Supongamos que alguien lanza 100 veces la misma moneda y registra los resultados en una base de datos. Los datos se ven así:  
+
+.pull-left[
+```{r, echo=FALSE, fig.height=5, fig.width=6, message=FALSE}
+library("tidyverse")
+set.seed(481)
+data_coins <- data.frame(X = rbinom(n=100, size=1, prob=0.8))
+
+data_coins %>% ggplot(aes(x=factor(X), fill="")) + 
+    geom_bar() +
+    geom_text(aes(label=..count..), stat='count', vjust=-0.2) +
+    scale_fill_viridis_d() + 
+    guides(fill=FALSE, color=FALSE)
+
+```
+]
+
+--
+
+.pull-right[
+
+- Lo vemos en la izquierda son .bold[datos]
+
+- Datos: realización de $n$ variables aleatorias 
+
+- Normalmente *no conocemos* la distribución de las variables
+
+- Datos nos da una pista sobre cuál podría ser esa distribución.
+
+- .bold[Estadística]: aprender de los datos para *estimar* los parámetros los generan. 
+
+]
+
+---
+##Estimación via Maximum Likelihood (MLE) 
+
+Previamente lanzamos la misma moneda 100 veces y obtuvimos "Cara" (1) 82 veces.
+--
+ ¿Qué valor de $p$ es más probable que genere estos datos?
+
+MLE es justamente la formalización de esta pregunta. Pasos:
+
+--
+
+1) Decidir sobre la distribución subyacente que genera los datos. En este caso, podemos asumir que: 
+
+  * Cada lanzamiento $X_{1}, X_{2}, \dots X_{100} \sim \text{Bernoulli}(p)$, donde X's son $iid$ 
+
+--
+
+2)  Escribir una función que cuantifique la plausibilidad de diferentes valores del parámetro. Dicha función se denomina .bold[likelihood function]: 
+
+<br>
+  * $\mathcal{L}(p) = \mathbb{P}(\text{ Data : \{1,0,1,1,....0,1\}} | \text{ } p)$
+
+<br>
+--
+
+  * $\mathcal{L}(p) = \mathbb{P}(X_{1})\mathbb{P}(X_{2}) \dots \mathbb{P}(X_{100}) = p^{82}(1-p)^{18}$
+
+
+---
+##Estimación via Maximum Likelihood (MLE) 
+
+Podemos inspeccionar visualmente la "likelihood" de diferentes valores $p$.
+
+```{r, echo=FALSE, fig.height=5, fig.width=6, message=FALSE}
+plot <- ggplot(data = data.frame(p = 0), mapping = aes(x = p, color=""))
+binom_distrib <- function(p,n,k) (p^(k))*((1-p)^(n-k))
+
+plot + stat_function(fun = binom_distrib, args = list(n= 100, k= 82)) + 
+  xlim(0,1) + labs(title="Likelihood of p", x="p", y=expression(paste(p^{82}, (1-p)^{18})) ) +
+    scale_color_viridis_d() + 
+    guides(fill=FALSE, color=FALSE)
+```
+
+Intuitivamente: habiendo obtenido 82 caras, $p=0.82$ es el valor más plausible de $p$
+
+
+---
+
+##Estimación via Maximum Likelihood (MLE) 
+
+3) Encontrar matemáticamente el valor de $p$ que maximiza $\mathcal{L}(p)$.
+
+
+- $\mathcal{L}(p) = P(X_{1})P(X_{2}) \dots P(X_{n}) = p^{k}(1-p)^{n-k} \quad \text{   donde  } k= \sum X_{i}$
+
+--
+
+- Para facilitar el cálculo tomamos logaritmo natural el ambos lados (.bold[log-likelihood])
+
+  - $\ell\ell(p) = \ln \mathcal{L}(p)  = k \ln(p) + (n - k) \ln(1-p)$ 
+
+--
+-  Calcular la derivada de $\ell\ell(p)$ con respecto a $p$: pendiente de la curva en cada valor de $p$.
+
+  - $\ell\ell^{\text{ '}}(p) = \frac{k}{p} -  \frac{n-k}{1-p}$
+
+--
+
+- Encontrar el máximo de la función: valor de $p$ en el cual la curva no cambia, es decir. cuando $\ell\ell^{\text{ '}}(p)=0$ 
+
+  - $\frac{k}{p} -  \frac{n-k}{1-p} = 0$
+  
+  - Después de resolver por $p$ obtenemos:
+  
+--
+  
+  - $p = \frac{k}{n} = \frac{\sum X_{i}}{n}$
+
+
+---
+##Estimación via Maximum Likelihood (MLE) 
+
+<br>
+
+- El estimador ML de $p$ es ....
+
+
+- $\hat{p} = \frac{\sum X_{i}}{n}$
+
+
+- Es decir, el porcentaje de 1's en la muestra!
+
+--
+
+- Intuitivo y elegante.
+--
+ No siempre tan simple....
+
+
+---
+class: inverse, center, middle
+
+.huge[
+**Hasta la próxima clase. Gracias!**
+]
+
+<br>
+Mauricio Bucca <br>
+https://mebucca.github.io/ <br>
+github.com/mebucca
+
+
+
+
