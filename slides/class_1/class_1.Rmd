@@ -25,7 +25,7 @@ class: inverse, center, middle
 
 ## Experimentos aleatorios
 
- Un  .text-azzurro[experimento aleatorio] es un experimento - real o hipotético - en el que todos los posibles resultados son conocidos *a priori*.
+ Un  .bold[experimento aleatorio] es un experimento - real o hipotético - en el que todos los posibles resultados son conocidos *a priori*.
 
 <br>
 --
@@ -52,7 +52,7 @@ En palabras, $\Omega: \{1,2,3,4,5,6 \}$ significa que nuestro experimento, consi
 
 ## Eventos
 
-Un .text-azzurro[*evento*] es un subconjunto bien definido de los posibles resultados de un experimento. 
+Un .bold[evento] es un subconjunto bien definido de los posibles resultados de un experimento. 
 
 <br>
 --
@@ -73,7 +73,7 @@ $$A :  \text{dado=1 or dado=5}$$
 
 ## Probabilidad 
 
-Para cualquier .text-azzurro[*evento*] es posible asociar un número que cuantifique la .text-azzurro[*probabilidad*] de ocurrencia de tal evento. 
+Para cualquier .bold[*evento*] es posible asociar un número que cuantifique la .bold[probabilidad] de ocurrencia de tal evento. 
 
 <br>
 --
