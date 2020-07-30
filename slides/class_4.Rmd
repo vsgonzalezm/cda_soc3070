@@ -156,7 +156,7 @@ dbinom(x=9,size=10,prob=0.5)
 ---
 ##Estimación 
 
-.bold[Modelos estadísticos]:  ¿Cuáles son los *parámetros* más probables que podrían generar los *datos* que observamos? 
+.bold[Modelos estadísticos]:  ¿Cuáles son los valores más plausible de los *parámetros* dado los *datos* que observamos? 
 
 
 E.j. Supongamos que alguien lanza 100 veces la misma moneda y registra los resultados en una base de datos. Los datos se ven así:  
