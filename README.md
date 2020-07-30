@@ -13,7 +13,7 @@
   - Manipulación de bases de datos con `tidyverse`: [`[here]`](pre_calculo.pdf), [`[here]`](pre_calculo.pdf), y [`[here]`](pre_calculo.pdf).
   - Gráficos con `ggplot`: [`[here]`](pre_calculo.pdf)
   - Un template de código que cubre las funciones típicamente usadas en un proyecto real de intestigación. El código tiene la estructura de lo que considero un workflow efectivo y ordenado. Consiste en un [`[master file]`](pre_calculo.pdf) desde el que llamamos una serie de `Rscript` que implementan diferentes partes del análisis: [`[exploración]`](pre_calculo.pdf) y [`[análisis]`](pre_calculo.pdf) de datos, incluyendo modelos de regresión, producción de tablas y gráficos publicables.
-  - Un template ([`[PDF]`](files/template_rmarkdown.pdf) y [`[.Rmd]`](files/template_rmarkdown.Rmd) ) para escribir en `RMarkdown`. El uso de `RMarkdown` no es obligatorio, pero es altamente recomendado para escribir sus tareas y trabajos. Hoja de ayuda [`[aquí]`](https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-spanish.pdf).
+  - Un template para escribir en `RMarkdown` ([`[PDF]`](files/template_rmarkdown.pdf) y [`[.Rmd]`](files/template_rmarkdown.Rmd) ). El uso de `RMarkdown` no es obligatorio, pero es altamente recomendado para escribir sus tareas y trabajos. Hoja de ayuda [`[aquí]`](https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-spanish.pdf).
   
 ### Clases
 
