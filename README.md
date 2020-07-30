@@ -1,6 +1,6 @@
 # SOC3070 Análisis de Datos Categóricos 
 
-Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categóricos, dictado el segundo semestre 2020 a estudiantes de postgrado del Departamento de Sociología de la Universidad Católica de Chile.
+Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categóricos, dictado el segundo semestre 2020 a estudiantes de postgrado del Departamento de Sociología de la Universidad Católica de Chile. Para mayores detalles ver el [programa](files/syllabus_SOC3070.pdf) del curso.
 
 ## Material del curso
 
