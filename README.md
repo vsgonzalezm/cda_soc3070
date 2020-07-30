@@ -32,6 +32,11 @@ Una plantilla de código que cubre las funciones típicamente usadas en un proye
 
 ### Evaluaciones 
 
-#### Tables cortas
+#### Tareas cortas
 
 - Tarea \#1
+
+#### Trabajos
+
+#### Trabajo Final
+
