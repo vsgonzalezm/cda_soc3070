@@ -1,0 +1,30 @@
+---
+title: "Tarea corta 1"
+author: "Mauricio Bucca"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+
+1) $\ln(1) = \dotfill$ 
+
+
+2) $\ln(e^{\alpha + \beta x}) = \dotfill$ 
+
+
+3) $e^{\ln(\alpha + \beta x)} = \dotfill$ 
+
+
+4) $e^{x} \times e^{0}  \times e^{y} = \dotfill$ 
+
+
+5) $\frac{e^{x}}{e} = \dotfill$ 
+
+
+6) Si $\ln\Big(x^{-2}\Big) = a$ entonces $x = \dotfill$ 
+
+
+7) Si $\ln\Big( \frac{y}{z}\Big) = \alpha + \beta$ entonces $y = \dotfill$
+
