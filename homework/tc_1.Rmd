@@ -22,10 +22,10 @@ library("tinytex")
 3) $e^{\ln(\alpha + \beta x)} =$ 
 
 
-4) $e^{x} \times e^{0}  \times e^{y} =$ 
+4) $p^{x} \times p^{0}  \times p^{y} =$ 
 
 
-5) $\frac{e^{x}}{e} =$ 
+5) $\frac{p^{x}}{p} =$ 
 
 
 6) Si $\ln\Big(x^{-2}\Big) = a$ entonces $x =$ 
