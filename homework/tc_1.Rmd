@@ -1,30 +1,35 @@
 ---
-title: "Tarea corta 1"
-author: "Mauricio Bucca"
+title: "SOC3070 Análisis de Datos Categóricos"
+author: "Tarea corta 1"
 output:
   pdf_document: default
   html_document:
     df_print: paged
 ---
 
+```{r, echo=FALSE}
+# Escribir install.packages("tinytex") en la consola para instalar "tinytex"
+# Carga "tinytex" para compilar PDF
+library("tinytex")
+```
 
-1) $\ln(1) = \dotfill$ 
-
-
-2) $\ln(e^{\alpha + \beta x}) = \dotfill$ 
-
-
-3) $e^{\ln(\alpha + \beta x)} = \dotfill$ 
-
-
-4) $e^{x} \times e^{0}  \times e^{y} = \dotfill$ 
+1) $\ln(1) =$ 
 
 
-5) $\frac{e^{x}}{e} = \dotfill$ 
+2) $\ln(e^{\alpha + \beta x}) =$ 
 
 
-6) Si $\ln\Big(x^{-2}\Big) = a$ entonces $x = \dotfill$ 
+3) $e^{\ln(\alpha + \beta x)} =$ 
 
 
-7) Si $\ln\Big( \frac{y}{z}\Big) = \alpha + \beta$ entonces $y = \dotfill$
+4) $e^{x} \times e^{0}  \times e^{y} =$ 
+
+
+5) $\frac{e^{x}}{e} =$ 
+
+
+6) Si $\ln\Big(x^{-2}\Big) = a$ entonces $x =$ 
+
+
+7) Si $\ln\Big( \frac{y}{z}\Big) = \alpha + \beta$ entonces $y =$
 
