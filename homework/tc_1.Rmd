@@ -13,6 +13,9 @@ output:
 library("tinytex")
 ```
 
+Ponderación: 2% de la nota final del curso
+
+
 1) $\ln(1) =$ 
 
 
