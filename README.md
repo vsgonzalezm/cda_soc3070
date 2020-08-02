@@ -23,9 +23,14 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
 - Modelos de Regresión Poisson y alternativas* (Regresión Binomial Negativa)
 - Modelos Log-lineales para tablas de contingencia*
 
+
+### Ayudantías
+
+- Descarga `R` y `RStudio`: [`[PDF]`](ta/Ayudantia1.pdf) [`[Código]`](ta/Ayudantia1.Rmd) 
+  
 ### Recursos para trabajar en `R`
 
-  - Introducción al [`[lenguaje basal]`](pre_calculo.pdf) de `R`
+  - Introducción al [`[lenguaje basal]`](https://mebucca.github.io/dar_soc4001/slides/class_1/#1) de `R`
   - Manipulación de bases de datos con `tidyverse`: [`[here]`](pre_calculo.pdf), [`[here]`](pre_calculo.pdf), y [`[here]`](pre_calculo.pdf).
   - Gráficos con `ggplot`: [`[here]`](pre_calculo.pdf)
   - Un template de código que cubre las funciones típicamente usadas en un proyecto real de intestigación. El código tiene la estructura de lo que considero un workflow efectivo y ordenado. Consiste en un [`[master file]`](pre_calculo.pdf) desde el que llamamos una serie de `Rscript` que implementan diferentes partes del análisis: [`[exploración]`](pre_calculo.pdf) y [`[análisis]`](pre_calculo.pdf) de datos, incluyendo modelos de regresión, producción de tablas y gráficos publicables.
