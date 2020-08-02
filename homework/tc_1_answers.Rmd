@@ -1,6 +1,6 @@
 ---
 title: "SOC3070 Análisis de Datos Categóricos"
-author: "Tarea corta 1"
+author: "Tarea corta 1, respuestas"
 output:
   pdf_document: default
   html_document:
@@ -23,23 +23,37 @@ _Notar_:
 
 <br />
 
-1) $\ln(1) =$ 
+1) $\ln(1) = 0$ 
 
 
-2) $\ln(e^{\alpha + \beta x}) =$ 
+2) $\ln(e^{\alpha + \beta x}) = \alpha + \beta x$ 
 
 
-3) $e^{\ln(\alpha + \beta x)} =$ 
+3) $e^{\ln(\alpha + \beta x)} = \alpha + \beta x$ 
 
 
-4) $p^{x} \times p^{0}  \times p^{y} =$ 
+4) $p^{x} \times p^{0}  \times p^{y} = p^{x +y}$ 
 
 
-5) $\frac{p^{x}}{p} =$ 
+5) $\frac{p^{x}}{p} = p^{x -1}$ 
 
 
 6) Si $\ln\Big(x^{-2}\Big) = a$ entonces $x =$ 
 
+\begin{align}
+\ln\Big(x^{-2}\Big) &= a \\
+\ln\Big( \frac{1}{x^2}  \Big) &= a \\
+\frac{1}{x^2} &= e^{a} \\
+x^{2} &= \frac{1}{e^{a}} = e^{-a} \\
+x = \pm \sqrt{e^{-a}}
+\end{align}
+
+
 
 7) Si $\ln\Big( \frac{y}{z}\Big) = \alpha + \beta$ entonces $y =$
 
+\begin{align}
+\ln\Big( \frac{y}{z}\Big) &= \alpha + \beta \\
+\frac{y}{z} &= e^{\alpha + \beta} \\
+y &= e^{\alpha + \beta} \times z
+\end{align}
