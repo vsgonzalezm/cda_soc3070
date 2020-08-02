@@ -26,7 +26,7 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
 
 ### Ayudantías
 
-- Descarga `R` y `RStudio`: [`[PDF]`](ta/Ayudantia1.pdf) [`[Código]`](ta/Ayudantia1.Rmd) 
+- Descarga `R` y `RStudio`: [`[PDF]`](ta/Ayudantia_TDR.pdf) 
   
 ### Recursos para trabajar en `R`
 
