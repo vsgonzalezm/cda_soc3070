@@ -23,7 +23,6 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
 - Modelos de Regresión Poisson y alternativas* (Regresión Binomial Negativa)
 - Modelos Log-lineales para tablas de contingencia*
 
-
 ### Ayudantías
 
 - Descarga `R` y `RStudio`: [`[PDF]`](ta/Ayudantia_TDR.pdf) 
