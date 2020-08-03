@@ -13,33 +13,25 @@ output:
 library("tinytex")
 ```
 
-Ponderación: 2% de la nota final del curso
-Entrega: Desde el momento de entrega, los estudiantes tienen 1 semana exacta de plazo para completar esta tarea. 
+Ponderación: 2% de la nota final del curso Entrega: Desde el momento de entrega, los estudiantes tienen 1 semana exacta de plazo para completar esta tarea.
 
-_Notar_: 
+*Notar*:
 
-  - $e$ corresponde al exponente natural 
-  - $\ln$ es el logarítmo natural
+-   $e$ corresponde al exponente natural
+-   $\ln$ es el logarítmo natural
 
 <br />
 
-1) $\ln(1) =$ 
+1)  $\ln(1) =$
 
+2)  $\ln(e^{\alpha + \beta x}) =$
 
-2) $\ln(e^{\alpha + \beta x}) =$ 
+3)  $e^{\ln(\alpha + \beta x)} =$
 
+4)  $p^{x} \times p^{0} \times p^{y} =$
 
-3) $e^{\ln(\alpha + \beta x)} =$ 
+5)  $\frac{p^{x}}{p} =$
 
+6)  Si $\ln\Big(x^{-2}\Big) = a$ entonces $x =$
 
-4) $p^{x} \times p^{0}  \times p^{y} =$ 
-
-
-5) $\frac{p^{x}}{p} =$ 
-
-
-6) Si $\ln\Big(x^{-2}\Big) = a$ entonces $x =$ 
-
-
-7) Si $\ln\Big( \frac{y}{z}\Big) = \alpha + \beta$ entonces $y =$
-
+7)  Si $\ln\Big( \frac{y}{z}\Big) = \alpha + \beta$ entonces $y =$

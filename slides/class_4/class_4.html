@@ -4,6 +4,7 @@
     <title>Análisis de Datos Categóricos (SOL3070)</title>
     <meta charset="utf-8" />
     <meta name="author" content="  Mauricio Bucca  Profesor Asistente, Sociología UC" />
+    <script src="libs/header-attrs-2.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link rel="stylesheet" href="gentle-r.css" type="text/css" />
@@ -55,10 +56,66 @@ Por ejemplo, supongamos que `\(Y\)` es una variable que resulta de tirar un dado
      &amp;= 3.5
 \end{align}`
 
----
-## Valor Esperado
 
-### Valor esperado de una variable Bernoulli
+---
+## Valor Esperado, algunas propiedades útiles  
+
+1) El valor esperado de una constante es una constante.
+
+`$$E(c)=c$$`
+
+--
+
+2) Si `\(X\)` es una variable aleatoria y `\(c\)` una constante, entonces 
+
+`$$E(c X)= c E(X)$$`
+--
+
+3) Si `\(X\)` e `\(Y\)` son variables aleatorias (sin importar si `\(X \bot Y\)` o no), entonces
+
+`$$E(X + Y)=  E(X) + E(Y)$$`
+--
+
+4) Si `\(X\)` es una variable aleatoria y `\(g(.)\)` es una función, entonces
+
+`$$E(g(X))=  g(E(X))$$`
+
+--
+
+5. Si `\(X\)` e `\(Y\)` son variables aleatorias independientes, entonces
+
+`$$E(XY) = E(X)E(Y)$$`
+---
+
+## Valor Esperado, algunas propiedades útiles  
+
+Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
+--
+
+ ¿Cuánto es el premio esperado?
+
+--
+
+`$$P = 1000 + \sum^{n=100}_{i=1} X_{i} \times 10$$`
+
+Por tanto,
+--
+
+`$$E(P) = E(1000 + \sum^{n=100}_{i=1} X_{i} \times 10)$$`
+
+--
+
+`$$E(P) = 1000 + 10 \times \sum^{n=100}_{i=1}E(X_{i})$$`
+
+--
+
+$$E(P) = 1000 + 10 (3.5 + 3.5 + \dots + 3.5)) = 1000 + 10 \times 100 \times 3.5 = \$4500$$ 
+
+---
+
+## Valor Esperado de variables discretas
+
+###  Bernoulli
 
 Si X es una variable Bernoulli, su valor esperado viene dado por:
 
@@ -70,7 +127,7 @@ Si X es una variable Bernoulli, su valor esperado viene dado por:
 
 --
 
-### Valor esperado de una variable Binomial
+### Binomial
 
 Si X es una variable Binomial, su valor esperado viene dado por:
 
@@ -248,13 +305,13 @@ Intuitivamente: habiendo obtenido 82 caras, `\(p=0.82\)` es el valor más plausi
 
 --
 
-- Encontrar el máximo de la función: valor de `\(p\)` en el cual la curva no cambia, es decir. cuando `\(\ell\ell^{\text{ '}}(p)=0\)` 
+- Encontrar el máximo de la función `\(\ell\ell(p)\)`: valor de `\(p\)` en el cual la curva no cambia, es decir. cuando `\(\ell\ell^{\text{ '}}(p)=0\)` 
 
   - `\(\frac{k}{p} -  \frac{n-k}{1-p} = 0\)`
   
-  - Después de resolver por `\(p\)` obtenemos:
-  
 --
+
+Después de resolver por `\(p\)` obtenemos:
   
   - `\(p = \frac{k}{n} = \frac{\sum X_{i}}{n}\)`
 
@@ -280,6 +337,63 @@ Intuitivamente: habiendo obtenido 82 caras, `\(p=0.82\)` es el valor más plausi
 
 
 ---
+
+.bold[Ejemplo via simulacioón en R]
+
+
+```r
+# log-likelihood function
+ll &lt;- function(p,n,k) {
+  ell = k * log(p) + (n - k)*log(1-p)
+  return(ll = ell)
+}
+
+
+# Evaluate the log-likelihood function for some arbitrary values
+ll(p=0.1,n=100,k=82); ll(p=0.7,n=100,k=82)
+```
+
+```
+## [1] -190.7085
+```
+
+```
+## [1] -50.91886
+```
+
+```r
+# Evaluate the log-likelihood function for many possible combinatios values of p
+
+parameter_space &lt;- tibble(p=seq(0,1,by=0.01)) %&gt;% 
+  rowwise() %&gt;% mutate(loglik = ll(p,n=100,k=82)) 
+
+# Find the value of p that yield the largest value for the log-likelihood function
+
+parameter_space %&gt;% as.matrix() -&gt; m
+m[which.max(m[,2]),]
+```
+
+```
+##         p    loglik 
+##   0.82000 -47.13935
+```
+
+--
+
+Así se ve:
+
+
+```r
+# Plot all LL values
+parameter_space %&gt;% as.data.frame() %&gt;% ggplot(aes(x=p, y=loglik, colour=loglik)) + geom_line(size=1) + geom_point(aes(x=m[which.max(m[,2]),1], m[which.max(m[,2]),2])) +
+scale_color_viridis() +
+guides(fill=FALSE, color=FALSE) + labs(x="p", y="log-Likelihood") +
+annotate(geom="text", x=0.82, y=-35, label='bold("0.82")', color="black", parse=TRUE) 
+```
+
+![](class_4_files/figure-html/loglik_density-1.png)&lt;!-- --&gt;
+
+---
 class: inverse, center, middle
 
 .huge[
@@ -290,6 +404,10 @@ class: inverse, center, middle
 Mauricio Bucca &lt;br&gt;
 https://mebucca.github.io/ &lt;br&gt;
 github.com/mebucca
+
+
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -53,10 +53,66 @@ Por ejemplo, supongamos que $Y$ es una variable que resulta de tirar un dado "ju
      &= 3.5
 \end{align}
 
----
-## Valor Esperado
 
-### Valor esperado de una variable Bernoulli
+---
+## Valor Esperado, algunas propiedades útiles  
+
+1) El valor esperado de una constante es una constante.
+
+$$\mathbb{E}(c)=c$$
+
+--
+
+2) Si $X$ es una variable aleatoria y $c$ una constante, entonces 
+
+$$\mathbb{E}(c X)= c \mathbb{E}(X)$$
+--
+
+3) Si $X$ e $Y$ son variables aleatorias (sin importar si $X \bot Y$ o no), entonces
+
+$$\mathbb{E}(X + Y)=  \mathbb{E}(X) + \mathbb{E}(Y)$$
+--
+
+4) Si $X$ es una variable aleatoria y $g(.)$ es una función, entonces
+
+$$\mathbb{E}(g(X))=  g(\mathbb{E}(X))$$
+
+--
+
+5. Si $X$ e $Y$ son variables aleatorias independientes, entonces
+
+$$\mathbb{E}(XY) = \mathbb{E}(X)\mathbb{E}(Y)$$
+---
+
+## Valor Esperado, algunas propiedades útiles  
+
+Por ejemplo, supongamos que $X_{i}$ es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio es $ $1000$ de base, más el resultado de cada dado $i$ multiplicado por 10.
+--
+
+ ¿Cuánto es el premio esperado?
+
+--
+
+$$P = 1000 + \sum^{n=100}_{i=1} X_{i} \times 10$$
+
+Por tanto,
+--
+
+$$\mathbb{E}(P) = \mathbb{E}(1000 + \sum^{n=100}_{i=1} X_{i} \times 10)$$
+
+--
+
+$$\mathbb{E}(P) = 1000 + 10 \times \sum^{n=100}_{i=1}\mathbb{E}(X_{i})$$
+
+--
+
+$$\mathbb{E}(P) = 1000 + 10 (3.5 + 3.5 + \dots + 3.5)) = 1000 + 10 \times 100 \times 3.5 = \$4500$$ 
+
+---
+
+## Valor Esperado de variables discretas
+
+###  Bernoulli
 
 Si X es una variable Bernoulli, su valor esperado viene dado por:
 
@@ -68,7 +124,7 @@ Si X es una variable Bernoulli, su valor esperado viene dado por:
 
 --
 
-### Valor esperado de una variable Binomial
+### Binomial
 
 Si X es una variable Binomial, su valor esperado viene dado por:
 
@@ -105,6 +161,30 @@ Por ejemplo, supongamos que $Y$ es una variable que resulta de tirar un dado "ju
      &= 2.91
 \end{align}
 
+
+---
+## Varianza, algunas propiedades útiles  
+
+1) La varianzade una constante es cero.
+
+$$\mathbb{Var}(c)=0$$
+
+--
+
+2) Si $X$ es una variable aleatoria y $c$ una constante, entonces 
+
+$$\mathbb{Var}(c X)= c^{2} \mathbb{Var}(X)$$
+--
+
+3) Si $X$ e $Y$ son dos variables aleatorias independientes, entoces
+
+$$\mathbb{Var(X \pm Y)=  \mathbb{Var}(X) + \mathbb{Var}(Y)$$
+
+--
+
+5. Si $X$ e $Y$ son variables aleatorias independientes, entonces
+
+$$\mathbb{E}(XY) = \mathbb{E}(X)\mathbb{E}(Y)$$
 ---
 
 ### Varianza de una variable Bernoulli
@@ -112,7 +192,7 @@ Por ejemplo, supongamos que $Y$ es una variable que resulta de tirar un dado "ju
 Si X es una variable Bernoulli, su varianza viene dada por:
 
 \begin{align}
-\mathbb{Var} = \sum_{i} \bigg( x_{i} - E(X) \bigg)^{2} \times f_{X}(x_{i}) &= (1 - p)^{2} \times p +  (0 - p)^{2} \times (1-p) \\ 
+\mathbb{Var} = \sum_{i} \bigg( x_{i} - \mathbb{E}(X) \bigg)^{2} \times f_{X}(x_{i}) &= (1 - p)^{2} \times p +  (0 - p)^{2} \times (1-p) \\ 
  &=p^{2} − p^{3} + p − 2p^{2} + p^{3} \\ \\
  &=p(1-p)
 \end{align}
@@ -165,7 +245,7 @@ E.j. Supongamos que alguien lanza 100 veces la misma moneda y registra los resul
 ```{r, echo=FALSE, fig.height=5, fig.width=6, message=FALSE}
 library("tidyverse")
 set.seed(481)
-data_coins <- data.frame(X = rbinom(n=100, size=1, prob=0.8))
+data_coins <- data.fram\mathbb{E}(X = rbinom(n=100, size=1, prob=0.8))
 
 data_coins %>% ggplot(aes(x=factor(X), fill="")) + 
     geom_bar() +
@@ -226,11 +306,11 @@ MLE es justamente la formalización de esta pregunta. Pasos:
 Podemos inspeccionar visualmente la "likelihood" de diferentes valores $p$.
 
 ```{r, echo=FALSE, fig.height=5, fig.width=6, message=FALSE}
-plot <- ggplot(data = data.frame(p = 0), mapping = aes(x = p, color=""))
+plot <- ggplot(data = data.fram\mathbb{E}(p = 0), mapping = aes(x = p, color=""))
 binom_distrib <- function(p,n,k) (p^(k))*((1-p)^(n-k))
 
 plot + stat_function(fun = binom_distrib, args = list(n= 100, k= 82)) + 
-  xlim(0,1) + labs(title="Likelihood of p", x="p", y=expression(paste(p^{82}, (1-p)^{18})) ) +
+  xlim(0,1) + labs(title="Likelihood of p", x="p", y=expression(past\mathbb{E}(p^{82}, (1-p)^{18})) ) +
     scale_color_viridis_d() + 
     guides(fill=FALSE, color=FALSE)
 ```
@@ -260,13 +340,13 @@ Intuitivamente: habiendo obtenido 82 caras, $p=0.82$ es el valor más plausible 
 
 --
 
-- Encontrar el máximo de la función: valor de $p$ en el cual la curva no cambia, es decir. cuando $\ell\ell^{\text{ '}}(p)=0$ 
+- Encontrar el máximo de la función $\ell\ell(p)$: valor de $p$ en el cual la curva no cambia, es decir. cuando $\ell\ell^{\text{ '}}(p)=0$ 
 
   - $\frac{k}{p} -  \frac{n-k}{1-p} = 0$
   
-  - Después de resolver por $p$ obtenemos:
-  
 --
+
+Después de resolver por $p$ obtenemos:
   
   - $p = \frac{k}{n} = \frac{\sum X_{i}}{n}$
 
@@ -290,6 +370,47 @@ Intuitivamente: habiendo obtenido 82 caras, $p=0.82$ es el valor más plausible 
 --
  No siempre tan simple....
 
+
+---
+
+.bold[Ejemplo via simulacioón en R]
+
+```{r loglik_fun,  include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+
+# log-likelihood function
+ll <- function(p,n,k) {
+  ell = k * log(p) + (n - k)*log(1-p)
+  return(ll = ell)
+}
+
+
+# Evaluate the log-likelihood function for some arbitrary values
+ll(p=0.1,n=100,k=82); ll(p=0.7,n=100,k=82)
+
+
+# Evaluate the log-likelihood function for many possible combinatios values of p
+
+parameter_space <- tibbl\mathbb{E}(p=seq(0,1,by=0.01)) %>% 
+  rowwis\mathbb{E}() %>% mutat\mathbb{E}(loglik = ll(p,n=100,k=82)) 
+
+# Find the value of p that yield the largest value for the log-likelihood function
+
+parameter_space %>% as.matrix() -> m
+m[which.max(m[,2]),]
+```
+
+--
+
+Así se ve:
+
+```{r loglik_density,  include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+# Plot all LL values
+parameter_space %>% as.data.fram\mathbb{E}() %>% ggplot(aes(x=p, y=loglik, colour=loglik)) + geom_lin\mathbb{E}(size=1) + geom_point(aes(x=m[which.max(m[,2]),1], m[which.max(m[,2]),2])) +
+scale_color_viridis() +
+guides(fill=FALSE, color=FALSE) + labs(x="p", y="log-Likelihood") +
+annotat\mathbb{E}(geom="text", x=0.82, y=-35, label='bold("0.82")', color="black", parse=TRUE) 
+
+```
 
 ---
 class: inverse, center, middle
