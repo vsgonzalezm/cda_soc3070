@@ -14,7 +14,7 @@ library("tinytex")
 ```
 
 Ponderación: 2% de la nota final del curso
-Entrega: Desde el momento de entrega, los estudiantes tiene 1 exacta semana de plazo para completar esta tarea. 
+Entrega: Desde el momento de entrega, los estudiantes tienen 1 semana exacta de plazo para completar esta tarea. 
 
 _Notar_: 
 
