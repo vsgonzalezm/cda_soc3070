@@ -22,8 +22,6 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
 - Modelos de Regresión Logística Multinomial 
 - Modelos de Regresión Poisson y alternativas* (Regresión Binomial Negativa)
 - Modelos Log-lineales para tablas de contingencia*
-- Regression trees
-
 
 ### Ayudantías
 
