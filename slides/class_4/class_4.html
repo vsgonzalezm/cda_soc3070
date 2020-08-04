@@ -62,29 +62,29 @@ Por ejemplo, supongamos que `\(Y\)` es una variable que resulta de tirar un dado
 
 1) El valor esperado de una constante es una constante.
 
-`$$E(c)=c$$`
+`$$\mathbb{E}(c)=c$$`
 
 --
 
 2) Si `\(X\)` es una variable aleatoria y `\(c\)` una constante, entonces 
 
-`$$E(c X)= c E(X)$$`
+`$$\mathbb{E}(c X)= c \mathbb{E}(X)$$`
 --
 
 3) Si `\(X\)` e `\(Y\)` son variables aleatorias (sin importar si `\(X \bot Y\)` o no), entonces
 
-`$$E(X + Y)=  E(X) + E(Y)$$`
+`$$\mathbb{E}(X + Y)=  \mathbb{E}(X) + \mathbb{E}(Y)$$`
 --
 
 4) Si `\(X\)` es una variable aleatoria y `\(g(.)\)` es una función, entonces
 
-`$$E(g(X))=  g(E(X))$$`
+`$$\mathbb{E}(g(X))=  g(\mathbb{E}(X))$$`
 
 --
 
 5. Si `\(X\)` e `\(Y\)` son variables aleatorias independientes, entonces
 
-`$$E(XY) = E(X)E(Y)$$`
+`$$\mathbb{E}(XY) = \mathbb{E}(X)\mathbb{E}(Y)$$`
 ---
 
 ## Valor Esperado, algunas propiedades útiles  
@@ -96,20 +96,18 @@ Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un d
 
 --
 
-`$$P = 1000 + \sum^{n=100}_{i=1} X_{i} \times 10$$`
-
-Por tanto,
+`$$P = 1000 + \sum^{n=100}_{i=1} X_{i} \times 10 \quad \text{ por tanto,}$$`
 --
 
-`$$E(P) = E(1000 + \sum^{n=100}_{i=1} X_{i} \times 10)$$`
-
---
-
-`$$E(P) = 1000 + 10 \times \sum^{n=100}_{i=1}E(X_{i})$$`
+`$$\mathbb{E}(P) = \mathbb{E}(1000 + \sum^{n=100}_{i=1} X_{i} \times 10)$$`
 
 --
 
-$$E(P) = 1000 + 10 (3.5 + 3.5 + \dots + 3.5)) = 1000 + 10 \times 100 \times 3.5 = \$4500$$ 
+`$$\mathbb{E}(P) = 1000 + 10 \times \sum^{n=100}_{i=1}\mathbb{E}(X_{i})$$`
+
+--
+
+$$\mathbb{E}(P) = 1000 + 10 (3.5 + 3.5 + \dots + 3.5)) = 1000 + 10 \times 100 \times 3.5 = \$4500$$ 
 
 ---
 
@@ -164,21 +162,72 @@ Por ejemplo, supongamos que `\(Y\)` es una variable que resulta de tirar un dado
      &amp;= 2.91
 \end{align}`
 
----
 
-### Varianza de una variable Bernoulli
+---
+## Varianza, algunas propiedades útiles  
+
+1) La varianzade una constante es cero.
+
+`$$\mathbb{Var}(c)=0$$`
+&lt;br&gt;
+--
+
+2) Si `\(X\)` es una variable aleatoria y `\(c\)` una constante, entonces 
+
+`$$\mathbb{Var}(c X)= c^{2} \mathbb{Var}(X)$$`
+&lt;br&gt;
+--
+
+3) Si `\(X\)` e `\(Y\)` son dos variables aleatorias independientes, entonces
+
+`$$\mathbb{Var}(X + Y) =  \mathbb{Var}(X) + \mathbb{Var}(Y)$$`
+---
+## Varianza, algunas propiedades útiles  
+
+Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
+--
+ ¿Cuánto es la desviación estándar del premio?
+
+--
+
+`$$P = 1000 + \sum^{n=100}_{i=1} X_{i} \times 10 \quad \text{ por tanto,}$$`
+
+--
+
+`$$\mathbb{Var}(P) = \mathbb{Var}(1000 + \sum^{n=100}_{i=1} X_{i} \times 10)$$`
+
+--
+
+`$$\mathbb{Var}(P) = \mathbb{Var}(1000) + 10^{2} \times \sum^{n=100}_{i=1}\mathbb{Var}(X_{i})$$`
+
+--
+
+$$\mathbb{Var}(P) =  0 +  10^{2} \times 100 \times 2.91 = \$29100$$ 
+
+--
+
+$$\sigma_{P} = \sqrt{0 + 100 \times 100 \times 2.91} = \$ 170.6$$
+---
+## Varianza de variables discretas
+
+### Bernoulli
 
 Si X es una variable Bernoulli, su varianza viene dada por:
 
 `\begin{align}
-\mathbb{Var} = \sum_{i} \bigg( x_{i} - E(X) \bigg)^{2} \times f_{X}(x_{i}) &amp;= (1 - p)^{2} \times p +  (0 - p)^{2} \times (1-p) \\ 
+\mathbb{Var}(X) &amp;= \sum_{i} \bigg( x_{i} - \mathbb{E}(X) \bigg)^{2} \times f_{X}(x_{i})  \\ \\
+ &amp;= (1 - \mathbb{E}(X))^{2} \times \mathbb{P}(X=1) + (0 - \mathbb{E}(X))^{2} \times \mathbb{P}(X=0) \\ \\
+ &amp;= (1 - p)^{2} \times p +  (0 - p)^{2} \times (1-p) \\ \\
  &amp;=p^{2} − p^{3} + p − 2p^{2} + p^{3} \\ \\
  &amp;=p(1-p)
 \end{align}`
 
---
+---
+## Varianza de variables discretas
 
-### Varianza de una variable Binomial
+### Bernoulli
+
+### Binomial
 
 Si X es una variable Binomial, su varianza viene dada por:
 
@@ -338,7 +387,7 @@ Después de resolver por `\(p\)` obtenemos:
 
 ---
 
-.bold[Ejemplo via simulacioón en R]
+.bold[Ejemplo via simulación en R]
 
 
 ```r
@@ -378,16 +427,15 @@ m[which.max(m[,2]),]
 ##   0.82000 -47.13935
 ```
 
---
-
-Así se ve:
+---
+.bold[Ejemplo via simulación en R]
 
 
 ```r
-# Plot all LL values
-parameter_space %&gt;% as.data.frame() %&gt;% ggplot(aes(x=p, y=loglik, colour=loglik)) + geom_line(size=1) + geom_point(aes(x=m[which.max(m[,2]),1], m[which.max(m[,2]),2])) +
-scale_color_viridis() +
-guides(fill=FALSE, color=FALSE) + labs(x="p", y="log-Likelihood") +
+library("viridis")
+parameter_space %&gt;% as.data.frame() %&gt;% ggplot(aes(x=p, y=loglik, colour=loglik)) + 
+geom_line(size=1) + geom_point(aes(x=m[which.max(m[,2]),1], m[which.max(m[,2]),2])) +
+scale_color_viridis() + guides(fill=FALSE, color=FALSE) + labs(x="p", y="log-Likelihood") +
 annotate(geom="text", x=0.82, y=-35, label='bold("0.82")', color="black", parse=TRUE) 
 ```
 
