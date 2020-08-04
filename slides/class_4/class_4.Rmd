@@ -222,8 +222,6 @@ Si X es una variable Bernoulli, su varianza viene dada por:
 ---
 ## Varianza de variables discretas
 
-### Bernoulli
-
 ### Binomial
 
 Si X es una variable Binomial, su varianza viene dada por:
@@ -400,7 +398,7 @@ Después de resolver por $p$ obtenemos:
 
 .bold[Ejemplo via simulación en R]
 
-```{r loglik_fun,  include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+```{r, include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
 
 # log-likelihood function
 ll <- function(p,n,k) {
@@ -411,7 +409,10 @@ ll <- function(p,n,k) {
 
 # Evaluate the log-likelihood function for some arbitrary values
 ll(p=0.1,n=100,k=82); ll(p=0.7,n=100,k=82)
+```
+--
 
+```{r, include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
 
 # Evaluate the log-likelihood function for many possible combinatios values of p
 
