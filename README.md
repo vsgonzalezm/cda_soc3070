@@ -35,7 +35,7 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
   - Gráficos con `ggplot`: 
   - Un template de código que cubre las funciones típicamente usadas en un proyecto real de intestigación. El código tiene la estructura de lo que considero un workflow efectivo y ordenado. Consiste en un [`[master file]`](https://github.com/mebucca/Introduction-to-R/blob/master/code/1_masterfile.R) desde el que llamamos una serie de `Rscript` que implementan diferentes partes del análisis: [`[exploración]`](https://github.com/mebucca/Introduction-to-R/blob/master/code/2_exploration.R) y [`[análisis]`](https://github.com/mebucca/Introduction-to-R/blob/master/code/3_analyses.R) de datos, incluyendo modelos de regresión, producción de tablas y gráficos publicables.
   - Un template para escribir en `RMarkdown` ([`[PDF]`](files/template_rmarkdown.pdf) y [`[.Rmd]`](files/template_rmarkdown.Rmd) ). El uso de `RMarkdown` no es obligatorio, pero es altamente recomendado para escribir sus tareas y trabajos. Hoja de ayuda [`[aquí]`](https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-spanish.pdf).
-  - [StalkOverflow](https://stackoverflow.com/) tiene las respuestas a casi todas las preguntas.
+  - [`[StalkOverflow]`](https://stackoverflow.com/) tiene las respuestas a casi todas las preguntas.
  
 ### Evaluaciones 
 
