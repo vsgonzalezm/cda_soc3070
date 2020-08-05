@@ -80,7 +80,6 @@ Para cualquier .bold[*evento*] es posible asociar un número que cuantifique la 
 
 Continuando con nuestro ejemplo,
 
-- Hello
 - Experimento: Tirar un dado
 - Espacio muestral, $\Omega: \{1,2,3,4,5,6\}$
 -  A es el evento de "obtener un 1 o un 5"
@@ -205,12 +204,36 @@ Cual es la probabilidad de obtener un 3 o un 4?
 4). De los puntos 2 y 3 se deduce que la probabilidad de la unión de dos eventos desunidos, A y B, viene dada por:
 
 $$\mathbb{P}(A \text{ or } B) = \mathbb{P}(A) + \mathbb{P}(B)$$
+---
+
+### Reglas básicas de probabilidad
+
+5) La probabilidad del espacio muestral es uno. 
+
+<br>
+--
+
+Formalmente, si denotamos cada posible resultado de un experimento como $A_{i}$, entonces:
+
+$$\mathbb{P}(\Omega) = \mathbb{P}(A_{1} \text{ o } A_{2} \dots \text{ o } A_{n})  = \sum A_{i} = 1$$
+<br>
+--
+
+Por ejemplo. Experimento: tirar un dado justo
+
+Entonces, 
+
+\begin{align}
+\mathbb{P}(\Omega) &= \mathbb{P}(\text{dado=1  o ... o dado=6})  \\ \\
+ &= \mathbb{P}(\text{dado=1}) + \dots + \mathbb{P}(\text{dado=6}) \\ \\
+ &= \frac{1}{6} + \dots + \frac{1}{6} = 1
+\end{align}
 
 ---
 
 ### Reglas básicas de probabilidad
 
-5). Si dos eventos A y B dividen el espacio muestral en dos particiones mutuamente excluyentes entonces sus probabilidades son complementarias. 
+6). Se sigue de (5) que si dos eventos A y B dividen el espacio muestral en dos particiones mutuamente excluyentes entonces sus probabilidades son complementarias. 
 
 <br>
 --
@@ -224,8 +247,8 @@ $$\mathbb{P}(A) = 1 - \mathbb{P}(B)$$
 
 Por ejemplo
   - Experimento: tirar un dado justo
-  - $A: \text{dice < 3}$ 
-  - $B:\text{dice} \geq 3$
+  - $A: \text{dado < 3}$ 
+  - $B:\text{dado} \geq 3$
 
 Entonces, 
 
