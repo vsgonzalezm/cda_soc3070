@@ -80,6 +80,7 @@ Para cualquier .bold[*evento*] es posible asociar un número que cuantifique la 
 
 Continuando con nuestro ejemplo,
 
+- Hello
 - Experimento: Tirar un dado
 - Espacio muestral, $\Omega: \{1,2,3,4,5,6\}$
 -  A es el evento de "obtener un 1 o un 5"
