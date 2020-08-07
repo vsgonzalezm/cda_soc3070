@@ -83,16 +83,48 @@ $$\mathbb{P}(Y=12) = \frac{1}{36}$$
 
 ### Distribución de una variable aleatoria
 
-Cada valor posible de una variable aleatoria tiene una cierta probabilidad de ocurrencia. El conjunto de estas probabilidades se denomina la .bold[distribución] de la variable.
+Cada valor posible de una variable aleatoria tiene una cierta probabilidad de ocurrencia.
+--
+El conjunto de estas probabilidades se denomina la .bold[distribución] de la variable.
 
-La función que describe la distribución de una variable aleatoria se denomina .bold[función de masa/densidad de probabilidad (pf)], denotada $f_{X}(x)$. 
+<br>
+--
 
-En el caso de las variables discretas $f_{X}(x)$ entrega la probabilidad de que la variable $X$ tome valor $x$. Formalmente
+#### Función de probabilidad
+La función que describe la distribución de una variable aleatoria se denomina .bold[función de probabilidad (pf)], denotada $f_{X}(x)$. 
+
+--
+
+- En el caso de variables discretas la función de probabilidad $f_{X}(x)$ entrega la probabilidad de que la variable $X$ tome valor $x$. Formalmente
 
 $$f_{X}(x) = \mathbb{P}(X=x)$$
 
 ---
+### Distribución de una variable aleatoria
 
+Dos características cruciales de una distribución de probabilidad son:
+
+<br>
+--
+
+- densidad/masa no negativa: $f(x) \geq 0$
+
+--
+
+- suma a 1: si $x_{1}, x_{2}, \dots, x_{n}$ son todos los valores posibles de una variable discreta $X$, entonces
+
+--
+
+$$\sum^{\infty}_{i=1} f(x_{i}) = 1$$
+
+--
+
+Análogamente, si $X$ es continua, entonces
+
+$$\int ^{+\infty}_{-\infty} f(x)dx = 1$$
+
+
+---
 ### Distribución de una variable aleatoria
 
 Continuando con nuestro ejemplo:
