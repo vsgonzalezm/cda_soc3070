@@ -112,6 +112,10 @@ $$ X \sim \mathcal{N}(\mu,\sigma)$$
 ]
 ]
 
+<br>
+--
+
+- Spanglish, so sorry!
 
 ---
 
