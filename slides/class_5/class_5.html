@@ -4,7 +4,6 @@
     <title>Análisis de Datos Categóricos (SOL3070)</title>
     <meta charset="utf-8" />
     <meta name="author" content="  Mauricio Bucca  Profesor Asistente, Sociología UC" />
-    <script src="libs/header-attrs-2.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link rel="stylesheet" href="gentle-r.css" type="text/css" />
@@ -37,19 +36,19 @@ class: inverse, center, middle
 
 ```
 ## # A tibble: 601 x 10
-##    sex      age    ym child religious education occupation  rate nbaffairs everaffair
-##    &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;     &lt;int&gt;     &lt;dbl&gt;      &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;     
-##  1 male      37 10    no            3        18          7     4         0 Never     
-##  2 female    27  4    no            4        14          6     4         0 Never     
-##  3 female    32 15    yes           1        12          1     4         0 Never     
-##  4 male      57 15    yes           5        18          6     5         0 Never     
-##  5 male      22  0.75 no            2        17          6     3         0 Never     
-##  6 female    32  1.5  no            2        17          5     5         0 Never     
-##  7 female    22  0.75 no            2        12          1     3         0 Never     
-##  8 male      57 15    yes           2        14          4     4         0 Never     
-##  9 female    32 15    yes           4        16          1     2         0 Never     
-## 10 male      22  1.5  no            4        14          4     5         0 Never     
-## # … with 591 more rows
+##    sex     age    ym child religious education occupation  rate nbaffairs
+##    &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;     &lt;int&gt;     &lt;dbl&gt;      &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;
+##  1 male     37 10    no            3        18          7     4         0
+##  2 fema…    27  4    no            4        14          6     4         0
+##  3 fema…    32 15    yes           1        12          1     4         0
+##  4 male     57 15    yes           5        18          6     5         0
+##  5 male     22  0.75 no            2        17          6     3         0
+##  6 fema…    32  1.5  no            2        17          5     5         0
+##  7 fema…    22  0.75 no            2        12          1     3         0
+##  8 male     57 15    yes           2        14          4     4         0
+##  9 fema…    32 15    yes           4        16          1     2         0
+## 10 male     22  1.5  no            4        14          4     5         0
+## # … with 591 more rows, and 1 more variable: everaffair &lt;chr&gt;
 ```
 
 ---
@@ -243,398 +242,373 @@ Supongamos que elegimos al azar un individuo de nuestra población. ¿Cuáles so
 --
 ### Distribución conjunta
 
-Para cada frecuencia conjunta `\(n_{ij}\)` en la table tiene una probabilidad conjunta asociada `\(p_{ij}\)`, tal que
+Para cada frecuencia conjunta `\(n_{ij}\)` en la table existe una probabilidad conjunta asociada `\(p_{ij}\)`, tal que
 
-`\(p_{ij} = \mathbb{P}(X = i, Y = j)\)`
+`$$p_{ij} = \mathbb{P}(X = i, Y = j)$$`
 
-i.e., it denotes the probability that a randomly sampled observation falls in the cell in row `\(i\)` and column `\(j\)`. The collection of probabilities `\(p_{ij}\)` forms the *joint distribution* of `\(X\)` and `\(Y\)` .
 
-When working on samples, the cell proportions provide estimates for joint probabilities, `\(\hat{p}_{ij}\)`.  The sample cell proportions relate to the cell counts by
+- denota la probabilidad de que una observación muestreada al azar pertenezca en la celda `\((i,j)\)`.
 
-`\(\hat{p}_{ij} = \frac{n_{ij}}{n}\)`
----
-## Valor Esperado, algunas propiedades útiles  
+- la colección de probabilidades `\(p_{ij}\)` forma la *distribución conjunta* de `\(X\)` y `\(Y\)` .
 
-1) El valor esperado de una constante es una constante.
 
-`$$\mathbb{E}(c)=c$$`
+Cuando trabajamos con muestras, estas probabilidad se puede estimar a partir de las frecuencias en la tabla:
 
---
-
-2) Si `\(X\)` es una variable aleatoria y `\(c\)` una constante, entonces 
-
-`$$\mathbb{E}(c X)= c \mathbb{E}(X)$$`
---
-
-3) Si `\(X\)` e `\(Y\)` son variables aleatorias (sin importar si `\(X \bot Y\)` o no), entonces
-
-`$$\mathbb{E}(X + Y)=  \mathbb{E}(X) + \mathbb{E}(Y)$$`
---
-
-4) Si `\(X\)` es una variable aleatoria y `\(g(.)\)` es una función, entonces
-
-`$$\mathbb{E}(g(X))=  g(\mathbb{E}(X))$$`
-
---
-
-5. Si `\(X\)` e `\(Y\)` son variables aleatorias independientes, entonces
-
-`$$\mathbb{E}(XY) = \mathbb{E}(X)\mathbb{E}(Y)$$`
----
-
-## Valor Esperado, algunas propiedades útiles  
-
-Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
---
-
- ¿Cuánto es el premio esperado?
-
---
-
-`$$P = 1000 + \sum^{n=100}_{i=1} X_{i} \times 10 \quad \text{ por tanto,}$$`
---
-
-`$$\mathbb{E}(P) = \mathbb{E}(1000 + \sum^{n=100}_{i=1} X_{i} \times 10)$$`
-
---
-
-`$$\mathbb{E}(P) = 1000 + 10 \times \sum^{n=100}_{i=1}\mathbb{E}(X_{i})$$`
-
---
-
-$$\mathbb{E}(P) = 1000 + 10 (3.5 + 3.5 + \dots + 3.5)) = 1000 + 10 \times 100 \times 3.5 = \$4500$$ 
-
----
-
-## Valor Esperado de variables discretas
-
-###  Bernoulli
-
-Si X es una variable Bernoulli, su valor esperado viene dado por:
-
-`\begin{align}
-\mathbb{E}(X) = \sum_{i} x_{i} \times \mathbb{P}(X=x_{i}) &amp;= \sum_{i} x_{i} \times p^{x_{i}}(1-p)^{1 - x_{i}} \\ 
-     &amp;= 1 \times p + 0 \times (1-p) \\ 
-     &amp;= p
-\end{align}`
-
---
-
-### Binomial
-
-Si X es una variable Binomial, su valor esperado viene dado por:
-
-`\begin{align}
-\mathbb{E}(X) = np
-\end{align}`
-
---
-.bold[Pregunta]: ¿Cuántas "Caras" debo esperar si tiro 200 monedas "justas"?
-
---
-
-.bold[Respuesta]: `\(np = 200 \times 0.5 = 100\)`
+`$$\hat{p}_{ij} = \frac{n_{ij}}{n}$$`
 
 
 ---
-## Varianza 
+## Distribución conjunta
 
-La varianza de una variable aleatoria es el análogo teórico de la varianza de los datos.
---
- Mide cuánta dispersión existe entonce al centro (la media). Formalmente:
- 
-`$$\mathbb{Var}(X) = \sum_{i} \bigg( x_{i} - \mathbb{E}(X) \bigg)^{2} \times f_{X}(x_{i})$$`
---
+En nuestro ejemplo,
 
-Por ejemplo, supongamos que `\(Y\)` es una variable que resulta de tirar un dado "justo".  ¿Cuál es la varianza de `\(Y\)`?
-
-&lt;br&gt;
---
-
-`\begin{align}
-\mathbb{Var}(Y) &amp;= \sum_{i} \bigg( y_{i} - \mathbb{E}(Y) \bigg)^{2} \times f_{Y}(y_{i})   \\ \\
-     &amp;=  (1 - 3.5)^{2} \times  \frac{1}{6} + (2-3.5)^{2} \times \frac{1}{6} + \dots + (6-3.5)^{2} \times \frac{1}{6}  \\ \\
-     &amp;= 2.91
-\end{align}`
-
-
----
-## Varianza, algunas propiedades útiles  
-
-1) La varianzade una constante es cero.
-
-`$$\mathbb{Var}(c)=0$$`
-&lt;br&gt;
---
-
-2) Si `\(X\)` es una variable aleatoria y `\(c\)` una constante, entonces 
-
-`$$\mathbb{Var}(c X)= c^{2} \mathbb{Var}(X)$$`
-&lt;br&gt;
---
-
-3) Si `\(X\)` e `\(Y\)` son dos variables aleatorias independientes, entonces
-
-`$$\mathbb{Var}(X + Y) =  \mathbb{Var}(X) + \mathbb{Var}(Y)$$`
----
-## Varianza, algunas propiedades útiles  
-
-Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
---
- ¿Cuánto es la desviación estándar del premio?
-
---
-
-`$$P = 1000 + \sum^{n=100}_{i=1} X_{i} \times 10 \quad \text{ por tanto,}$$`
-
---
-
-`$$\mathbb{Var}(P) = \mathbb{Var}(1000 + \sum^{n=100}_{i=1} X_{i} \times 10)$$`
-
---
-
-`$$\mathbb{Var}(P) = \mathbb{Var}(1000) + 10^{2} \times \sum^{n=100}_{i=1}\mathbb{Var}(X_{i})$$`
-
---
-
-$$\mathbb{Var}(P) =  0 +  10^{2} \times 100 \times 2.91 = \$29100$$ 
-
---
-
-$$\sigma_{P} = \sqrt{0 + 100 \times 100 \times 2.91} = \$ 170.6$$
----
-## Varianza de variables discretas
-
-### Bernoulli
-
-Si X es una variable Bernoulli, su varianza viene dada por:
-
-`\begin{align}
-\mathbb{Var}(X) &amp;= \sum_{i} \bigg( x_{i} - \mathbb{E}(X) \bigg)^{2} \times f_{X}(x_{i})  \\ \\
- &amp;= (1 - \mathbb{E}(X))^{2} \times \mathbb{P}(X=1) + (0 - \mathbb{E}(X))^{2} \times \mathbb{P}(X=0) \\ \\
- &amp;= (1 - p)^{2} \times p +  (0 - p)^{2} \times (1-p) \\ \\
- &amp;=p^{2} − p^{3} + p − 2p^{2} + p^{3} \\ \\
- &amp;=p(1-p)
-\end{align}`
-
----
-## Varianza de variables discretas
-
-### Binomial
-
-Si X es una variable Binomial, su varianza viene dada por:
-
-`\begin{align}
-\mathbb{Var}(X) = n \times p(1-p)
-\end{align}`
-
-&lt;br&gt;
---
-.bold[Pregunta]: ¿Cuánta variabilidad debo esperar en el número de "Caras" si tiro 200 monedas "justas"?
-
---
-
-.bold[Respuesta]: varianza es `\(n \times p(1-p) = 200 \times 0.5 \times 0.5 = 50\)`. La desviación estándar es `\(\sqrt{50} = 7.01\)`.
-
----
-class: inverse, center, middle
-
-#Estimación
-##Maximum Likelihood Estimation (MLE)
-
----
-
-##Estimación 
-
-.bold[Modelos de probabilidad]: ¿Cuál es la probabilidad del observar los *datos* dado los *parámetros* que conocemos?
-
-E.j. ¿Cuán probable es que obtengamos 9 "Caras" (1) si lanzamos una moneda 'justa' ( `\(p=0.5\)` ) 10 veces? 
-
-
-```r
-dbinom(x=9,size=10,prob=0.5)
-```
 
 ```
-## [1] 0.009765625
+##         everaffair
+## sex      At least once     Never
+##   female     0.1198003 0.4043261
+##   male       0.1297837 0.3460899
 ```
 
+&lt;br&gt;
+--
+Como con cualquier distribución de probabilidad, sabemos que los `\(p_{ij}\)` suman a 1. 
+
+--
+
+Veamos en caso de nuestro estimador:
+
+Si `\(\hat{p}_{ij} = \frac{n_{ij}}{n}\)`, entonces 
+
+`$$\sum_{i} \sum_{j} \frac{n_{ij}}{n} = \frac{n}{n} = 1$$`
 ---
-##Estimación 
+## Distribuciones marginales
 
-.bold[Modelos estadísticos]:  ¿Cuáles son los valores más plausible de los *parámetros* dado los *datos* que observamos? 
+Al igual que con las frecuencias, podemos obtener la distribución marginal de las variables `\(X\)` y `\(Y\)` a partir su distribución conjunta. 
+
+&lt;br&gt;
+--
+
+- La distribución marginal de `\(X\)` (filas) está dada por:    
+
+`$$p_{i+} = \sum_{j} p_{ij}$$`
+&lt;br&gt;
+--
+
+- La distribución marginal de `\(Y\)` (columnas) está dada por:    
+
+`$$p_{+j} = \sum_{i} p_{ij}$$`
 
 
-E.j. Supongamos que alguien lanza 100 veces la misma moneda y registra los resultados en una base de datos. Los datos se ven así:  
+---
+## Distribuciones marginales
 
 .pull-left[
-![](class_5_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+Cuando trabajamos con una muestra podemos estimar las distribuciones marginales a partir de las proporciones muestrales. 
+]
+.pull-right[
+
+
+```
+##         everaffair
+## sex      At least once     Never
+##   female     0.1198003 0.4043261
+##   male       0.1297837 0.3460899
+```
 ]
 
 --
+
+
+```r
+# marginal distribution rows
+margin_i &lt;- apply(joint_dis,1,sum); margin_i
+```
+
+```
+##    female      male 
+## 0.5241265 0.4758735
+```
+
+
+```r
+# marginal distribution columns
+margin_j &lt;- apply(joint_dis,2,sum); margin_j
+```
+
+```
+## At least once         Never 
+##      0.249584      0.750416
+```
+
+&lt;br&gt;
+--
+Como toda distribución de probabilidad, .bold[suma a 1]
+
+---
+class: middle
+
+## Distribuciones conjuntas y marginales
+
+![joint_marginal](joint_marginal.jpg)
+
+
+---
+## Distribuciones condicionales 
+
+- Recuerden `\(\mathbb{P}(Y=y \mid X=x)\)` es la probabilidad de que la variable `\(Y\)` tome valor `\(y\)` si `\(X\)` toma valor `\(x\)`.
+
+--
+
+- La distribución condicional `\(f_{Y,x}(Y \mid X=x)\)` es una función que expresa la probabilidad que `\(Y\)` tome cada uno de sus posibles valore `\(y\)`'s si `\(X\)` toma valor `\(x\)`.
+
+--
+
+- La distribución condicional `\(f_{Y,X}(Y \mid X)\)` es una función que expresa la probabilidad que `\(Y\)` tome cada uno de sus posibles valores `\(y\)`'s para `\(X\)` fijo en cada uno de sus valores posible `\(x\)`'s.
+
+&lt;br&gt;
+--
+
+Por tanto,
+
+-  En una tabla de contingencia podemos construir las distribuciones condicionales de las variables `\(X\)` (o `\(Y\)`) fijando la otra variable en sus diferentes niveles.
+
+--
+
+- Normalmente nos referimos como la "variable independiente" a la variable que usamos para condicionar, mientras que la otra variable actúa como "variable dependiente". 
+
+---
+## Distribuciones condicionales 
+
+.pull-left[
+En nuestro ejemplo podemos construir la distribución condicional  de la variable `everaffair` dado `sex` usando la fórmula genral para probabilidades condicionales:
+]
 
 .pull-right[
 
-- Lo vemos en la izquierda son .bold[datos]
+```
+##         everaffair
+## sex      At least once Never
+##   female            72   243
+##   male              78   208
+```
+]
 
-- Datos: realización de `\(n\)` variables aleatorias 
+&lt;br&gt;
+--
+`\begin{align}
+\mathbb{P}( \text{affair}=j | \text{ gender}=i  ) &amp;= \frac{\mathbb{P}(\text{affair}=j , \text{ gender}=i )}{\mathbb{P}(\text{ gender}=i)} \\ \\
+\mathbb{P}( \text{dependent }| \text{ independent} )  &amp;= \frac{\text{joint prob.}}{\text{marginal prob. of independent}}
+\end{align}`
 
-- Normalmente *no conocemos* la distribución de las variables
+---
+## Distribuciones condicionales 
 
-- Datos nos da una pista sobre cuál podría ser esa distribución.
+.pull-left[
+Sustituyendo las probabilidades  de la ecuación por sus respectivos estimadores podemos estimar las distribuciones condicionales en la tabla:
+]
+.pull-right[
 
-- .bold[Estadística]: aprender de los datos para *estimar* los parámetros los generan. 
+```
+##         everaffair
+## sex      At least once Never
+##   female            72   243
+##   male              78   208
+```
+]
 
+&lt;br&gt;
+--
+
+`\begin{align}
+ \hat{p}_{j | i} &amp;= \frac{P(\text{affair}=j , \text{ gender}=i )}{P(\text{ gender}=i)} \\ \\
+  &amp;= \frac{\frac{n_{ij}}{n}}{\frac{\sum_{j} n_{ij}}{n}} = \frac{n_{ij}}{\sum_{j}n_{ij}} 
+\end{align}`
+
+---
+
+## Distribuciones condicionales 
+
+.pull-left[
+Sustituyendo las probabilidades  de la ecuación por sus respectivos estimadores podemos estimar las distribuciones condicionales en la tabla:
+]
+.pull-right[
+
+```
+##         everaffair
+## sex      At least once Never
+##   female            72   243
+##   male              78   208
+```
+]
+
+&lt;br&gt;
+
+Por ejemplo, la probabilidad condicional de haber tenido un "affair" dado que el genero es mujer se estima de la siguiente manera:
+
+`\begin{align}
+ \hat{p}_{ \text{had affair} | \text{women}} &amp; = \frac{n_{11}}{\sum_{j}n_{1j}} \\ \\
+ &amp;= \frac{72}{72 + 243} = 0.23
+\end{align}`
+
+---
+
+## Distribuciones condicionales 
+
+.pull-left[
+Sustituyendo las probabilidades  de la ecuación por sus respectivos estimadores podemos estimar las distribuciones condicionales en la tabla:
+]
+.pull-right[
+
+```
+##         everaffair
+## sex      At least once Never
+##   female            72   243
+##   male              78   208
+```
+]
+
+&lt;br&gt;
+
+En términos más generales, la _distribución condicional_ de la variable de la variable `everaffair`, dado `sex` se estima del siguiente modo:
+
+
+```r
+ctable &lt;- affairsdata %&gt;% with(table(sex,everaffair)) # contingency table
+joint_gender_affair &lt;- ctable/sum(ctable) # joint distribution
+margin_gender &lt;- apply(joint_gender_affair,1,sum) # marginal distribution gender 
+
+joint_gender_affair/margin_gender # conditional affair given gender 
+```
+
+```
+##         everaffair
+## sex      At least once     Never
+##   female     0.2285714 0.7714286
+##   male       0.2727273 0.7272727
+```
+
+```r
+# can also be computed using prop.table(ctable,1)
+```
+
+
+---
+## Independencia estadística
+
+- Recuerden, dos variables `\(X\)` y `\(Y\)` son independientes si al saber algo sobre `\(X\)` no aprendemos nada sobre `\(Y\)`, y viceversa: `\(\mathbb{P}(Y|X) = \mathbb{P}(Y)\)`.
+
+- Check:  `\(X \bot Y \iff \mathbb{P}(X,Y) = \mathbb{P}(X)\mathbb{P}(Y)\)`
+
+--
+
+.bold[Ejercicio rápido]:
+Supongamos que el 60% de la población son mujeres, y el 50% ha tenido un "affair" al menos una vez. 
+
+.full-width[.content-box-red[
+.bold[Pregunta]:
+Si la probabilidad de tener una aventura fuera independiente del género, cual sería la probabilidad de que al seleccionar una persona al azar encontremos una mujer que ha tenido un "affair"? 
+]
+]
+
+--
+
+.full-width[.content-box-blue[
+.bold[Respuesta]:
+  `$$\mathbb{P}(\text{affair},\text{mujer}) = \mathbb{P}(\text{affair})\mathbb{P}(\text{mujer}) = 0.6 \times 0.5 = 0.3$$`
+]
 ]
 
 ---
-##Estimación via Maximum Likelihood (MLE) 
+## Independencia estadística
 
-Previamente lanzamos la misma moneda 100 veces y obtuvimos "Cara" (1) 82 veces.
---
- ¿Qué valor de `\(p\)` es más probable que genere estos datos?
-
-MLE es justamente la formalización de esta pregunta. Pasos:
-
---
-
-1) Decidir sobre la distribución subyacente que genera los datos. En este caso, podemos asumir que: 
-
-  * Cada lanzamiento `\(X_{1}, X_{2}, \dots X_{100} \sim \text{Bernoulli}(p)\)`, donde X's son `\(iid\)` 
-
---
-
-2)  Escribir una función que cuantifique la plausibilidad de diferentes valores del parámetro. Dicha función se denomina .bold[likelihood function]: 
-
-&lt;br&gt;
-  * `\(\mathcal{L}(p) = \mathbb{P}(\text{ Data : \{1,0,1,1,....0,1\}} | \text{ } p)\)`
+Podemos usar esta propiedad para comprobar independencia en una tabla de contingencia.
 
 &lt;br&gt;
 --
 
-  * `\(\mathcal{L}(p) = \mathbb{P}(X_{1})\mathbb{P}(X_{2}) \dots \mathbb{P}(X_{100}) = p^{82}(1-p)^{18}\)`
+- Si `\(X \bot Y\)` las probabilidades conjuntas .bold[esperadas bajo el supuesto de independencia]  están dadas por:
 
-
----
-##Estimación via Maximum Likelihood (MLE) 
-
-Podemos inspeccionar visualmente la "likelihood" de diferentes valores `\(p\)`.
-
-![](class_5_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
-
-Intuitivamente: habiendo obtenido 82 caras, `\(p=0.82\)` es el valor más plausible de `\(p\)`
-
-
----
-
-##Estimación via Maximum Likelihood (MLE) 
-
-3) Encontrar matemáticamente el valor de `\(p\)` que maximiza `\(\mathcal{L}(p)\)`.
-
-
-- `\(\mathcal{L}(p) = P(X_{1})P(X_{2}) \dots P(X_{n}) = p^{k}(1-p)^{n-k} \quad \text{   donde  } k= \sum X_{i}\)`
-
+`$$\tilde{p}_{ij} = p_{i+} \times  p_{+j}$$`
+&lt;br&gt;
 --
 
-- Para facilitar el cálculo tomamos logaritmo natural el ambos lados (.bold[log-likelihood])
+- Asimismo, las frecuencias esperadas bajo independencia están dadas por:
 
-  - `\(\ell\ell(p) = \ln \mathcal{L}(p)  = k \ln(p) + (n - k) \ln(1-p)\)` 
-
---
--  Calcular la derivada de `\(\ell\ell(p)\)` con respecto a `\(p\)`: pendiente de la curva en cada valor de `\(p\)`.
-
-  - `\(\ell\ell^{\text{ '}}(p) = \frac{k}{p} -  \frac{n-k}{1-p}\)`
-
---
-
-- Encontrar el máximo de la función `\(\ell\ell(p)\)`: valor de `\(p\)` en el cual la curva no cambia, es decir. cuando `\(\ell\ell^{\text{ '}}(p)=0\)` 
-
-  - `\(\frac{k}{p} -  \frac{n-k}{1-p} = 0\)`
-  
---
-
-Después de resolver por `\(p\)` obtenemos:
-  
-  - `\(p = \frac{k}{n} = \frac{\sum X_{i}}{n}\)`
-
-
----
-##Estimación via Maximum Likelihood (MLE) 
+`$$\tilde{n}_{ij} = n \times p_{i+} \times  p_{+j}$$`
 
 &lt;br&gt;
-
-- El estimador ML de `\(p\)` es ....
-
-
-- `\(\hat{p} = \frac{\sum X_{i}}{n}\)`
-
-
-- Es decir, el porcentaje de 1's en la muestra!
-
 --
 
-- Intuitivo y elegante.
---
- No siempre tan simple....
-
+.bold[Importante]: noten que sólo necesitamos saber la distribución marginal de las variables para calcular las probabilidades y frecuencias esperadas bajo la independencia. 
 
 ---
+## Independencia estadística
 
-.bold[Ejemplo via simulación en R]
-
-
-```r
-# log-likelihood function
-ll &lt;- function(p,n,k) {
-  ell = k * log(p) + (n - k)*log(1-p)
-  return(ll = ell)
-}
+.pull-left[
+.bold[Distribución conjunta observada]
 
 
-# Evaluate the log-likelihood function for some arbitrary values
-ll(p=0.1,n=100,k=82); ll(p=0.7,n=100,k=82)
+```
+##         everaffair
+## sex      At least once     Never
+##   female     0.1198003 0.4043261
+##   male       0.1297837 0.3460899
+```
+
+]
+.pull-right[
+.bold[Distribuciones marginales]
+
+```
+##    female      male 
+## 0.5241265 0.4758735
 ```
 
 ```
-## [1] -190.7085
+## At least once         Never 
+##      0.249584      0.750416
 ```
+]
 
-```
-## [1] -50.91886
-```
+&lt;br&gt;
 --
 
+.bold[Distribución conjunta esperada bajo independencia]
+
 
 ```r
-# Evaluate the log-likelihood function for many possible combinatios values of p
-
-parameter_space &lt;- tibble(p=seq(0,1,by=0.01)) %&gt;% 
-  rowwise() %&gt;% mutate(loglik = ll(p,n=100,k=82)) 
-
-# Find the value of p that yield the largest value for the log-likelihood function
-
-parameter_space %&gt;% as.matrix() -&gt; m
-m[which.max(m[,2]),]
+# expected joint probs under independence 
+joint_gender_affair_indep &lt;- margin_gender %*% t(margin_affair)
+print(joint_gender_affair_indep)
 ```
 
 ```
-##         p    loglik 
-##   0.82000 -47.13935
+##      At least once     Never
+## [1,]     0.1308136 0.3933129
+## [2,]     0.1187704 0.3571031
 ```
 
 ---
-.bold[Ejemplo via simulación en R]
+## Independencia estadística ... so what?
 
 
-```r
-library("viridis")
-parameter_space %&gt;% as.data.frame() %&gt;% ggplot(aes(x=p, y=loglik, colour=loglik)) + 
-geom_line(size=1) + geom_point(aes(x=m[which.max(m[,2]),1], m[which.max(m[,2]),2])) +
-scale_color_viridis() + guides(fill=FALSE, color=FALSE) + labs(x="p", y="log-Likelihood") +
-annotate(geom="text", x=0.82, y=-35, label='bold("0.82")', color="black", parse=TRUE) 
-```
 
-![](class_5_files/figure-html/loglik_density-1.png)&lt;!-- --&gt;
+
+
+.pull-left[
+.bold[Educational Assortative Mating Chile 1990]
+![](class_5_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+.bold[Educational Assortative Mating Chile 2015]
+![](class_5_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
+]
+
+.bold[1]:EB-, .bold[2]:EB, .bold[3]:EM, .bold[4]:ES-, .bold[5]:ES
+
+
 
 ---
 class: inverse, center, middle
@@ -647,10 +621,6 @@ class: inverse, center, middle
 Mauricio Bucca &lt;br&gt;
 https://mebucca.github.io/ &lt;br&gt;
 github.com/mebucca
-
-
-
-
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
