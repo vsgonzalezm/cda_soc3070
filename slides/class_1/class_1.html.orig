@@ -13,7 +13,7 @@
 class: center, middle, inverse, title-slide
 
 # Análisis de Datos Categóricos (SOL3070)
-## Clase #0
+## Clase #1
 ### <br> Mauricio Bucca<br> Profesor Asistente, Sociología UC
 ### <a href="https://github.com/mebucca">github.com/mebucca</a>
 
@@ -21,144 +21,249 @@ class: center, middle, inverse, title-slide
 
 class: inverse, center, middle
 
-.huge[
-**Presentación del curso**
-]
+#Probabilidades
 
 ---
 
-## Sobre mi
+## Experimentos aleatorios
 
-  - Profesor Asistente, Sociología UC
-
---
-
-  - Max Weber Postdoctoral Fellow, European University Institute, Firenze
-  
-  - PhD en Sociología, Cornell University, NY
-    - PhD Minor en Estadística, Departamento de Estadística, Cornell University
-
---
-
-  - Investigación: movilidad social intergeneracional,  desigualdades en el mercado laboral, creencias sobre las desigualdades, métodos cuantitativos
-  
-  - Métodos: modelación estadística, estrategias empíricas para inferencia causal, métodos experimentales y computacionales
-    - Datos categóricos: desarrollos en "log-linear models"
+ Un  .bold[experimento aleatorio] es un experimento - real o hipotético - en el que todos los posibles resultados son conocidos *a priori*.
 
 &lt;br&gt;
 --
 
-.bold[Información de contacto]
- - mail: mebucca@uc.cl
- - webpage: https://mebucca.github.io/
-
----
-## Ayudantía
+Ejemplo:
+- Experimento: Tirar un dado
+- Posibles resultados: números enteros entre 1 y 6
 
 &lt;br&gt;
+--
 
-.pull-left[
-.bold[Roberto Velázquez]
+El conjunto de todos los posibles resultados de un experimento se llama "espacio muestral",  `\(\Omega\)`. 
 
-- Historiador y Sociólogo UC
+En este caso: 
 
-- MA in Latin American History, Columbia University
+`$$\Omega: \{1,2,3,4,5,6 \}$$`
 
-- MSc in Social Theory - London School of Economics
+&lt;br&gt;
+--
 
-- Estudiante PhD, Sociología UC
-
-- Investigación: economía política y moral, formación del Estado e interacciones transnacionales, campos de producción cultural y redes de socialización del arte
-
-]
-.figure-right[
-![ayudante](https://64.media.tumblr.com/2c764e7a70f2d8eec7a72cd5c44b1f00/tumblr_pe8yj3wJUb1tad247o2_r1_540.gif)
-]
+En palabras, `\(\Omega: \{1,2,3,4,5,6 \}\)` significa que nuestro experimento, consistente en tirar un dado, puede resultar en: "1 o 2 o 3... o 6"
 
 ---
-## Enseñanza de métodos cuantitativos
 
+## Eventos
+
+Un .bold[evento] es un subconjunto bien definido de los posibles resultados de un experimento. 
+
+&lt;br&gt;
 --
 
-.pull-left[
-- Los "atajos" estadísticos, tarde o temprano, dificultan el aprendizaje
-
-]
-.figure-right[
-![pvalue](pvalue.png)
-
-]
---
-
-- Hay contenidos que hay que saber, la intuición no basta
-
---
-
-`$$\ln(\alpha + \beta x) = e^{a} e^{\beta x}$$`
---
-
-- Muchas cosas parecen más difíciles de lo que son (notación, desconocimiento, miedo, etc.)
-
-
---
-
-`$$\mu = \int xf(x)dx$$`
-
---
-
-- Cosas aparentemente sencillas son más profundas de lo que parecen
-
---
-
-$$ X \sim \mathcal{N}(\mu,\sigma)$$
-
----
-## Enseñanza de métodos cuantitativos
-
-.pull-top[
-.pull-left[
-- Es más importante tener fundamentos sólidos que "conocer" muchos métodos distintos 
-
+Ejemplo:
+- Experimento: Tirar un dado
 <<<<<<< HEAD
-
-  - ej. logistic regression, ordered logistic regression, rank-order logistic regression, generalized ordered logistic regression...
+- "A" es el evento de "obtener un 1 o un 5" 
 =======
-  - ej. logistic regression, ordered logistic regression, rank-order logistic regression, generalized ordered logistic regression ...
+- "A" es el evento de "obtener un 1 o un 5"  
 >>>>>>> master
-  ]
-
-.pull-right[
-![tweet](tweet.png)
-]
-]
 
 &lt;br&gt;
+
 --
 
-.pull-bottom[
-.pull-left[
-- Los conceptos teóricos se aprenden poniéndolos en práctica, a mano
-]
-]
+Formalmente,
 
-&lt;br&gt;
---
-
-- Spanglish, so sorry!
+`$$A :  \text{dado=1 o dado=5}$$`
 
 ---
 
-## Material del curso
+## Probabilidad 
 
-Todo el material del curso será almacenado y actualizado regularmente en repositorio `Github`:
+Para cualquier .bold[*evento*] es posible asociar un número que cuantifique la .bold[probabilidad] de ocurrencia de tal evento. 
 
 &lt;br&gt;
-.center[
+--
 
-![github](github.jpg)
+Continuando con nuestro ejemplo,
 
-https://github.com/mebucca/cda_soc3070
+- Experimento: Tirar un dado
+- Espacio muestral, `\(\Omega: \{1,2,3,4,5,6\}\)`
+- A es el evento de "obtener un 1 o un 5"
+
+
+¿Cuál es la probabilidad de que ocurra A? 
+
+&lt;br&gt;
+--
+Formalmente,  
+
+`$$\mathbb{P}(A) = \mathbb{P}(\text{dado=1 o dado=5})$$`
+&lt;br&gt;
+donde `\(\mathbb{P}(.)\)` refiere a la probabilidad de ocurrencia del evento y `\(\mathbb{P}(.) \in [0,1]\)`
+
+---
+
+## Probabilidad 
+
+.bold[Ejercicio rápido]:
+
+* Supuesto: el dado es "justo", es decir, todos los valores tienen la misma probabilidad de ocurrencia
+
+--
+
+.full-width[.content-box-red[
+.bold[Preguntas]:
+
+1) ¿Cuál es la probabilidad de ocurrencia de cada valor en el espacio muestral?
+
+2) ¿Cuál es la probabilidad de ocurrencia del evento A (obtener un 1 o un 5)?
 ]
+]
+
+--
+.bold[Respuestas:]
+
+1) `\(\frac{1}{6}\)` 
+
+2) `\(\frac{2}{6}\)` 
+
+--
+
+Detrás de estas respuestas hay una comprensión intuitiva de algunas propiedades importantes de la probabilidad.
+
+---
+
+### Reglas básicas de probabilidad
+
+1) Las probabilidades están limitadas entre cero y uno. Si A es un evento, entonces:
+
+`$$0 \leq \mathbb{P}(A) \leq 1$$`
+&lt;br&gt;
+--
+
+2) La probabilidad de que dos eventos mutuamente excluyentes ocurran al mismo tiempo es cero. Si A y B son eventos mutuamente excluyentes, entonces:
+
+`$$\mathbb{P}(A \text{ y }B) = 0$$`
+Por ejemplo, 
+  - si `\(A:\text{dado=1 o dado=5}\)` 
+  - y `\(B:\text{dado=6}\)`
+  
+&lt;br&gt;
+--
+entonces `\(\mathbb{P}(A \text{ y } B) = 0\)`
+
+
+---
+
+### Reglas básicas de probabilidad
+
+3) Si A y B son dos eventos la probabilidad de que *al menos* uno de los dos ocurra es llamada la "unión" de ambos eventos y viene dada por:
+
+`$$\mathbb{P}(A \text{ o } B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \text{ y } B)$$`
+&lt;br&gt;
+--
+
+Por ejemplo,    
+  - si `\(A: \text{dado=1 o dado=5}\)` 
+  - y `\(B:\text{dado=5 o dado=6}\)`
+  
+entonces, 
+
+`$$\mathbb{P}(A \text{ o } B) = \mathbb{P}(\text{dado=1 o dado=5}) + \mathbb{P}(\text{dado=5 o dado=6}) - \mathbb{P}(\text{dado=5})$$`
+---
+
+### Reglas básicas de probabilidad
+
+
+.bold[Ejercicio rápido]:
+
+- Experimento: tirar un dado
+- Supuesto: el dado es "justo", es decir, todos los valores tienen la misma probabilidad de ocurrencia
+
+&lt;br&gt;
+--
+
+.full-width[.content-box-red[
+.bold[Pregunta]:
+
+¿Cuál es la probabilidad de obtener un 3 o un 4?
+
+]
+]
+
+
+--
+
+.full-width[.content-box-blue[
+.bold[Respuesta]:
+`\begin{align}
+\mathbb{P}(\text{dado=3 o dado=4}) &amp;= \mathbb{P}(\text{dado=3}) +  \mathbb{P}(\text{dado=4}) - \mathbb{P}(\text{dado=3 y dado=4}) \\
+&amp;= \frac{1}{6} +  \frac{1}{6} - 0 = \frac{2}{6}
+\end{align}`
+]
+]
+
+---
+
+### Reglas básicas de probabilidad
+
+4) De los puntos 2 y 3 se deduce que la probabilidad de la unión de dos eventos desunidos, A y B, viene dada por:
+
+`$$\mathbb{P}(A \text{ or } B) = \mathbb{P}(A) + \mathbb{P}(B)$$`
+---
+
+### Reglas básicas de probabilidad
+
+5) La probabilidad del espacio muestral es uno 
+
+&lt;br&gt;
+--
+
+Formalmente, si denotamos cada posible resultado de un experimento como `\(A_{i}\)`, entonces:
+
+`$$\mathbb{P}(\Omega) = \mathbb{P}(A_{1} \text{ o } A_{2} \dots \text{ o } A_{n})  = \sum A_{i} = 1$$`
+&lt;br&gt;
+--
+
+Por ejemplo
+  - Experimento: tirar un dado justo
+
+Entonces, 
+
+`\begin{align}
+\mathbb{P}(\Omega) &amp;= \mathbb{P}(\text{dado=1  o ... o dado=6})  \\ \\
+ &amp;= \mathbb{P}(\text{dado=1}) + \dots + \mathbb{P}(\text{dado=6}) \\ \\
+ &amp;= \frac{1}{6} + \dots + \frac{1}{6} = 1
+\end{align}`
+
+---
+
+### Reglas básicas de probabilidad
+
+6) Se sigue de (5) que si dos eventos A y B dividen el espacio muestral en dos particiones mutuamente excluyentes entonces sus probabilidades son complementarias. 
+
+&lt;br&gt;
+--
+
+Formalmente,
+
+`$$\mathbb{P}(A) = 1 - \mathbb{P}(B)$$`
+
+&lt;br&gt;
+--
+
+Por ejemplo,
+  - Experimento: tirar un dado justo
+  - `\(A: \text{dado &lt; 3}\)` 
+  - `\(B:\text{dado} \geq 3\)`
+
+Entonces, 
+
+`\begin{align}
+\mathbb{P}(A) &amp;= 1 - \mathbb{P}(B) \\
+&amp;= 1 - \frac{4}{6} \\
+&amp;= \frac{2}{6}
+\end{align}`
 
 
 ---
