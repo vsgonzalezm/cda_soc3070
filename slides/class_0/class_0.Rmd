@@ -66,7 +66,7 @@ class: inverse, center, middle
 
 - Estudiante PhD, Sociología UC
 
-- Investigación: economía política y moral, formación del Estado e interacciones transnacionales, campos de producción cultural y redes de socialización del Arte.
+- Investigación: economía política y moral, formación del Estado e interacciones transnacionales, campos de producción cultural y redes de socialización del arte
 
 ]
 .figure-right[
@@ -115,7 +115,7 @@ $$ X \sim \mathcal{N}(\mu,\sigma)$$
 
 .pull-top[
 .pull-left[
-- Es mas importante tener fundamentos sólidos que "conocer" muchos métodos distintos 
+- Es más importante tener fundamentos sólidos que "conocer" muchos métodos distintos 
 
   - ej. logistic regression, ordered logistic regression, rank-order logistic regression, generalized ordered logistic regression ...
   ]
