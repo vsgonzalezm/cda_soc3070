@@ -19,7 +19,7 @@ editor_options:
 ---
 class: inverse, center, middle
 
-#Probabilitidades (continuación)
+#Probabilidades (continuación)
 
 ---
 
@@ -27,7 +27,7 @@ class: inverse, center, middle
 
 .bold[Probabilidad condicional] es un concepto crucial en teoría de la probabilidad y subyace al propósito principal del análisis de regresión logística.
 --
- La probabilidad de un evento A después de que nos enteramos de que se ha producido el evento B se denomina probabilidad condicional de A dado B. Formalmente.
+ La probabilidad de un evento A después de que nos enteramos de que se ha producido el evento B se denomina probabilidad condicional de A dado B. Formalmente:
 
 $$\mathbb{P}(A | B)$$
 --
