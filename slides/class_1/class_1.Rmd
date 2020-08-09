@@ -158,8 +158,8 @@ $$\mathbb{P}(A \text{ o } B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \tex
 --
 
 Por ejemplo,    
-  - si $A: \text{dice=1 o dados=5}$ 
-  - y $B:\text{dice=5 o dados=6}$
+  - si $A: \text{dado=1 o dado=5}$ 
+  - y $B:\text{dado=5 o dado=6}$
   
 entonces, 
 
