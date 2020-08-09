@@ -51,7 +51,27 @@ class: inverse, center, middle
  - webpage: https://mebucca.github.io/
 
 ---
+## Ayudantía
 
+<br>
+
+.pull-left[
+.bold[Roberto Velasquez]
+
+- Historiador y sociólogo del arte
+
+- MA Columbia University and LSE
+
+- Estudiante del PhD en Sociología, ISUC
+
+- Investiga redes globales y locales de producción artística
+
+]
+.figure-right[
+![ayudante](https://64.media.tumblr.com/2c764e7a70f2d8eec7a72cd5c44b1f00/tumblr_pe8yj3wJUb1tad247o2_r1_540.gif)
+]
+
+---
 ## Enseñanza de métodos cuantitativos
 
 --
