@@ -36,14 +36,14 @@ $\alpha = \mathbb{P}(\text{rechazar } H_{0} \mid H_{1}  \text{ falsa}) = 0.05$
 
 Debes calcular las siguientes cantidades de interés:
 
-1) La probabilidad de obtener un __"positivo verdadero"__, definido como:
+1) La probabilidad de obtener un __"positivo verdadero"__, definida como:
 
-$PV = \mathbb{P}(H_{1} \text{ verdadera} \mid \text{rechazar } H_{0})$
+$\mathbb{P}(H_{1} \text{ verdadera} \mid \text{rechazar } H_{0})$
 
 
-2) La probabilidad de obtener un __"falso positivo"__, definido como:
+2) La probabilidad de obtener un __"falso positivo"__, definida como:
 
-$FP = \mathbb{P}(H_{1} \text{ falso} \mid \text{rechazar } H_{0})$
+$\mathbb{P}(H_{1} \text{ falsa} \mid \text{rechazar } H_{0})$
 
 
 #### Pista 
