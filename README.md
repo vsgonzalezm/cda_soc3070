@@ -4,6 +4,8 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
 
 ## Material del curso
 
+---
+
 ### Nivelación Matemática
 
 - Repaso de pre-cálculo, especialmente funciones logarítmicas y exponenciales: [`[texto]`](files/pre_calculo.pdf).
