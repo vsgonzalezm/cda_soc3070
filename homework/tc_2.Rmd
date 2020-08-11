@@ -1,0 +1,58 @@
+---
+title: "SOC3070 Análisis de Datos Categóricos"
+author: "Tarea corta 2"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r, echo=FALSE}
+# Escribir install.packages("tinytex") en la consola para instalar "tinytex"
+# Carga "tinytex" para compilar PDF
+library("tinytex")
+```
+Ponderación: 3% de la nota final del curso Entrega: Desde el momento de entrega, los estudiantes tienen 1 semana exacta de plazo para completar esta tarea.
+
+En esta pregunta aplicarán propiedades de probabilidades condicionales para calcular alguna cantidades de interés para el test de hipótesis. Supon que te encuentras en la siguiente situación:
+
+- Tienes una hipótesis de interés (o Hipótesis alternativa, $H_{1}$), y una  hipótesis nula ($H_{0}$)
+
+- No tienes conocimiento previo sobre la plausibilidad de tu hipótesis, de modo que le asignas un 50% de probabilidad de ser cierta: $\mathbb{P}(H_{1}  \text{ verdadera})=0.5$. Esto implica que también la hipótesis alternativa tiene la misma probabilidad de ser cierta: $\mathbb{P}(H_{0} \text{ verdadera})= 0.5$
+
+- Como es estándar, usas un test estadístico que tienen un "Statistical Power" de 80%, definido como:
+
+$\text{power} = \mathbb{P}(\text{rechazar } H_{0} \mid H_{1}  \text{ verdadera}) = 0.8$
+
+(virtud de aceptar un resultado verdadero)
+
+- Como es estándar, trabajas con un nivel de significación estadística del 5% ($\alpha=0.05$), definido como:
+
+$\alpha = \mathbb{P}(\text{rechazar } H_{0} \mid H_{1}  \text{ falsa}) = 0.05$
+
+(error de aceptar un resultado falso)
+
+### Pregunta
+
+Debes calcular las siguientes cantidades de interés:
+
+1) La probabilidad de obtener un __"positivo verdadero"__, definido como:
+
+$PV = \mathbb{P}(H_{1} \text{ verdadera} \mid \text{rechazar } H_{0})$
+
+
+2) La probabilidad de obtener un __"falso positivo"__, definido como:
+
+$FP = \mathbb{P}(H_{1} \text{ falso} \mid \text{rechazar } H_{0})$
+
+
+#### Pista 
+
+\begin{align*}
+\mathbb{P}(\text{rechazar } H_{0}) &= \mathbb{P}(\text{rechazar } H_{0},  H_{1}  \text{ verdadera}) + \mathbb{P}(\text{rechazar } H_{0},  H_{1}  \text{ falsa}) \\ 
+&= \mathbb{P}(\text{rechaza } H_{0} \mid H_{1}  \text{ verdadera})\mathbb{P}(H_{1}  \text{ verdadera}) +   
+    \mathbb{P}(\text{rechaza } H_{0} \mid H_{1}  \text{ falsa})\mathbb{P}(H_{1}  \text{ falsa})
+\end{align*}
+
+
+
