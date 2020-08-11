@@ -4,6 +4,7 @@
     <title>Análisis de Datos Categóricos (SOL3070)</title>
     <meta charset="utf-8" />
     <meta name="author" content="  Mauricio Bucca  Profesor Asistente, Sociología UC" />
+    <script src="libs/header-attrs-2.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link rel="stylesheet" href="gentle-r.css" type="text/css" />
@@ -31,7 +32,7 @@ class: inverse, center, middle
 --
  La probabilidad de un evento A después de que nos enteramos de que se ha producido el evento B se denomina probabilidad condicional de A dado B. Formalmente:
 
-`$$\mathbb{P}(A | B)$$`
+`$$\mathbb{P}(A \mid B)$$`
 --
 
 Ejemplo:
@@ -53,15 +54,15 @@ Supongamos que tiramos el dado pero no miramos el resultado todavía. Una tercer
 
 ### Probabilidad condicional
 
-Formalmente, nuestra pregunta se expresa del siguiente modo: `\(\mathbb{P}(A | B )\)`. Para calcular esta probabilidad utilizamos la siguiente fórmula:
+Formalmente, nuestra pregunta se expresa del siguiente modo: `\(\mathbb{P}(A \mid B )\)`. Para calcular esta probabilidad utilizamos la siguiente fórmula:
 
-`$$\mathbb{P}(A | B ) = \frac{\mathbb{P}(A,B)}{\mathbb{P}(B)}$$`
+`$$\mathbb{P}(A \mid B ) = \frac{\mathbb{P}(A,B)}{\mathbb{P}(B)}$$`
 Intuitivamente, queremos saber en qué proporción de los casos en que B ocurre, A también ocurre. 
 
 ---
 ### Probabilidad condicional
 
-`$$\mathbb{P}(A | B ) = \frac{\mathbb{P}(A,B)}{\mathbb{P}(B)}$$`
+`$$\mathbb{P}(A \mid B ) = \frac{\mathbb{P}(A,B)}{\mathbb{P}(B)}$$`
 
 Donde,
 - `\(\mathbb{P}(B)\)` es la probabilidad de que B ocurra: obtener un número .bold[par]
@@ -103,7 +104,7 @@ Supongamos que:
 
 1) 
 `\begin{align}
-\mathbb{P}(U | M) = \frac{\mathbb{P}(U,M)}{\mathbb{P}(M)} = \frac{0.05}{0.55} \approx  0.09
+\mathbb{P}(U \mid M) = \frac{\mathbb{P}(U,M)}{\mathbb{P}(M)} = \frac{0.05}{0.55} \approx  0.09
 \end{align}`
 ]
 ]
@@ -133,7 +134,7 @@ Supongamos que:
 
 2) 
 `\begin{align}
-\mathbb{P}(M | U) = \frac{\mathbb{P}(U,M)}{\mathbb{P}(U)} = \frac{0.05}{0.2} = 0.25
+\mathbb{P}(M \mid U) = \frac{\mathbb{P}(U,M)}{\mathbb{P}(U)} = \frac{0.05}{0.2} = 0.25
 \end{align}`
 ]
 ]
@@ -164,7 +165,7 @@ Supongamos que:
 
 1) 
 `\begin{align}
-\mathbb{P}(H | U) = \frac{\mathbb{P}(U,H)}{\mathbb{P}(U)} = 1- P(M | U) = 1 - 0.25 = 0.75 
+\mathbb{P}(H \mid U) = \frac{\mathbb{P}(U,H)}{\mathbb{P}(U)} = 1- \mathbb{P}(M | U) = 1 - 0.25 = 0.75 
 \end{align}`
 ]
 ]
@@ -189,30 +190,78 @@ pero el .bold[Teorema de Bayes] nos dice cómo transformar uno en el otro.
 ---
 ### Teorema de Bayes
 
-.pull-left[
+
 La probabilidad de A dado B está definida como:
 
 `$$\mathbb{P}(A \mid B) = \frac{\mathbb{P}(A,B)}{\mathbb{P}(B)} \quad \quad \quad \quad \quad (1)$$`
+&lt;br&gt;
+--
+
 Por tanto, La probabilidad de B dado A está definida como:
 
 `$$\mathbb{P}(B \mid A) = \frac{\mathbb{P}(A,B)}{\mathbb{P}(A)} \quad \quad \quad \quad \quad (2)$$`
+&lt;br&gt;
+--
+
 Por tanto: 
 
 `$$\mathbb{P}(A,B) = \mathbb{P}(B \mid A)\mathbb{P}(A) \quad \quad \quad \quad  (3)$$`
+&lt;br&gt;
+--
 
 Reemplazando (3) en (1) obtenemos:
 
 
 $$\mathbb{P}(A \mid B) = \frac{\mathbb{P}(B \mid A)\mathbb{P}(A)}{\mathbb{P}(B)} \quad \quad \quad \quad \quad $$
 
-]
+---
+### Teorema de Bayes
 
+Entonces, si
+
+$$\mathbb{P}(A \mid B) = \frac{\mathbb{P}(B \mid A)\mathbb{P}(A)}{\mathbb{P}(B)} \quad \quad \quad \quad \quad $$
+
+
+&lt;br&gt;
+re-ordenando la expresión encontramos ...
+
+&lt;br&gt;
 --
 
-.pull-right[
-reordenando la expresión, 
 
+.full-width[.content-box-blue[
+.bold[Teorema de Bayes]:
 $$\mathbb{P}(B \mid A) = \frac{\mathbb{P}(A \mid B)\mathbb{P}(B)}{\mathbb{P}(A)} \quad \quad \quad \quad \quad $$
+]
+]
+
+---
+class: fullscreen,left, top, top, text-white
+background-image: url(bayes.jpg)
+
+---
+### Probabilidad condicional
+
+.bold[Ejercicio rápido]:
+
+- Un 5% de población son mujeres (M) con un estudios universitarios completos (U)
+- Las mujeres representan 55% de la población
+- Un 20% de la población tiene estudios universitarios completos
+
+
+.full-width[.content-box-red[
+.bold[Bonus]:
+4) Cual es la probabilidad de que un hombre tenga estudios universitarios completos?
+]
+]
+.full-width[.content-box-blue[
+.bold[Respuesta]:
+
+4) 
+`\begin{align}
+\mathbb{P}(U \mid H) = \frac{\mathbb{P}(H \mid U)\mathbb{P}(U)}{\mathbb{P}(H)} =   \frac{0.75 \times 0.2}{0.45} = 0.333
+\end{align}`
+]
 ]
 
 ---
@@ -222,7 +271,7 @@ Dos eventos A y B son .bold[independientes] cuando la ocurrencia de A no afecta 
 --
 Independencia es una caso especial de probabilidad condicional: `\(A \bot B\)` si el conocimiento sobre B no cambia nuestro conocimiento sobre A. Formalmente:
 
-`$$P(A | B) = P(A) \quad \iff \quad P(B | A) = P(B)$$` 
+`$$\mathbb{P}(A | B) = \mathbb{P}(A) \quad \iff \quad \mathbb{P}(B | A) = \mathbb{P}(B)$$` 
 &lt;br&gt;
 --
 A partir de esta definición podemos derivar un test matemático de independencia:
@@ -230,14 +279,14 @@ A partir de esta definición podemos derivar un test matemático de independenci
 &lt;br&gt;
 
 `\begin{align}
-  &amp;P(A | B) = P(A) \\ \\
-  &amp;\frac{P(A,B)}{P(B)} = P(A) \\  \\
-  &amp;P(A,B) = P(A)P(B) 
+  &amp;\mathbb{P}(A | B) = \mathbb{P}(A) \\ \\
+  &amp;\frac{\mathbb{P}(A,B)}{\mathbb{P}(B)} = \mathbb{P}(A) \\  \\
+  &amp;\mathbb{P}(A,B) = \mathbb{P}(A)\mathbb{P}(B) 
 \end{align}`
 
 &lt;br&gt;
 --
-Si dos eventos A y B son independientes entonces debe ser cierto que `\(P(A,B)=P(A)(B)\)`.
+Si dos eventos A y B son independientes entonces debe ser cierto que `\(\mathbb{P}(A,B)=\mathbb{P}(A)(B)\)`.
 
 ---
 ### Independencia
@@ -258,13 +307,13 @@ Son A y B dos eventos independientes?
 .pull-left[
 .full-width[.content-box-blue[
 .bold[Sabemos que...]
-- `\(P(A) = P(B) = 1/2\)`
+- `\(\mathbb{P}(A) = \mathbb{P}(B) = 1/2\)`
 
 - `\(\Omega: \{CC,CS,SC,SS\}\)`
 
 - `\((A,B) = \{CS\}\)`
 
-- `\(P(A,B) = 1/4\)`
+- `\(\mathbb{P}(A,B) = 1/4\)`
 
 ]
 ]
@@ -276,13 +325,89 @@ Son A y B dos eventos independientes?
 .full-width[.content-box-blue[
 .bold[Test de independencia]
 
-Si A y B son eventos independientes entonces deberiamos espera que `\(P(A)P(B) = 1/4\)`
+Si A y B son eventos independientes entonces deberiamos espera que `\(\mathbb{P}(A)\mathbb{P}(B) = 1/4\)`
 
 `\begin{align}
-P(A)P(B) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}
+\mathbb{P}(A)\mathbb{P}(B) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}
 \end{align}`
 ]
 ]
+]
+
+---
+### Independencia
+
+.bold[Ilustración via Monte Carlo Simulation] .footnote[[1] En su versión más simple posible!]
+
+.center[
+![mc](montecarlo.jpg)
+]
+
+---
+
+### Independencia
+
+.bold[Ilustración via Monte Carlo Simulation]
+
+Experimento: Tiramos dos moneda simultáneamente, una justa y una moneda sesgada (90% prob. Cara). 
+
+--
+
+Si ambas lanzamientos son efectivamente independientes la probabilidad de obtener dos caras debiera ser: `\(\mathbb{P}(C_{1}C_{2}) = \mathbb{P}(C_{1})\mathbb{P}(C_{2}) = 0.5 \times 0.9 = 0.45\)`
+
+--
+
+.pull-left[
+
+
+```r
+# lanzamos ambas moneda 100000 veces
+coin1 &lt;- rbinom(100000,1, prob = 0.5)
+coin2 &lt;- rbinom(100000,1, prob = 0.9)
+
+glimpse(coin1)
+```
+
+```
+##  int [1:100000] 1 1 0 0 1 1 1 0 1 1 ...
+```
+
+```r
+#  probabilidad de obtener cara
+p1 = mean(coin1)
+p2 = mean(coin2); print(c(p1=p1, p2=p2))
+```
+
+```
+##      p1      p2 
+## 0.50096 0.90023
+```
+]
+
+--
+
+.pull-right[
+
+```r
+# definimos evento exitoso: dos caras
+cc &lt;- ifelse(coin1==1 &amp; coin2==1,1,0)
+
+#  probabilidad de obtener 2 caras
+p_cc = mean(cc); p_cc
+```
+
+```
+## [1] 0.45097
+```
+
+```r
+# test independencia
+p1*p2
+```
+
+```
+## [1] 0.4509792
+```
 ]
 
 ---
@@ -296,6 +421,10 @@ class: inverse, center, middle
 Mauricio Bucca &lt;br&gt;
 https://mebucca.github.io/ &lt;br&gt;
 github.com/mebucca
+
+
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
