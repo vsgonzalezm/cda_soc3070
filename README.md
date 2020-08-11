@@ -6,7 +6,7 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
 
 ### Nivelación Matemática
 
-- Repaso de pre-cálculo, especialmente funciones logarítmicas y exponenciales: [`[texto]`](files/pre_calculo.pdf).
+- Repaso de pre-cálculo, especialmente funciones logarítmicas y exponenciales: [`[texto]`](https://www.amazon.com/Thomas-Calculus-Transcendentals-Single-Variable/dp/0321628837/ref=sr_1_3?dchild=1&keywords=thomas+calculus+early+transcendentals&qid=1597175072&s=books&sr=1-3).
 
 ### Clases
 
