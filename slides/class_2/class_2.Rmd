@@ -38,12 +38,12 @@ Ejemplo:
 - A es el evento de obtener un cuatro o más,  $A: \{4,5,6\}$.
 - B es el evento de obtener un número par, $B: \{2,4,6\}$.
 
-Supongamos que tiramos el dado pero no miramos el resultado todavía. Una tercera persona te dice que obtuvimos un número par.
+Supongamos que tiramos el dado pero no miramos el resultado todavía. Una tercera persona nos dice que obtuvimos un número par.
 
 --
 .full-width[.content-box-red[
 .bold[Pregunta]:
-¿cuál es la probabilidad de obtener un cuatro o más una vez que _actualizamos_ nuestro conocimiento sobre el comportamiento del dado?
+¿cuál es la probabilidad de obtener un cuatro o más una vez que sabemos que el resultado es un número?
 ]
 ]
 
@@ -63,7 +63,7 @@ $$\mathbb{P}(A | B ) = \frac{\mathbb{P}(A,B)}{\mathbb{P}(B)}$$
 
 Donde,
 - $\mathbb{P}(B)$ es la probabilidad de que B ocurra: obtener un número .bold[par]
-- $\mathbb{P}(A,B)$ es la probabilidad  A y B ocurran conjuntamente: obtener un número .bold[par igual o superior a 4]
+- $\mathbb{P}(A,B)$ es la probabilidad  A y B ocurran conjuntamente: obtener un número .bold[par, igual o superior a 4]
 
 <br>
 --
@@ -184,6 +184,34 @@ $$ \mathbb{P}(A | B) \neq \mathbb{P}(B | A)  $$
 <br>
 pero el .bold[Teorema de Bayes] nos dice cómo transformar uno en el otro.
 
+---
+### Teorema de Bayes
+
+.pull-left[
+La probabilidad de A dado B está definida como:
+
+$$\mathbb{P}(A \mid B) = \frac{\mathbb{P}(A,B)}{\mathbb{P}(B)} \quad \quad \quad \quad \quad (1)$$
+Por tanto, La probabilidad de B dado A está definida como:
+
+$$\mathbb{P}(B \mid A) = \frac{\mathbb{P}(A,B)}{\mathbb{P}(A)} \quad \quad \quad \quad \quad (2)$$
+Por tanto: 
+
+$$\mathbb{P}(A,B) = \mathbb{P}(B \mid A)\mathbb{P}(A) \quad \quad \quad \quad  (3)$$
+
+Reemplazando (3) en (1) obtenemos:
+
+
+$$\mathbb{P}(A \mid B) = \frac{\mathbb{P}(B \mid A)\mathbb{P}(A)}{\mathbb{P}(B)} \quad \quad \quad \quad \quad $$
+
+]
+
+--
+
+.pull-right[
+reordenando la expresión, 
+
+$$\mathbb{P}(B \mid A) = \frac{\mathbb{P}(A \mid B)\mathbb{P}(B)}{\mathbb{P}(A)} \quad \quad \quad \quad \quad $$
+]
 
 ---
 ### Independencia
@@ -213,7 +241,7 @@ Si dos eventos A y B son independientes entonces debe ser cierto que $P(A,B)=P(A
 ### Independencia
 
 Ejemplo:
-- Experimento de lanzar dos monedas justas consecutivamente. 
+- Experimento: lanzar dos monedas justas consecutivamente. 
 - A es el evento de obtener una Cara con la primera moneda
 - B es el evento de obtener Sello con la segunda moneda. 
 
