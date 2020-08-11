@@ -1,0 +1,552 @@
+---
+title: "Análisis de Datos Categóricos (SOL3070)"
+subtitle: "Clase #5"
+author: "<br> Mauricio Bucca<br> Profesor Asistente, Sociología UC"
+date: "[github.com/mebucca](https://github.com/mebucca)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default","default-fonts","gentle-r.css"]
+    df_print: default
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+editor_options: 
+  chunk_output_type: console
+---
+
+class: inverse, center, middle
+
+#Tablas de Contingencia
+
+
+---
+## Datos relaciones extra-matrimoniales, ejemplo
+
+- Usaremos datos del artículo _A theory of extramarital affairs_ (Fair 1978), publicado en JPE. 
+
+- Muestra de 601 individuos en USA. Información sobre relaciones extra -matrimoniales que cada individuo. También covariables como género, edad, años de matrimonio, paternidad, educación, etc.
+
+--
+```{r,  include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+library("Ecdat")
+library("tidyverse")
+data(Fair)
+affairsdata <- Fair %>% as_tibble()
+
+# create a binary variable indicating whether person has ever had an affair
+affairsdata <- affairsdata %>% 
+	mutate(everaffair = case_when(nbaffairs == 0 ~ "Never", nbaffairs > 0 ~ "At least once") )
+
+# display data as tibble
+print(affairsdata)
+```
+
+---
+## Datos relaciones extra-matrimoniales, ejemplo
+
+Si estuviéramos interesados en estudiar la asociación entre genero y haber tenido una aventura, el primer paso probablemente sería construir una tabla de este tipo:
+
+--
+
+```{r, include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+ctable <- affairsdata %>% with(table(sex,everaffair))
+print(ctable)
+```
+
+Este tipo de tablas se denomina _tablas de contingencia_.
+
+---
+
+## Tablas de contingencia
+
+Una definición formal:una tabla de contingencia es una matriz que muestra la *distribución multivariada* de frecuencia de un numero arbitrario de variables categóricas. 
+
+Caso simple:
+
+- $X$ y $Y$ son dos variables categóricas.
+- $X$ tiene $I$ categorias $\{i, \dots, I \}$ 
+- $Y$ tiene $J$ categorias $\{j, \dots, J \}$.
+
+--
+
+Una tabla rectangular que clasifica todas las combinaciones posibles de $X$ y $Y$ tendrá $I$ filas para las categorías de $X$, $J$ columnas para las categorías de $Y$, y $I \times J$ celdas.
+
+---
+## Tablas de contingencia
+
+
+ - Una tabla que clasifica $n$ variables se llama se denomina una tabla $n$-ways
+ 
+ - Una tabla con $I$ filas y $J$ columnas se denomina una $I \times J$ (léase I-por-J)
+
+<br> 
+--
+
+Por ejemplo, la tabla en nuestro ejemplo es una tabla 2-ways. 2-por-2
+```{r, include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+ctable <- affairsdata %>% with(table(sex,everaffair))
+print(ctable)
+```
+
+<br>
+--
+
+- En una tabla de contingencia $n_{ik}$ (frecuencia conjunta) denota la frecuencia observada en la celda $i,j$, es decir, el numero de casos presentes en la combinación $X=i \text{ y } Y=j$
+
+- Usando la notación matricial $i$ indexa las filas y $j$ las columnas.
+
+--
+A partir de la tabla podemos recuperar otras cantidades importantes.
+
+---
+## Frecuencias marginales
+
+Las frecuencias marginales describen la distribución de frecuencias de cada una de las variables por separado.    
+
+--
+
+.pull-left[
+
+- Las .bold[frecuencias marginales de las filas] están dadas por:
+
+$$n_{i+} = \sum_{j} n_{ij} =  n_{i1} + n_{i2}$$
+
+]
+
+.pull-right[
+```{r, echo=FALSE}
+print(ctable)
+```
+]
+
+el signo "+" en lugar de un índice denota la suma los valores de ese índice.
+
+--
+
+```{r,  include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+# marginal distribution rows
+marginf_i <- apply(ctable,1,sum); marginf_i
+```
+
+---
+
+## Frecuencias marginales
+
+.pull-left[
+
+- Asimismo, las .bold[frecuencias marginales de las columnas] están dadas por:
+
+$$n_{+j} = \sum_{i} n_{ij} =  n_{1j} + n_{2j}$$
+
+]
+
+.pull-right[
+```{r, echo=FALSE}
+print(ctable)
+```
+]
+
+<br>
+--
+
+```{r,  include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+# marginal distribution rows
+marginf_j <- apply(ctable,2,sum); marginf_j
+```
+
+<br>
+--
+
+Las frecuencias marginales pueden obtenerse a partir de las frecuencias conjuntas, pero no al revés (excepto en el caso de que las variables sean independientes). 
+
+---
+## Frecuencia total (n)
+
+El número total de observaciones de los datos viene dado por:  
+
+\begin{align}
+n = n_{++} = \sum_{i} \sum_{j} n_{ij} &= \sum_{j} \sum_{i} n_{ij} \\ \\
+= \sum_{i} n_{i+} &=  \sum_{j} n_{+j}
+\end{align}
+
+--
+
+
+```{r,  include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+
+# total count 
+marginf_i <- apply(ctable,1,sum)
+sum(marginf_i)
+
+# total count 
+marginf_j <- apply(ctable,2,sum)
+sum(marginf_j)
+```
+
+---
+## Estructura de probabilidad en tablas de contingencia 
+
+Supongamos que elegimos al azar un individuo de nuestra población. ¿Cuáles son las probabilidades de que caiga en cada una de las celdas de la tabla de contingencia?
+
+--
+### Distribución conjunta
+
+Para cada frecuencia conjunta $n_{ij}$ en la table existe una probabilidad conjunta asociada $p_{ij}$, tal que
+
+$$p_{ij} = \mathbb{P}(X = i, Y = j)$$
+
+
+- denota la probabilidad de que una observación muestreada al azar pertenezca en la celda $(i,j)$.
+
+- la colección de probabilidades $p_{ij}$ forma la *distribución conjunta* de $X$ y $Y$ .
+
+
+Cuando trabajamos con muestras, estas probabilidad se puede estimar a partir de las frecuencias en la tabla:
+
+$$\hat{p}_{ij} = \frac{n_{ij}}{n}$$
+
+
+---
+## Distribución conjunta
+
+En nuestro ejemplo,
+
+```{r,  include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+# joint distibution
+joint_dis <- ctable/sum(ctable); joint_dis  
+```
+
+<br>
+--
+Como con cualquier distribución de probabilidad, sabemos que los $p_{ij}$ suman a 1. 
+
+--
+
+Veamos en caso de nuestro estimador:
+
+Si $\hat{p}_{ij} = \frac{n_{ij}}{n}$, entonces 
+
+$$\sum_{i} \sum_{j} \frac{n_{ij}}{n} = \frac{n}{n} = 1$$
+---
+## Distribuciones marginales
+
+Al igual que con las frecuencias, podemos obtener la distribución marginal de las variables $X$ y $Y$ a partir su distribución conjunta. 
+
+<br>
+--
+
+- La distribución marginal de $X$ (filas) está dada por:    
+
+$$p_{i+} = \sum_{j} p_{ij}$$
+<br>
+--
+
+- La distribución marginal de $Y$ (columnas) está dada por:    
+
+$$p_{+j} = \sum_{i} p_{ij}$$
+
+
+---
+## Distribuciones marginales
+
+.pull-left[
+Cuando trabajamos con una muestra podemos estimar las distribuciones marginales a partir de las proporciones muestrales. 
+]
+.pull-right[
+
+```{r,  include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+# joint distibution
+joint_dis <- ctable/sum(ctable); joint_dis  
+```
+]
+
+--
+
+```{r,  include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+# marginal distribution rows
+margin_i <- apply(joint_dis,1,sum); margin_i
+```
+
+```{r,  include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+# marginal distribution columns
+margin_j <- apply(joint_dis,2,sum); margin_j
+```
+
+<br>
+--
+Como toda distribución de probabilidad, .bold[suma a 1]
+
+---
+class: middle
+
+## Distribuciones conjuntas y marginales
+
+![joint_marginal](joint_marginal.jpg)
+
+
+---
+## Distribuciones condicionales 
+
+- Recuerden $\mathbb{P}(Y=y \mid X=x)$ es la probabilidad de que la variable $Y$ tome valor $y$ si $X$ toma valor $x$.
+
+--
+
+- La distribución condicional $f_{Y,x}(Y \mid X=x)$ es una función que expresa la probabilidad que $Y$ tome cada uno de sus posibles valore $y$'s si $X$ toma valor $x$.
+
+--
+
+- La distribución condicional $f_{Y,X}(Y \mid X)$ es una función que expresa la probabilidad que $Y$ tome cada uno de sus posibles valores $y$'s para $X$ fijo en cada uno de sus valores posible $x$'s.
+
+<br>
+--
+
+Por tanto,
+
+-  En una tabla de contingencia podemos construir las distribuciones condicionales de las variables $X$ (o $Y$) fijando la otra variable en sus diferentes niveles.
+
+--
+
+- Normalmente nos referimos como la "variable independiente" a la variable que usamos para condicionar, mientras que la otra variable actúa como "variable dependiente". 
+
+---
+## Distribuciones condicionales 
+
+.pull-left[
+En nuestro ejemplo podemos construir la distribución condicional  de la variable `everaffair` dado `sex` usando la fórmula genral para probabilidades condicionales:
+]
+
+.pull-right[
+```{r, include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+ctable <- affairsdata %>% with(table(sex,everaffair))
+print(ctable)
+```
+]
+
+<br>
+--
+\begin{align}
+\mathbb{P}( \text{affair}=j | \text{ gender}=i  ) &= \frac{\mathbb{P}(\text{affair}=j , \text{ gender}=i )}{\mathbb{P}(\text{ gender}=i)} \\ \\
+\mathbb{P}( \text{dependent }| \text{ independent} )  &= \frac{\text{joint prob.}}{\text{marginal prob. of independent}}
+\end{align}
+
+---
+## Distribuciones condicionales 
+
+.pull-left[
+Sustituyendo las probabilidades  de la ecuación por sus respectivos estimadores podemos estimar las distribuciones condicionales en la tabla:
+]
+.pull-right[
+```{r, include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+ctable <- affairsdata %>% with(table(sex,everaffair))
+print(ctable)
+```
+]
+
+<br>
+--
+
+\begin{align}
+ \hat{p}_{j | i} &= \frac{P(\text{affair}=j , \text{ gender}=i )}{P(\text{ gender}=i)} \\ \\
+  &= \frac{\frac{n_{ij}}{n}}{\frac{\sum_{j} n_{ij}}{n}} = \frac{n_{ij}}{\sum_{j}n_{ij}} 
+\end{align}
+
+---
+
+## Distribuciones condicionales 
+
+.pull-left[
+Sustituyendo las probabilidades  de la ecuación por sus respectivos estimadores podemos estimar las distribuciones condicionales en la tabla:
+]
+.pull-right[
+```{r, include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+ctable <- affairsdata %>% with(table(sex,everaffair))
+print(ctable)
+```
+]
+
+<br>
+
+Por ejemplo, la probabilidad condicional de haber tenido un "affair" dado que el genero es mujer se estima de la siguiente manera:
+
+\begin{align}
+ \hat{p}_{ \text{had affair} | \text{women}} & = \frac{n_{11}}{\sum_{j}n_{1j}} \\ \\
+ &= \frac{72}{72 + 243} = 0.23
+\end{align}
+
+---
+
+## Distribuciones condicionales 
+
+.pull-left[
+Sustituyendo las probabilidades  de la ecuación por sus respectivos estimadores podemos estimar las distribuciones condicionales en la tabla:
+]
+.pull-right[
+```{r, include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+ctable <- affairsdata %>% with(table(sex,everaffair))
+print(ctable)
+```
+]
+
+<br>
+
+En términos más generales, la _distribución condicional_ de la variable de la variable `everaffair`, dado `sex` se estima del siguiente modo:
+
+```{r}
+ctable <- affairsdata %>% with(table(sex,everaffair)) # contingency table
+joint_gender_affair <- ctable/sum(ctable) # joint distribution
+margin_gender <- apply(joint_gender_affair,1,sum) # marginal distribution gender 
+
+joint_gender_affair/margin_gender # conditional affair given gender 
+# can also be computed using prop.table(ctable,1)
+```
+
+
+---
+## Independencia estadística
+
+- Recuerden, dos variables $X$ y $Y$ son independientes si al saber algo sobre $X$ no aprendemos nada sobre $Y$, y viceversa: $\mathbb{P}(Y|X) = \mathbb{P}(Y)$.
+
+- Check:  $X \bot Y \iff \mathbb{P}(X,Y) = \mathbb{P}(X)\mathbb{P}(Y)$
+
+--
+
+.bold[Ejercicio rápido]:
+Supongamos que el 60% de la población son mujeres, y el 50% ha tenido un "affair" al menos una vez. 
+
+.full-width[.content-box-red[
+.bold[Pregunta]:
+Si la probabilidad de tener una aventura fuera independiente del género, cual sería la probabilidad de que al seleccionar una persona al azar encontremos una mujer que ha tenido un "affair"? 
+]
+]
+
+--
+
+.full-width[.content-box-blue[
+.bold[Respuesta]:
+  $$\mathbb{P}(\text{affair},\text{mujer}) = \mathbb{P}(\text{affair})\mathbb{P}(\text{mujer}) = 0.6 \times 0.5 = 0.3$$
+]
+]
+
+---
+## Independencia estadística
+
+Podemos usar esta propiedad para comprobar independencia en una tabla de contingencia.
+
+<br>
+--
+
+- Si $X \bot Y$ las probabilidades conjuntas .bold[esperadas bajo el supuesto de independencia]  están dadas por:
+
+$$\tilde{p}_{ij} = p_{i+} \times  p_{+j}$$
+<br>
+--
+
+- Asimismo, las frecuencias esperadas bajo independencia están dadas por:
+
+$$\tilde{n}_{ij} = n \times p_{i+} \times  p_{+j}$$
+
+<br>
+--
+
+.bold[Importante]: noten que sólo necesitamos saber la distribución marginal de las variables para calcular las probabilidades y frecuencias esperadas bajo la independencia. 
+
+---
+## Independencia estadística
+
+.pull-left[
+.bold[Distribución conjunta observada]
+
+```{r, echo=FALSE}
+# joint_dis <- ctable/sum(ctable); joint_dis  
+joint_gender_affair <- ctable/sum(ctable); print(joint_gender_affair)
+```
+
+]
+.pull-right[
+.bold[Distribuciones marginales]
+```{r, echo=FALSE}
+# marginal gender 
+margin_gender <- apply(joint_gender_affair,1,sum); print(margin_gender)
+# marginal affair 
+margin_affair <- apply(joint_gender_affair,2,sum); print(margin_affair)
+```
+]
+
+<br>
+--
+
+.bold[Distribución conjunta esperada bajo independencia]
+
+```{r}
+# expected joint probs under independence 
+joint_gender_affair_indep <- margin_gender %*% t(margin_affair)
+print(joint_gender_affair_indep)
+```
+
+---
+## Independencia estadística ... so what?
+
+```{r, echo=FALSE, message=FALSE}
+library("reshape2")
+casen_data <- read.csv("/Users/Mauricio/Library/Mobile Documents/com~apple~CloudDocs/Research/Assortative Mating and Inequality Chile/Data/casen_un.csv")
+
+casen_data <- casen_data %>% filter(Year==1990 | Year==2015) %>% select(Year,Educ_H,Educ_W)
+```
+
+```{r, echo=FALSE}
+table_1990 <- casen_data %>% filter(Year==1990) %>% with(chisq.test(table(Educ_H,Educ_W) + 1))
+logratio_1990 <- log(table_1990$observed/table_1990$expected)
+
+table_2015 <- casen_data %>% filter(Year==2015) %>% with(chisq.test(table(Educ_H,Educ_W) + 1))
+logratio_2015 <- log(table_2015$observed/table_2015$expected)
+```
+
+.pull-left[
+.bold[Educational Assortative Mating Chile 1990]
+```{r, echo=FALSE, fig.height=6}
+logratio_1990 %>% melt() %>%
+ggplot(aes(y=factor(Educ_H, levels = 5:1), x=factor(Educ_W, levels = 1:5))) + geom_raster(aes(fill=value)) +
+scale_fill_gradientn(limits=c(-4.5,4.5), colours=c("red","white","blue")) +
+labs(y="Husband's education", x= "Wife's education" ) +
+theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24))
+```
+]
+
+.pull-right[
+.bold[Educational Assortative Mating Chile 2015]
+```{r, echo=FALSE,fig.height=6}
+logratio_2015 %>% melt() %>%
+ggplot(aes(y=factor(Educ_H, levels = 5:1), x=factor(Educ_W, levels = 1:5))) + geom_raster(aes(fill=value)) +
+scale_fill_gradientn(limits=c(-4.5,4.5), colours=c("red","white","blue")) +
+labs(y="Husband's education", x= "Wife's education" ) +
+theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+ axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24))
+```
+]
+
+.bold[1]:EB-, .bold[2]:EB, .bold[3]:EM, .bold[4]:ES-, .bold[5]:ES
+
+
+```{r, echo=FALSE, message=FALSE}
+rm(casen_data)
+```
+---
+class: inverse, center, middle
+
+.huge[
+**Hasta la próxima clase. Gracias!**
+]
+
+<br>
+Mauricio Bucca <br>
+https://mebucca.github.io/ <br>
+github.com/mebucca
+
+
+
+
