@@ -117,11 +117,9 @@ Volviendo a nuestro ejemplo, `\(\hat{p}_{M}\)`, llamemos y a la proporción de h
 
 Dos consideraciones importantes:
 
-1) La diferencia de proporciones debe estar adecuadamente definida en términos de una variable dependiente y otra independiente. La razón es que, en general:
+1) La diferencia de proporciones debe estar adecuadamente definida en términos de una variable dependiente y otra independiente, y su resultado depende de qué categoría es considerada como "éxito". La razón es que, en general:
 
 `$$\mathbb{P}(Y=1 \mid X=1) - \mathbb{P}(Y=1 \mid X=0) \neq  \mathbb{P}(X=1 \mid Y=1) - \mathbb{P}(X=1 \mid Y=0)$$`
-
---
 
 En nuestro ejemplo:
 
@@ -141,6 +139,8 @@ Si tratamos género como variable independiente y definimos "mujeres" como la ca
 
 ---
 ### Diferencia de proporciones
+
+Dos consideraciones importantes:
 
 2) La diferencia de proporciones es una estadística intuitiva y fácil de interpretar, pero por sí sola puede ser engañosa cuando las proporciones son ambas cercanas a cero. Consideremos los dos casos hipotéticos siguientes:
 
@@ -193,26 +193,10 @@ Tres consideraciones importantes:
 
 `$$\frac{\mathbb{P}(Y=1 | X=1)}{\mathbb{P}(Y=1 | X=0)} \neq  \frac{\mathbb{P}(X=1 | Y=1) }{\mathbb{P}(X=1 | Y=0)}$$`
 
---
-
-En nuestro ejemplo:
-
-
-```r
-prop.table(ctable,2)
-```
-
-```
-##         everaffair
-## sex      At least once     Never
-##   female     0.4800000 0.5388027
-##   male       0.5200000 0.4611973
-```
-
-Si tratamos género como variable independiente y definimos "mujeres" como la categoría de éxito, la diferencia en las proporciones es `\(RR = 0.48/0.54 = 0.89\)`. 
-
 ---
 ### Riesgo Relativo (RR)
+
+Tres consideraciones importantes:
 
 2) El riesgo relativo depende que categoría definimos cómo "éxito". En general, 
 
@@ -268,9 +252,9 @@ radicalmente el resultado:
 
 - Odds ratio ( `\(\theta\)` ) es una medida fundamental de asociación. 
 
-- Parámetro de interés en el modelo más importante de datos categóricos: regresión logística.
+- Parámetro de interés en el modelo más importante de datos categóricos: la regresión logística.
 
-- `\(\theta\)` está formulada para tablas de 2-por-2, pero también puede calcularse para tablas de mayor dimensión: toda tabla `\(n\)`-ways, `\(I \times J\)`, puede ser re-escrita como  `\((I-1) \times (J-1) \times (n-1)\)` tablas de 2-por-2.
+- `\(\theta\)` está formulada para tablas de 2-por-2, pero también puede calcularse para tablas de mayor dimensión: toda tabla `\(n\)`-ways, `\(I \times J\)`, puede ser re-escrita como una serie  `\((I-1) \times (J-1) \times (n-1)\)` tablas de 2-por-2.
 
 ---
 ### Odds
@@ -295,31 +279,30 @@ Por ejemplo, si `\(Y\)` tiene una probabilidad de éxito `\(p=0.75\)`, las odds 
 ---
 ### Odds
 
-.pull-top[
 las Odds son funciones de probabilidades y, por lo tanto, las probabilidades también pueden expresarse en función de las odds. Formalmente:
 
 `$$p = \frac{\text{odds}}{1 + \text{odds}}$$`
 .pull-left[
 Siguiendo con ejemplo anterior, si sabemos que las odds de éxito son igual a 3, entonces la probabilidad ( `\(p\)` ) de éxito es:
-]
 
 &lt;br&gt;
 --
 
 .pull-bottom[
-.pull-left[
 `\begin{align}
 p &amp;= \frac{3}{1 + 3} \\ \\
   &amp;= 0.75
 \end{align}`
 ]
 
-
 .pull-right[
-e
-]
-]
+.content-box-blue[
+.bold[Derivación]:
 
+
+
+]
+]
 ]
 
 
