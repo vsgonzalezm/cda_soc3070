@@ -1,6 +1,6 @@
 ---
 title: "Análisis de Datos Categóricos (SOL3070)"
-subtitle: "Clase #5"
+subtitle: "Clase #6"
 author: "<br> Mauricio Bucca<br> Profesor Asistente, Sociología UC"
 date: "[github.com/mebucca](https://github.com/mebucca)"
 output:
@@ -21,520 +21,278 @@ editor_options:
 class: inverse, center, middle
 
 #Tablas de Contingencia
+## Medidas de asociación
+
+---
+##  Asociación en tablas de contingencia 
+
+Las variables de una tabla de contingencia están asociadas si la distribución condicional de las variables es distinta de su distribución marginal. Formalmente, 
+
+<br>
+
+- $f_{Y \mid X}(Y \mid X) \neq f_{Y}(Y)$
+
+y por tanto,
+
+- $f_{X \mid Y}(X \mid Y) \neq f_{X}(X)$
 
 
 ---
-## Datos relaciones extra-matrimoniales, ejemplo
+##  Asociación en tablas de contingencia 
 
-- Usaremos datos del artículo _A theory of extramarital affairs_ (Fair 1978), publicado en JPE. 
-
-- Muestra de 601 individuos en USA. Información sobre relaciones extra -matrimoniales que cada individuo. También covariables como género, edad, años de matrimonio, paternidad, educación, etc.
-
---
 ```{r,  include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
 library("Ecdat")
-library("tidyverse")
 data(Fair)
 affairsdata <- Fair %>% as_tibble()
 
-# create a binary variable indicating whether person has ever had an affair
+# create a binary variable indicating wether persons has ever had an affair
 affairsdata <- affairsdata %>% 
 	mutate(everaffair = case_when(nbaffairs == 0 ~ "Never", nbaffairs > 0 ~ "At least once") )
 
-# display data as tibble
-print(affairsdata)
-```
-
----
-## Datos relaciones extra-matrimoniales, ejemplo
-
-Si estuviéramos interesados en estudiar la asociación entre genero y haber tenido una aventura, el primer paso probablemente sería construir una tabla de este tipo:
-
---
-
-```{r, include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
 ctable <- affairsdata %>% with(table(sex,everaffair))
-print(ctable)
 ```
 
-Este tipo de tablas se denomina _tablas de contingencia_.
-
----
-
-## Tablas de contingencia
-
-Una definición formal:una tabla de contingencia es una matriz que muestra la *distribución multivariada* de frecuencia de un numero arbitrario de variables categóricas. 
-
-Caso simple:
-
-- $X$ y $Y$ son dos variables categóricas.
-- $X$ tiene $I$ categorias $\{i, \dots, I \}$ 
-- $Y$ tiene $J$ categorias $\{j, \dots, J \}$.
-
---
-
-Una tabla rectangular que clasifica todas las combinaciones posibles de $X$ y $Y$ tendrá $I$ filas para las categorías de $X$, $J$ columnas para las categorías de $Y$, y $I \times J$ celdas.
-
----
-## Tablas de contingencia
-
-
- - Una tabla que clasifica $n$ variables se llama se denomina una tabla $n$-ways
- 
- - Una tabla con $I$ filas y $J$ columnas se denomina una $I \times J$ (léase I-por-J)
-
-<br> 
---
-
-Por ejemplo, la tabla en nuestro ejemplo es una tabla 2-ways. 2-por-2
-```{r, include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
-ctable <- affairsdata %>% with(table(sex,everaffair))
-print(ctable)
-```
-
-<br>
---
-
-- En una tabla de contingencia $n_{ik}$ (frecuencia conjunta) denota la frecuencia observada en la celda $i,j$, es decir, el numero de casos presentes en la combinación $X=i \text{ y } Y=j$
-
-- Usando la notación matricial $i$ indexa las filas y $j$ las columnas.
-
---
-A partir de la tabla podemos recuperar otras cantidades importantes.
-
----
-## Frecuencias marginales
-
-Las frecuencias marginales describen la distribución de frecuencias de cada una de las variables por separado.    
-
---
+Continuando con nuestro ejemplo,
 
 .pull-left[
+$f(\text{everaffair} \mid \text{sex})$
+```{r}
+prop.table(ctable,1)
+```
 
-- Las .bold[frecuencias marginales de las filas] están dadas por:
 
-$$n_{i+} = \sum_{j} n_{ij} =  n_{i1} + n_{i2}$$
+$f(\text{everaffair})$
+```{r}
+prop.table(apply(ctable,2,sum))
+```
 
 ]
+
+--
 
 .pull-right[
-```{r, echo=FALSE}
-print(ctable)
-```
+Al parece que los hombres tienen una mayor probabilid que las mujeres de haber tenido un "affair".
+
+En lo que sigue vamos a usar este ejemplo para estudiar:
+
+- Diferentes formas de cuantificar la asociación entre variables de una tabla de contingencia
+
+- Evaluar si las diferencias observadas son o no más sustanciales de lo se esperaría debido al mero azar.
 ]
-
-el signo "+" en lugar de un índice denota la suma los valores de ese índice.
-
---
-
-```{r,  include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
-# marginal distribution rows
-marginf_i <- apply(ctable,1,sum); marginf_i
-```
 
 ---
+### Diferencia de proporciones
 
-## Frecuencias marginales
+- Supongamos que tenemos una tabla de contingencia 2-ways que cruza las variables binarias $X$ (independiente) y $Y$ (dependiente).  Éxito se codifica con valor 1 y el fracaso con el valor cero.
 
-.pull-left[
+- Para detectar la asociación necesitamos medir diferencias en la distribución de $Y$ condicional en $X$
 
-- Asimismo, las .bold[frecuencias marginales de las columnas] están dadas por:
+--
+La diferencia de proporciones cuantifica estas diferencias de la siguiente manera:
 
-$$n_{+j} = \sum_{i} n_{ij} =  n_{1j} + n_{2j}$$
-
-]
-
-.pull-right[
-```{r, echo=FALSE}
-print(ctable)
-```
-]
-
-<br>
+$$\delta = \mathbb{P}(Y=1 \mid X=1) - \mathbb{P}(Y=1 \mid X=0)$$
 --
 
-```{r,  include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
-# marginal distribution rows
-marginf_j <- apply(ctable,2,sum); marginf_j
-```
+Noten que $\delta \in [-1,1]$ donde $\delta=0$ indica proporciones iguales. 
 
-<br>
 --
 
-Las frecuencias marginales pueden obtenerse a partir de las frecuencias conjuntas, pero no al revés (excepto en el caso de que las variables sean independientes). 
-
----
-## Frecuencia total (n)
-
-El número total de observaciones de los datos viene dado por:  
+Volviendo a nuestro ejemplo, $\hat{p}_{M}$, llamemos y a la proporción de hombres que han tenido una aventura y $\hat{p}_{W}$ a la proporción de mujeres que han tenido una aventura. La diferencia de proporciones se define simplemente como:
 
 \begin{align}
-n = n_{++} = \sum_{i} \sum_{j} n_{ij} &= \sum_{j} \sum_{i} n_{ij} \\ \\
-= \sum_{i} n_{i+} &=  \sum_{j} n_{+j}
-\end{align}
-
---
-
-
-```{r,  include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
-
-# total count 
-marginf_i <- apply(ctable,1,sum)
-sum(marginf_i)
-
-# total count 
-marginf_j <- apply(ctable,2,sum)
-sum(marginf_j)
-```
-
----
-## Estructura de probabilidad en tablas de contingencia 
-
-Supongamos que elegimos al azar un individuo de nuestra población. ¿Cuáles son las probabilidades de que caiga en cada una de las celdas de la tabla de contingencia?
-
---
-### Distribución conjunta
-
-Para cada frecuencia conjunta $n_{ij}$ en la table existe una probabilidad conjunta asociada $p_{ij}$, tal que
-
-$$p_{ij} = \mathbb{P}(X = i, Y = j)$$
-
-
-- denota la probabilidad de que una observación muestreada al azar pertenezca en la celda $(i,j)$.
-
-- la colección de probabilidades $p_{ij}$ forma la *distribución conjunta* de $X$ y $Y$ .
-
-
-Cuando trabajamos con muestras, estas probabilidad se puede estimar a partir de las frecuencias en la tabla:
-
-$$\hat{p}_{ij} = \frac{n_{ij}}{n}$$
-
-
----
-## Distribución conjunta
-
-En nuestro ejemplo,
-
-```{r,  include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
-# joint distibution
-joint_dis <- ctable/sum(ctable); joint_dis  
-```
-
-<br>
---
-Como con cualquier distribución de probabilidad, sabemos que los $p_{ij}$ suman a 1. 
-
---
-
-Veamos en caso de nuestro estimador:
-
-Si $\hat{p}_{ij} = \frac{n_{ij}}{n}$, entonces 
-
-$$\sum_{i} \sum_{j} \frac{n_{ij}}{n} = \frac{n}{n} = 1$$
----
-## Distribuciones marginales
-
-Al igual que con las frecuencias, podemos obtener la distribución marginal de las variables $X$ y $Y$ a partir su distribución conjunta. 
-
-<br>
---
-
-- La distribución marginal de $X$ (filas) está dada por:    
-
-$$p_{i+} = \sum_{j} p_{ij}$$
-<br>
---
-
-- La distribución marginal de $Y$ (columnas) está dada por:    
-
-$$p_{+j} = \sum_{i} p_{ij}$$
-
-
----
-## Distribuciones marginales
-
-.pull-left[
-Cuando trabajamos con una muestra podemos estimar las distribuciones marginales a partir de las proporciones muestrales. 
-]
-.pull-right[
-
-```{r,  include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
-# joint distibution
-joint_dis <- ctable/sum(ctable); joint_dis  
-```
-]
-
---
-
-```{r,  include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
-# marginal distribution rows
-margin_i <- apply(joint_dis,1,sum); margin_i
-```
-
-```{r,  include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
-# marginal distribution columns
-margin_j <- apply(joint_dis,2,sum); margin_j
-```
-
-<br>
---
-Como toda distribución de probabilidad, .bold[suma a 1]
-
----
-class: middle
-
-## Distribuciones conjuntas y marginales
-
-![joint_marginal](joint_marginal.jpg)
-
-
----
-## Distribuciones condicionales 
-
-- Recuerden $\mathbb{P}(Y=y \mid X=x)$ es la probabilidad de que la variable $Y$ tome valor $y$ si $X$ toma valor $x$.
-
---
-
-- La distribución condicional $f_{Y,x}(Y \mid X=x)$ es una función que expresa la probabilidad que $Y$ tome cada uno de sus posibles valore $y$'s si $X$ toma valor $x$.
-
---
-
-- La distribución condicional $f_{Y,X}(Y \mid X)$ es una función que expresa la probabilidad que $Y$ tome cada uno de sus posibles valores $y$'s para $X$ fijo en cada uno de sus valores posible $x$'s.
-
-<br>
---
-
-Por tanto,
-
--  En una tabla de contingencia podemos construir las distribuciones condicionales de las variables $X$ (o $Y$) fijando la otra variable en sus diferentes niveles.
-
---
-
-- Normalmente nos referimos como la "variable independiente" a la variable que usamos para condicionar, mientras que la otra variable actúa como "variable dependiente". 
-
----
-## Distribuciones condicionales 
-
-.pull-left[
-En nuestro ejemplo podemos construir la distribución condicional  de la variable `everaffair` dado `sex` usando la fórmula genral para probabilidades condicionales:
-]
-
-.pull-right[
-```{r, include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
-ctable <- affairsdata %>% with(table(sex,everaffair))
-print(ctable)
-```
-]
-
-<br>
---
-\begin{align}
-\mathbb{P}( \text{affair}=j | \text{ gender}=i  ) &= \frac{\mathbb{P}(\text{affair}=j , \text{ gender}=i )}{\mathbb{P}(\text{ gender}=i)} \\ \\
-\mathbb{P}( \text{dependent }| \text{ independent} )  &= \frac{\text{joint prob.}}{\text{marginal prob. of independent}}
+  \hat{\delta} &= \hat{p}_{M} - \hat{p}_{W} \\ \\
+  &= 0.273 - 0.229 \\ \\
+  &= 0.044
 \end{align}
 
 ---
-## Distribuciones condicionales 
+### Diferencia de proporciones
 
-.pull-left[
-Sustituyendo las probabilidades  de la ecuación por sus respectivos estimadores podemos estimar las distribuciones condicionales en la tabla:
-]
-.pull-right[
-```{r, include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
-ctable <- affairsdata %>% with(table(sex,everaffair))
-print(ctable)
-```
-]
+Dos consideraciones importantes:
 
-<br>
---
+1) La diferencia de proporciones debe estar adecuadamente definida en términos de una variable dependiente y otra independiente, y su resultado depende de qué categoría es considerada como "éxito". La razón es que, en general:
 
-\begin{align}
- \hat{p}_{j | i} &= \frac{P(\text{affair}=j , \text{ gender}=i )}{P(\text{ gender}=i)} \\ \\
-  &= \frac{\frac{n_{ij}}{n}}{\frac{\sum_{j} n_{ij}}{n}} = \frac{n_{ij}}{\sum_{j}n_{ij}} 
-\end{align}
+$$\mathbb{P}(Y=1 \mid X=1) - \mathbb{P}(Y=1 \mid X=0) \neq  \mathbb{P}(X=1 \mid Y=1) - \mathbb{P}(X=1 \mid Y=0)$$
 
----
-
-## Distribuciones condicionales 
-
-.pull-left[
-Sustituyendo las probabilidades  de la ecuación por sus respectivos estimadores podemos estimar las distribuciones condicionales en la tabla:
-]
-.pull-right[
-```{r, include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
-ctable <- affairsdata %>% with(table(sex,everaffair))
-print(ctable)
-```
-]
-
-<br>
-
-Por ejemplo, la probabilidad condicional de haber tenido un "affair" dado que el genero es mujer se estima de la siguiente manera:
-
-\begin{align}
- \hat{p}_{ \text{had affair} | \text{women}} & = \frac{n_{11}}{\sum_{j}n_{1j}} \\ \\
- &= \frac{72}{72 + 243} = 0.23
-\end{align}
-
----
-
-## Distribuciones condicionales 
-
-.pull-left[
-Sustituyendo las probabilidades  de la ecuación por sus respectivos estimadores podemos estimar las distribuciones condicionales en la tabla:
-]
-.pull-right[
-```{r, include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
-ctable <- affairsdata %>% with(table(sex,everaffair))
-print(ctable)
-```
-]
-
-<br>
-
-En términos más generales, la _distribución condicional_ de la variable de la variable `everaffair`, dado `sex` se estima del siguiente modo:
+En nuestro ejemplo:
 
 ```{r}
-ctable <- affairsdata %>% with(table(sex,everaffair)) # contingency table
-joint_gender_affair <- ctable/sum(ctable) # joint distribution
-margin_gender <- apply(joint_gender_affair,1,sum) # marginal distribution gender 
-
-joint_gender_affair/margin_gender # conditional affair given gender 
-# can also be computed using prop.table(ctable,1)
+prop.table(ctable,2)
 ```
 
+Si tratamos género como variable independiente y definimos "mujeres" como la categoría de éxito, la diferencia en las proporciones es $\delta = 0.48 - 0.54 = -0.06$. 
 
 ---
-## Independencia estadística
+### Diferencia de proporciones
 
-- Recuerden, dos variables $X$ y $Y$ son independientes si al saber algo sobre $X$ no aprendemos nada sobre $Y$, y viceversa: $\mathbb{P}(Y|X) = \mathbb{P}(Y)$.
+Dos consideraciones importantes:
 
-- Check:  $X \bot Y \iff \mathbb{P}(X,Y) = \mathbb{P}(X)\mathbb{P}(Y)$
+2) La diferencia de proporciones es una estadística intuitiva y fácil de interpretar, pero por sí sola puede ser engañosa cuando las proporciones son ambas cercanas a cero. Consideremos los dos casos hipotéticos siguientes:
 
---
-
-.bold[Ejercicio rápido]:
-Supongamos que el 60% de la población son mujeres, y el 50% ha tenido un "affair" al menos una vez. 
-
-.full-width[.content-box-red[
-.bold[Pregunta]:
-Si la probabilidad de tener una aventura fuera independiente del género, cual sería la probabilidad de que al seleccionar una persona al azar encontremos una mujer que ha tenido un "affair"? 
-]
-]
+\begin{align}
+  \text{Caso 1: } p_{1a}=0.410 \text{ and } p_{1b}=0.401  \\ \\
+  \text{aquí: } \delta_{1} = 0.009
+\end{align}
 
 --
+y
 
-.full-width[.content-box-blue[
-.bold[Respuesta]:
-  $$\mathbb{P}(\text{affair},\text{mujer}) = \mathbb{P}(\text{affair})\mathbb{P}(\text{mujer}) = 0.6 \times 0.5 = 0.3$$
-]
-]
+\begin{align}
+  \text{Caso 2: } p_{2a}=0.010 \text{ and } p_{2b}=0.001  \\ \\
+  \text{aquí: } \delta_{2} = 0.009
+\end{align}
+
+--
+¿Problemas? En el caso 1 ambas porciones son, según todos los indicios, casi idénticas. En el caso 2, sin embargo, ambas proporciones son similares en términos absolutos, por muy diferentes en términos relativos: $0.010$ es 10 veces mayor $0.001$.
+
 
 ---
-## Independencia estadística
+### Riesgo Relativo (RR)
 
-Podemos usar esta propiedad para comprobar independencia en una tabla de contingencia.
+En casos como el descrito anteriormente el ratio entre las proporciones es una estadística más relevante. El riesgo relativo se define como:
+
+$$RR = \frac{\mathbb{P}(Y=1 \mid X=1)}{\mathbb{P}(Y=1 \mid X=0)}$$
+
+Notar que $RR \in [0,\infty+]$, donde $RR=1$ indica igualdad de proporciones. 
 
 <br>
 --
 
-- Si $X \bot Y$ las probabilidades conjuntas .bold[esperadas bajo el supuesto de independencia]  están dadas por:
+En nuestro ejemplo, el riesgo relativo estimado es:
 
-$$\tilde{p}_{ij} = p_{i+} \times  p_{+j}$$
-<br>
+\begin{align}
+  \hat{RR} &= \frac{\hat{p}_{M}}{\hat{p}_{W}} \\ \\
+  &= \frac{0.273}{0.229} = 1.19214
+\end{align}
+
 --
 
-- Asimismo, las frecuencias esperadas bajo independencia están dadas por:
-
-$$\tilde{n}_{ij} = n \times p_{i+} \times  p_{+j}$$
-
-<br>
---
-
-.bold[Importante]: noten que sólo necesitamos saber la distribución marginal de las variables para calcular las probabilidades y frecuencias esperadas bajo la independencia. 
+La proporción de infidelidad entre los hombres es aproximadamente un 20% mayor que entre las mujeres. 
 
 ---
-## Independencia estadística
+### Riesgo Relativo (RR)
+
+Tres consideraciones importantes:
+
+1) Al igual que la diferencia de proporciones, el riesgo relativo debe definirse adecuadamente en términos de una variable dependiente y otra independiente. En general:
+
+$$\frac{\mathbb{P}(Y=1 | X=1)}{\mathbb{P}(Y=1 | X=0)} \neq  \frac{\mathbb{P}(X=1 | Y=1) }{\mathbb{P}(X=1 | Y=0)}$$
+
+---
+### Riesgo Relativo (RR)
+
+Tres consideraciones importantes:
+
+2) El riesgo relativo depende que categoría definimos cómo "éxito". En general, 
+
+
+$$\frac{\mathbb{P}(Y=1 | X=1)}{\mathbb{P}(Y=1 | X=0)} \neq \frac{\mathbb{P}(Y=0 | X=0)}{\mathbb{P}(Y=0 | X=1)}$$
+--
+
+En nuestro ejemplo:
 
 .pull-left[
-.bold[Distribución conjunta observada]
-
-```{r, echo=FALSE}
-# joint_dis <- ctable/sum(ctable); joint_dis  
-joint_gender_affair <- ctable/sum(ctable); print(joint_gender_affair)
-```
-
+ratio proporción infidelidad H/M
+\begin{align}
+  \frac{\hat{p}_{M}}{\hat{p}_{W}} &= \frac{0.273}{0.229} \\ \\
+   &= 1.19214
+\end{align}
 ]
-.pull-right[
-.bold[Distribuciones marginales]
-```{r, echo=FALSE}
-# marginal gender 
-margin_gender <- apply(joint_gender_affair,1,sum); print(margin_gender)
-# marginal affair 
-margin_affair <- apply(joint_gender_affair,2,sum); print(margin_affair)
-```
+
+.pull-left[
+ratio proporción fidelidad M/H
+\begin{align}
+  \frac{1-\hat{p}_{W}}{1-\hat{p}_{M}} &= \frac{0.771}{0.727} \\ \\
+   &= 1.060523
+\end{align}
 ]
+
+
+---
+### Riesgo Relativo (RR)
+
+3)  Si una de las proporciones involucradas en el cálculo es demasiado pequeña, el $RR$ puede tomar valores arbitrariamente grandes o arbitrariamente pequeños. 
+
+<br>
+
+  - Ejemplo: $0.7/0.005 = 140$
+
+--
+
+  - En estos casos la definición de la variable dependiente/independiente, y de la la categoría de éxito afectan         
+radicalmente el resultado:
+
+    - invirtiendo la categoría de exito: $0.3/0.9 = 0.3$
+    
+    - invirtiendo la variable dependiente: $0.009/0.768=0.012$, u otros, dependiente de categoría de éxito
+  
+--
+
+  - Problema muy común cuando se trabaja con eventos con muy baja prevalencia (ej, suicidio, covid, etc.)
+
+---
+### Odds Ratio
+
+<br>
+
+- Odds ratio ( $\theta$ ) es una medida fundamental de asociación. 
+
+- Parámetro de interés en el modelo más importante de datos categóricos: la regresión logística.
+
+- $\theta$ está formulada para tablas de 2-por-2, pero también puede calcularse para tablas de mayor dimensión: toda tabla $n$-ways, $I \times J$, puede ser re-escrita como una serie  $(I-1) \times (J-1) \times (n-1)$ tablas de 2-por-2.
+
+---
+### Odds
+
+La Odds Ratio es el ratio de dos "odds", donde las "odds" una variable binaria $Y$ se definen como: 
+
+<br>
+
+\begin{align}
+  \text{odds} &= \frac{\mathbb{P}(Y=1)}{1-\mathbb{P}(Y=1)} \\ \\
+              &=  \frac{p}{1-p}
+\end{align}
 
 <br>
 --
 
-.bold[Distribución conjunta esperada bajo independencia]
+Por ejemplo, si $Y$ tiene una probabilidad de éxito $p=0.75$, las odds de éxito son $\text{odds}=\frac{0.75}{0.25} = 3$. 
 
-```{r}
-# expected joint probs under independence 
-joint_gender_affair_indep <- margin_gender %*% t(margin_affair)
-print(joint_gender_affair_indep)
-```
+- Esto significa que el éxito es 3 veces más probable que el fracaso.
+
 
 ---
-## Independencia estadística ... so what?
+### Odds
 
-```{r, echo=FALSE, message=FALSE}
-library("reshape2")
-casen_data <- read.csv("/Users/Mauricio/Library/Mobile Documents/com~apple~CloudDocs/Research/Assortative Mating and Inequality Chile/Data/casen_un.csv")
+las Odds son funciones de probabilidades y, por lo tanto, las probabilidades también pueden expresarse en función de las odds. Formalmente:
 
-casen_data <- casen_data %>% filter(Year==1990 | Year==2015) %>% select(Year,Educ_H,Educ_W)
-```
-
-```{r, echo=FALSE}
-table_1990 <- casen_data %>% filter(Year==1990) %>% with(chisq.test(table(Educ_H,Educ_W) + 1))
-logratio_1990 <- log(table_1990$observed/table_1990$expected)
-
-table_2015 <- casen_data %>% filter(Year==2015) %>% with(chisq.test(table(Educ_H,Educ_W) + 1))
-logratio_2015 <- log(table_2015$observed/table_2015$expected)
-```
-
+$$p = \frac{\text{odds}}{1 + \text{odds}}$$
 .pull-left[
-.bold[Educational Assortative Mating Chile 1990]
-```{r, echo=FALSE, fig.height=6}
-logratio_1990 %>% melt() %>%
-ggplot(aes(y=factor(Educ_H, levels = 5:1), x=factor(Educ_W, levels = 1:5))) + geom_raster(aes(fill=value)) +
-scale_fill_gradientn(limits=c(-4.5,4.5), colours=c("red","white","blue")) +
-labs(y="Husband's education", x= "Wife's education" ) +
-theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
-axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24))
-```
+Siguiendo con ejemplo anterior, si sabemos que las odds de éxito son igual a 3, entonces la probabilidad ( $p$ ) de éxito es:
+
+<br>
+--
+
+.pull-bottom[
+\begin{align}
+p &= \frac{3}{1 + 3} \\ \\
+  &= 0.75
+\end{align}
 ]
 
 .pull-right[
-.bold[Educational Assortative Mating Chile 2015]
-```{r, echo=FALSE,fig.height=6}
-logratio_2015 %>% melt() %>%
-ggplot(aes(y=factor(Educ_H, levels = 5:1), x=factor(Educ_W, levels = 1:5))) + geom_raster(aes(fill=value)) +
-scale_fill_gradientn(limits=c(-4.5,4.5), colours=c("red","white","blue")) +
-labs(y="Husband's education", x= "Wife's education" ) +
-theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
- axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24))
-```
+.content-box-blue[
+.bold[Derivación]:
+
+
+
+]
+]
 ]
 
-.bold[1]:EB-, .bold[2]:EB, .bold[3]:EM, .bold[4]:ES-, .bold[5]:ES
 
 
-```{r, echo=FALSE, message=FALSE}
-rm(casen_data)
-```
+
 ---
 class: inverse, center, middle
 

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Análisis de Datos Categóricos (SOL3070)</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="  Mauricio Bucca  Profesor Asistente, Sociología UC" />
+    <script src="libs/header-attrs-2.3/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="gentle-r.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Análisis de Datos Categóricos (SOL3070)
+## Clase #6
+### <br> Mauricio Bucca<br> Profesor Asistente, Sociología UC
+### <a href="https://github.com/mebucca">github.com/mebucca</a>
+
+---
+
+
+class: inverse, center, middle
+
+#Tablas de Contingencia
+## Medidas de asociación
+
+---
+##  Asociación en tablas de contingencia 
+
+Las variables de una tabla de contingencia están asociadas si la distribución condicional de las variables es distinta de su distribución marginal. Formalmente, 
+
+&lt;br&gt;
+
+- `\(f_{Y \mid X}(Y \mid X) \neq f_{Y}(Y)\)`
+
+y por tanto,
+
+- `\(f_{X \mid Y}(X \mid Y) \neq f_{X}(X)\)`
+
+
+---
+##  Asociación en tablas de contingencia 
+
+
+
+Continuando con nuestro ejemplo,
+
+.pull-left[
+`\(f(\text{everaffair} \mid \text{sex})\)`
+
+```r
+prop.table(ctable,1)
+```
+
+```
+##         everaffair
+## sex      At least once     Never
+##   female     0.2285714 0.7714286
+##   male       0.2727273 0.7272727
+```
+
+
+`\(f(\text{everaffair})\)`
+
+```r
+prop.table(apply(ctable,2,sum))
+```
+
+```
+## At least once         Never 
+##      0.249584      0.750416
+```
+
+]
+
+--
+
+.pull-right[
+Al parece que los hombres tienen una mayor probabilid que las mujeres de haber tenido un "affair".
+
+En lo que sigue vamos a usar este ejemplo para estudiar:
+
+- Diferentes formas de cuantificar la asociación entre variables de una tabla de contingencia
+
+- Evaluar si las diferencias observadas son o no más sustanciales de lo se esperaría debido al mero azar.
+]
+
+---
+### Diferencia de proporciones
+
+- Supongamos que tenemos una tabla de contingencia 2-ways que cruza las variables binarias `\(X\)` (independiente) y `\(Y\)` (dependiente).  Éxito se codifica con valor 1 y el fracaso con el valor cero.
+
+- Para detectar la asociación necesitamos medir diferencias en la distribución de `\(Y\)` condicional en `\(X\)`
+
+--
+La diferencia de proporciones cuantifica estas diferencias de la siguiente manera:
+
+`$$\delta = \mathbb{P}(Y=1 \mid X=1) - \mathbb{P}(Y=1 \mid X=0)$$`
+--
+
+Noten que `\(\delta \in [-1,1]\)` donde `\(\delta=0\)` indica proporciones iguales. 
+
+--
+
+Volviendo a nuestro ejemplo, `\(\hat{p}_{M}\)`, llamemos y a la proporción de hombres que han tenido una aventura y `\(\hat{p}_{W}\)` a la proporción de mujeres que han tenido una aventura. La diferencia de proporciones se define simplemente como:
+
+`\begin{align}
+  \hat{\delta} &amp;= \hat{p}_{M} - \hat{p}_{W} \\ \\
+  &amp;= 0.273 - 0.229 \\ \\
+  &amp;= 0.044
+\end{align}`
+
+---
+### Diferencia de proporciones
+
+Dos consideraciones importantes:
+
+1) La diferencia de proporciones debe estar adecuadamente definida en términos de una variable dependiente y otra independiente, y su resultado depende de qué categoría es considerada como "éxito". La razón es que, en general:
+
+`$$\mathbb{P}(Y=1 \mid X=1) - \mathbb{P}(Y=1 \mid X=0) \neq  \mathbb{P}(X=1 \mid Y=1) - \mathbb{P}(X=1 \mid Y=0)$$`
+
+En nuestro ejemplo:
+
+
+```r
+prop.table(ctable,2)
+```
+
+```
+##         everaffair
+## sex      At least once     Never
+##   female     0.4800000 0.5388027
+##   male       0.5200000 0.4611973
+```
+
+Si tratamos género como variable independiente y definimos "mujeres" como la categoría de éxito, la diferencia en las proporciones es `\(\delta = 0.48 - 0.54 = -0.06\)`. 
+
+---
+### Diferencia de proporciones
+
+Dos consideraciones importantes:
+
+2) La diferencia de proporciones es una estadística intuitiva y fácil de interpretar, pero por sí sola puede ser engañosa cuando las proporciones son ambas cercanas a cero. Consideremos los dos casos hipotéticos siguientes:
+
+`\begin{align}
+  \text{Caso 1: } p_{1a}=0.410 \text{ and } p_{1b}=0.401  \\ \\
+  \text{aquí: } \delta_{1} = 0.009
+\end{align}`
+
+--
+y
+
+`\begin{align}
+  \text{Caso 2: } p_{2a}=0.010 \text{ and } p_{2b}=0.001  \\ \\
+  \text{aquí: } \delta_{2} = 0.009
+\end{align}`
+
+--
+¿Problemas? En el caso 1 ambas porciones son, según todos los indicios, casi idénticas. En el caso 2, sin embargo, ambas proporciones son similares en términos absolutos, por muy diferentes en términos relativos: `\(0.010\)` es 10 veces mayor `\(0.001\)`.
+
+
+---
+### Riesgo Relativo (RR)
+
+En casos como el descrito anteriormente el ratio entre las proporciones es una estadística más relevante. El riesgo relativo se define como:
+
+`$$RR = \frac{\mathbb{P}(Y=1 \mid X=1)}{\mathbb{P}(Y=1 \mid X=0)}$$`
+
+Notar que `\(RR \in [0,\infty+]\)`, donde `\(RR=1\)` indica igualdad de proporciones. 
+
+&lt;br&gt;
+--
+
+En nuestro ejemplo, el riesgo relativo estimado es:
+
+`\begin{align}
+  \hat{RR} &amp;= \frac{\hat{p}_{M}}{\hat{p}_{W}} \\ \\
+  &amp;= \frac{0.273}{0.229} = 1.19214
+\end{align}`
+
+--
+
+La proporción de infidelidad entre los hombres es aproximadamente un 20% mayor que entre las mujeres. 
+
+---
+### Riesgo Relativo (RR)
+
+Tres consideraciones importantes:
+
+1) Al igual que la diferencia de proporciones, el riesgo relativo debe definirse adecuadamente en términos de una variable dependiente y otra independiente. En general:
+
+`$$\frac{\mathbb{P}(Y=1 | X=1)}{\mathbb{P}(Y=1 | X=0)} \neq  \frac{\mathbb{P}(X=1 | Y=1) }{\mathbb{P}(X=1 | Y=0)}$$`
+
+---
+### Riesgo Relativo (RR)
+
+Tres consideraciones importantes:
+
+2) El riesgo relativo depende que categoría definimos cómo "éxito". En general, 
+
+
+`$$\frac{\mathbb{P}(Y=1 | X=1)}{\mathbb{P}(Y=1 | X=0)} \neq \frac{\mathbb{P}(Y=0 | X=0)}{\mathbb{P}(Y=0 | X=1)}$$`
+--
+
+En nuestro ejemplo:
+
+.pull-left[
+ratio proporción infidelidad H/M
+`\begin{align}
+  \frac{\hat{p}_{M}}{\hat{p}_{W}} &amp;= \frac{0.273}{0.229} \\ \\
+   &amp;= 1.19214
+\end{align}`
+]
+
+.pull-left[
+ratio proporción fidelidad M/H
+`\begin{align}
+  \frac{1-\hat{p}_{W}}{1-\hat{p}_{M}} &amp;= \frac{0.771}{0.727} \\ \\
+   &amp;= 1.060523
+\end{align}`
+]
+
+
+---
+### Riesgo Relativo (RR)
+
+3)  Si una de las proporciones involucradas en el cálculo es demasiado pequeña, el `\(RR\)` puede tomar valores arbitrariamente grandes o arbitrariamente pequeños. 
+
+&lt;br&gt;
+
+  - Ejemplo: `\(0.7/0.005 = 140\)`
+
+--
+
+  - En estos casos la definición de la variable dependiente/independiente, y de la la categoría de éxito afectan         
+radicalmente el resultado:
+
+    - invirtiendo la categoría de exito: `\(0.3/0.9 = 0.3\)`
+    
+    - invirtiendo la variable dependiente: `\(0.009/0.768=0.012\)`, u otros, dependiente de categoría de éxito
+  
+--
+
+  - Problema muy común cuando se trabaja con eventos con muy baja prevalencia (ej, suicidio, covid, etc.)
+
+---
+### Odds Ratio
+
+&lt;br&gt;
+
+- Odds ratio ( `\(\theta\)` ) es una medida fundamental de asociación. 
+
+- Parámetro de interés en el modelo más importante de datos categóricos: la regresión logística.
+
+- `\(\theta\)` está formulada para tablas de 2-por-2, pero también puede calcularse para tablas de mayor dimensión: toda tabla `\(n\)`-ways, `\(I \times J\)`, puede ser re-escrita como una serie  `\((I-1) \times (J-1) \times (n-1)\)` tablas de 2-por-2.
+
+---
+### Odds
+
+La Odds Ratio es el ratio de dos "odds", donde las "odds" una variable binaria `\(Y\)` se definen como: 
+
+&lt;br&gt;
+
+`\begin{align}
+  \text{odds} &amp;= \frac{\mathbb{P}(Y=1)}{1-\mathbb{P}(Y=1)} \\ \\
+              &amp;=  \frac{p}{1-p}
+\end{align}`
+
+&lt;br&gt;
+--
+
+Por ejemplo, si `\(Y\)` tiene una probabilidad de éxito `\(p=0.75\)`, las odds de éxito son `\(\text{odds}=\frac{0.75}{0.25} = 3\)`. 
+
+- Esto significa que el éxito es 3 veces más probable que el fracaso.
+
+
+---
+### Odds
+
+las Odds son funciones de probabilidades y, por lo tanto, las probabilidades también pueden expresarse en función de las odds. Formalmente:
+
+`$$p = \frac{\text{odds}}{1 + \text{odds}}$$`
+.pull-left[
+Siguiendo con ejemplo anterior, si sabemos que las odds de éxito son igual a 3, entonces la probabilidad ( `\(p\)` ) de éxito es:
+
+&lt;br&gt;
+--
+
+.pull-bottom[
+`\begin{align}
+p &amp;= \frac{3}{1 + 3} \\ \\
+  &amp;= 0.75
+\end{align}`
+]
+
+.pull-right[
+.content-box-blue[
+.bold[Derivación]:
+
+
+
+]
+]
+]
+
+
+
+
+---
+class: inverse, center, middle
+
+.huge[
+**Hasta la próxima clase. Gracias!**
+]
+
+&lt;br&gt;
+Mauricio Bucca &lt;br&gt;
+https://mebucca.github.io/ &lt;br&gt;
+github.com/mebucca
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
