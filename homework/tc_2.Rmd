@@ -18,7 +18,7 @@ En esta pregunta aplicarán propiedades de probabilidades condicionales para cal
 
 - Tienes una hipótesis de interés (o Hipótesis alternativa, $H_{1}$), y una  hipótesis nula ($H_{0}$)
 
-- No tienes conocimiento previo sobre la plausibilidad de tu hipótesis, de modo que le asignas un 50% de probabilidad de ser cierta: $\mathbb{P}(H_{1}  \text{ verdadera})=0.5$. Esto implica que también la hipótesis alternativa tiene la misma probabilidad de ser cierta: $\mathbb{P}(H_{0} \text{ verdadera})= 0.5$
+- No tienes conocimiento previo sobre la plausibilidad de tu hipótesis de interés, de modo que le asignas un 50% de probabilidad de ser cierta: $\mathbb{P}(H_{1}  \text{ verdadera})=0.5$. Esto implica que también la hipótesis nula tiene la misma probabilidad de ser cierta: $\mathbb{P}(H_{0} \text{ verdadera})= 0.5$
 
 - Como es estándar, usas un test estadístico que tienen un "Statistical Power" de 80%, definido como:
 
@@ -34,7 +34,7 @@ $\alpha = \mathbb{P}(\text{rechazar } H_{0} \mid H_{1}  \text{ falsa}) = 0.05$
 
 ### Pregunta
 
-Debes calcular las siguientes cantidades de interés:
+Supón que tu análisis sugiere que puedes rechazar $H_{0}$. Ahora, debes calcular las siguientes cantidades de interés:
 
 1) La probabilidad de obtener un __"positivo verdadero"__, definida como:
 
