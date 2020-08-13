@@ -47,7 +47,7 @@ $\mathbb{P}(H_{1} \text{ falsa} \mid \text{rechazar } H_{0})$
 
 
 #### Pista 
-
+Usando la ley de "probabilidad total" sabemos que:
 \begin{align*}
 \mathbb{P}(\text{rechazar } H_{0}) &= \mathbb{P}(\text{rechazar } H_{0},  H_{1}  \text{ verdadera}) + \mathbb{P}(\text{rechazar } H_{0},  H_{1}  \text{ falsa}) \\ 
 &= \mathbb{P}(\text{rechaza } H_{0} \mid H_{1}  \text{ verdadera})\mathbb{P}(H_{1}  \text{ verdadera}) +   

@@ -237,7 +237,7 @@ class: fullscreen,left, top, top, text-white
 background-image: url(bayes.jpg)
 
 ---
-### Probabilidad condicional
+### Teorema de Bayes en práctica
 
 .bold[Ejercicio rápido]:
 
@@ -259,6 +259,56 @@ background-image: url(bayes.jpg)
 \mathbb{P}(U \mid H) = \frac{\mathbb{P}(H \mid U)\mathbb{P}(U)}{\mathbb{P}(H)} =   \frac{0.75 \times 0.2}{0.45} = 0.333
 \end{align}
 ]
+]
+
+---
+### Ley de "probabilidad total"
+
+Si $\{B_{1}, B_{2}., \dots, B_{n}\}$ es un conjunto de particiones "desunidas" y mutuamente excluyentes del espacio muestral, entonces:
+
+\begin{align}
+\mathbb{P}(A) = \sum_{i=1}^{n}\mathbb{P}(A,B_{i})
+\end{align}
+
+<br>
+--
+
+dado que, como vimos, $\mathbb{P}(A,B) = \mathbb{P}(A \mid B)\mathbb{P}(B)$, entonces ...
+
+<br>
+--
+
+\begin{align}
+\mathbb{P}(A) = \sum_{i=1}^{n}\mathbb{P}(A \mid B_{i})\mathbb{P}(B_{i})
+\end{align}
+
+---
+### Ley de "probabilidad total"
+
+.bold[Ejercicio rápido]:
+
+
+- Las mujeres (M) representan 55% de la población
+- El 20% de los hombres (H) tiene estudios universitarios completos (U)
+- El 25% de las mujeres tiene estudios universitarios completos
+
+--
+
+.content-box-red[
+.bold[Pregunta]:
+Cual es la probabilidad de tener estudios universitarios completos?
+]
+
+--
+
+.content-box-blue[
+.bold[Respuesta]:
+\begin{align}
+\mathbb{P}(U) &= \mathbb{P}(U \mid H)\mathbb{P}(H) + \mathbb{P}(U \mid M)\mathbb{P}(M) \\ \\
+              &= 0.2 \times 0.45 + 0.25 \times 0.55 \\ \\
+              &= 0.2275
+\end{align}
+
 ]
 
 ---
