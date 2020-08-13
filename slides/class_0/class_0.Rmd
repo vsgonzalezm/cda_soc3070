@@ -92,7 +92,7 @@ class: inverse, center, middle
 
 --
 
-$$\ln(\alpha + \beta x) = e^{a} e^{\beta x}$$
+$$e^{\alpha + \beta x} = e^{a} e^{\beta x}$$
 --
 
 - Muchas cosas parecen más difíciles de lo que son (notación, desconocimiento, miedo, etc.)

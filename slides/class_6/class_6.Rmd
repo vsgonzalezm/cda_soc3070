@@ -250,7 +250,7 @@ radicalmente el resultado:
 - $\theta$ está formulada para tablas de 2-por-2, pero también puede calcularse para tablas de mayor dimensión: toda tabla $n$-ways, $I \times J$, puede ser re-escrita como  $(I-1) \times (J-1) \times (n-1)$ tablas de 2-por-2.
 
 ---
-### Odds
+#### Odds
 
 La Odds Ratio es el ratio de dos "odds", donde las "odds" una variable binaria $Y$ se definen como: 
 
@@ -270,20 +270,16 @@ Por ejemplo, si $Y$ tiene una probabilidad de éxito $p=0.75$, las odds de éxit
 
 
 ---
-### Odds
+#### Odds
 
-.pull-top[
 las Odds son funciones de probabilidades y, por lo tanto, las probabilidades también pueden expresarse en función de las odds. Formalmente:
 
 $$p = \frac{\text{odds}}{1 + \text{odds}}$$
-.pull-left[
-Siguiendo con ejemplo anterior, si sabemos que las odds de éxito son igual a 3, entonces la probabilidad ( $p$ ) de éxito es:
-]
 
-<br>
 --
 
-.pull-bottom[
+Siguiendo con ejemplo anterior, si sabemos que las odds de éxito son igual a 3, entonces la probabilidad ( $p$ ) de éxito es:
+
 .pull-left[
 \begin{align}
 p &= \frac{3}{1 + 3} \\ \\
@@ -291,15 +287,64 @@ p &= \frac{3}{1 + 3} \\ \\
 \end{align}
 ]
 
+--
 
 .pull-right[
-e
+
+.content-box-grey[
+.tiny[.bold[Derivación]:
+\begin{align}
+  \text{odds} &= \frac{p}{1-p}  \text{  } \\ \\
+  \text{odds} &= \frac{1}{\frac{1}{p} - 1}  \\ \\
+  \frac{1}{p} &= \frac{1}{\text{odds}} + 1  \\  \\
+  \frac{1}{p} &= \frac{1 + \text{odds}}{\text{odds}}  \\ \\
+           p  &= \frac{\text{odds}}{1 + \text{odds}}
+\end{align}
+]
 ]
 ]
 
-]
+---
+### Odds Ratio
+
+Las .bold[odds] resumen la distribución de una sola variable binaria. Para medir la asociación entre dos de estas variables en una tabla podemos calcular la .bold[odds *ratio*]. 
+
+--
+
+Si $X$ e $Y$ son las variables independiente y dependiente, la distribución condicional $f(Y \mid X)$ se puede resumir con dos .bold[odds]:
+
+\begin{align}
+  \text{odds}_{0} &=  \frac{\mathbb{P}(Y=1 | X=0) }{1 - \mathbb{P}(Y=1 | X=0) } \quad \text{y} \\ \\
+  \text{odds}_{1} &=  \frac{\mathbb{P}(Y=1 | X=1) }{1 - \mathbb{P}(Y=1 | X=1) } 
+\end{align}
+
+--
+
+El .bold[odds *ratio*], por tanto, es:
+
+\begin{align}
+  \theta &= \frac{\text{odds}_{1}}{\text{odds}_{0}} \\ \\\
+\end{align}
 
 
+---
+### Odds Ratio
+
+Volviendo a nuestro ejemplo,
+
+```{r,echo=FALSE}
+prop.table(ctable,1)
+```
+
+Recuerde que $\hat{p}_{M}$ es la proporción de hombres que han tenido una aventura y $\hat{p}_{W}$ es la proporción de mujeres que han tenido una aventura. Estas son estimaciones de las probabilidades condicionales de tener una aventura dado el género. Por lo tanto, la proporción de probabilidades (hombres a mujeres) de tener una aventura es:
+
+
+\begin{align}
+  \hat{\theta} &= \frac{\hat{p}_{M}/(1 - \hat{p}_{M})}{\hat{p}_{W}/(1 - \hat{p}_{W})} \\ \\
+         &= \frac{0.273/0.727}{0.229/0.771} \\ \\
+         &= \frac{0.38}{0.30} \\ \\
+         &= 1.27
+\end{align}
 
 
 ---
