@@ -340,7 +340,8 @@ Si $\hat{p}_{M}$ es la proporción de hombres que han tenido una aventura y $\ha
 
 
 \begin{align}
-  \hat{\theta} &= \frac{\hat{p}_{M}/(1 - \hat{p}_{M})}{\hat{p}_{W}/(1 - \hat{p}_{W})} \\ \\
+  \hat{\theta} = \frac{\text{odds}_{M}}{\text{odds}_{W}} &= \\
+         &= \frac{\hat{p}_{M}/(1 - \hat{p}_{M})}{\hat{p}_{W}/(1 - \hat{p}_{W})} \\ \\
          &= \frac{0.273/0.727}{0.229/0.771} \\ \\
          &= \frac{0.38}{0.30} \\ \\
          &= 1.27
