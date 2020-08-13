@@ -336,7 +336,7 @@ Volviendo a nuestro ejemplo,
 prop.table(ctable,1)
 ```
 
-Recuerde que $\hat{p}_{M}$ es la proporción de hombres que han tenido una aventura y $\hat{p}_{W}$ es la proporción de mujeres que han tenido una aventura. Estas son estimaciones de las probabilidades condicionales de tener una aventura dado el género. Por lo tanto, la proporción de probabilidades (hombres a mujeres) de tener una aventura es:
+Si $\hat{p}_{M}$ es la proporción de hombres que han tenido una aventura y $\hat{p}_{W}$ es la proporción de mujeres que han tenido una aventura. 
 
 
 \begin{align}
