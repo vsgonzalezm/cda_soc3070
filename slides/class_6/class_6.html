@@ -104,10 +104,10 @@ Noten que `\(\delta \in [-1,1]\)` donde `\(\delta=0\)` indica proporciones igual
 
 --
 
-Volviendo a nuestro ejemplo, `\(\hat{p}_{M}\)`, llamemos y a la proporción de hombres que han tenido una aventura y `\(\hat{p}_{W}\)` a la proporción de mujeres que han tenido una aventura. La diferencia de proporciones se define simplemente como:
+Volviendo a nuestro ejemplo, `\(\hat{p}_{H}\)`, llamemos y a la proporción de hombres que han tenido una aventura y `\(\hat{p}_{M}\)` a la proporción de mujeres que han tenido una aventura. La diferencia de proporciones se define simplemente como:
 
 `\begin{align}
-  \hat{\delta} &amp;= \hat{p}_{M} - \hat{p}_{W} \\ \\
+  \hat{\delta} &amp;= \hat{p}_{H} - \hat{p}_{M} \\ \\
   &amp;= 0.273 - 0.229 \\ \\
   &amp;= 0.044
 \end{align}`
@@ -176,7 +176,7 @@ Notar que `\(RR \in [0,\infty+]\)`, donde `\(RR=1\)` indica igualdad de proporci
 En nuestro ejemplo, el riesgo relativo estimado es:
 
 `\begin{align}
-  \hat{RR} &amp;= \frac{\hat{p}_{M}}{\hat{p}_{W}} \\ \\
+  \hat{RR} &amp;= \frac{\hat{p}_{H}}{\hat{p}_{M}} \\ \\
   &amp;= \frac{0.273}{0.229} = 1.19214
 \end{align}`
 
@@ -225,7 +225,7 @@ En nuestro ejemplo:
 .pull-left[
 ratio proporción infidelidad H/M
 `\begin{align}
-  \frac{\hat{p}_{M}}{\hat{p}_{W}} &amp;= \frac{0.273}{0.229} \\ \\
+  \frac{\hat{p}_{H}}{\hat{p}_{M}} &amp;= \frac{0.273}{0.229} \\ \\
    &amp;= 1.19214
 \end{align}`
 ]
@@ -233,7 +233,7 @@ ratio proporción infidelidad H/M
 .pull-left[
 ratio proporción fidelidad M/H
 `\begin{align}
-  \frac{1-\hat{p}_{W}}{1-\hat{p}_{M}} &amp;= \frac{0.771}{0.727} \\ \\
+  \frac{1-\hat{p}_{M}}{1-\hat{p}_{H}} &amp;= \frac{0.771}{0.727} \\ \\
    &amp;= 1.060523
 \end{align}`
 ]
@@ -363,17 +363,86 @@ Volviendo a nuestro ejemplo,
 ##   male       0.2727273 0.7272727
 ```
 
-Si `\(\hat{p}_{M}\)` es la proporción de hombres que han tenido una aventura y `\(\hat{p}_{W}\)` es la proporción de mujeres que han tenido una aventura. 
+Si `\(\hat{p}_{H}\)` es la proporción de hombres que han tenido una aventura y `\(\hat{p}_{M}\)` es la proporción de mujeres que han tenido una aventura. 
 
 
 `\begin{align}
-  \hat{\theta} = \frac{\text{odds}_{M}}{\text{odds}_{W}} &amp;= \\
-         &amp;= \frac{\hat{p}_{M}/(1 - \hat{p}_{M})}{\hat{p}_{W}/(1 - \hat{p}_{W})} \\ \\
+  \hat{\theta} = \frac{\text{odds}_{H}}{\text{odds}_{M}} &amp;= \\
+         &amp;= \frac{\hat{p}_{H}/(1 - \hat{p}_{H})}{\hat{p}_{M}/(1 - \hat{p}_{M})} \\ \\
          &amp;= \frac{0.273/0.727}{0.229/0.771} \\ \\
          &amp;= \frac{0.38}{0.30} \\ \\
          &amp;= 1.27
 \end{align}`
 
+---
+### Odds Ratio
+
+Dado que estas proporciones se estiman a partir de los recuentos de la tabla, `\(\theta\)` también puede expresarse de la siguiente manera, denominada .bold[cross-product ratio].
+
+In nuestro ejemplo,
+
+.pull-left[
+
+```
+##         everaffair
+## sex      At least once Never
+##   female            72   243
+##   male              78   208
+```
+]
+
+.pull-right[
+`\begin{align}
+  \hat{\theta} &amp;= \frac{\hat{p}_{H}/(1 - \hat{p}_{H})}{\hat{p}_{M}/(1 - \hat{p}_{M})} \\ \\
+  \hat{\theta} &amp;= \frac{\frac{n_{21}}{n_{2+}} / \frac{n_{22}}{n_{2+}}}{\frac{n_{11}}{n_{1+}}/ \frac{n_{12}}{n_{1+} }} \\ \\
+  \hat{\theta} &amp;= \frac{n_{21} \times n_{12}}{n_{22} \times n_{11}} \\ \\
+\end{align}`
+]
+
+--
+
+
+```r
+Theta = (ctable[2,1]*ctable[1,2])/(ctable[2,2]*ctable[1,1]); Theta
+```
+
+```
+## [1] 1.265625
+```
+
+---
+### Odds Ratio
+
+
+```r
+Theta = (ctable[2,1]*ctable[1,2])/(ctable[2,2]*ctable[1,1]); Theta
+```
+
+```
+## [1] 1.265625
+```
+
+.bold[Interpretación]: las odds de que un hombre tenga affair son 1,27 veces mayores que las de una mujer, es decir, 27% más altas. 
+
+Notice that:
+
+- `\(\theta \in [0,\infty+]\)`
+
+--
+
+- `\(\theta=1\)` odds iguales y, por lo tanto, independencia
+
+--
+
+- `\(\theta &gt; 1\)` indica que el éxito es más probable para el grupo en el numerador (hombres en este caso)
+
+--
+
+- `\(\theta &lt; 1\)` indica que el éxito es más probable para el grupo en el denominador (mujeres en este caso)
+
+--
+
+- Valores lejos de 1, en cualquier dirección, representan una fuerte evidencia contra independencia
 
 ---
 class: inverse, center, middle
