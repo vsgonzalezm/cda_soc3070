@@ -41,6 +41,7 @@ y por tanto,
 ##  Asociación en tablas de contingencia 
 
 ```{r,  include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+library("tidyverse")
 library("Ecdat")
 data(Fair)
 affairsdata <- Fair %>% as_tibble()
@@ -712,7 +713,6 @@ paste0("Theta= ",round(theta,2),"; log Theta = ",round(log_theta,2))
 ```
 
 ---
-### Inferencia para la Odds Ratio
 #### Ilustración via Monte Carlo simulation
 
 
@@ -746,7 +746,6 @@ paste0("Theta_hat= ",round(theta_hat,2),"; log Theta_hat = ",round(log_theta_hat
 - Si pudiéramos tomar una infinidad de muestras y repetir el proceso, observaríamos la _distribución_ de  $\hat{\theta}$ y $\log \hat{\theta}$.
 
 ---
-### Inferencia para la Odds Ratio
 #### Ilustración via Monte Carlo simulation
 
 - Podemos reproducir el proceso teórico de tomar infinitas muestras usando simulaciones.
@@ -770,7 +769,6 @@ samp_dist_theta %>% glimpse();  samp_dist_logtheta %>% glimpse()
 ```
 
 ---
-### Inferencia para la Odds Ratio
 #### Ilustración via Monte Carlo simulation
 
 La distribución de nuestras estimaciones de $\hat{\theta}$ y $\log \hat{\theta}$ se ven así:
@@ -818,10 +816,52 @@ samp_dist_logtheta %>% as_tibble() %>% ggplot(aes(x=value)) +
 ]
 
 ---
-### Inferencia para la Odds Ratio
 #### Ilustración via Monte Carlo simulation
 
-Comparando resultados teó
+--
+
+- SE y 95% CI $\log \hat{\theta}$ en simulaciones 
+
+```{r}
+se_logtheta = sd(samp_dist_logtheta)
+ci_logtheta = quantile(samp_dist_logtheta, p=c(0.025,0.975));
+print(c(SE=se_logtheta, ci_ll=ci_logtheta[1], ci_ll=ci_logtheta[2]))
+```
+
+--
+
+- SE y 95% CI $\log \hat{\theta}$ basados en aproximación teórica y datos muestrales
+
+```{r}
+se_logtheta_hat <- sqrt(1/ct_sample[1,1] + 1/ct_sample[1,2] + 1/ct_sample[2,1] + 1/ct_sample[2,2])
+ci_logtheta_hat <- c(log_theta_hat - 1.96*se_logtheta_hat, log_theta_hat + 1.96*se_logtheta_hat)
+print(c(SE=se_logtheta_hat, ci_ll=ci_logtheta_hat[1], ci_ll=ci_logtheta_hat[2]))
+```
+
+---
+#### Ilustración via Monte Carlo simulation
+
+
+- 95% CI $\hat{\theta}$ en simulaciones 
+
+```{r}
+ci_theta = quantile(samp_dist_theta, p=c(0.025,0.975));
+print(c(ci_ll=ci_theta[1], ci_ll=ci_theta[2]))
+```
+
+<br>
+--
+
+- 95% CI $\hat{\theta}$ basados en aproximación teórica y datos muestrales
+
+```{r}
+ci_theta_hat = exp(ci_logtheta_hat); ci_theta_hat
+```
+
+<br>
+--
+
+.bold[Conclusión]: asociación entre variables es estadísticamente significativa 
 
 ---
 class: inverse, center, middle
