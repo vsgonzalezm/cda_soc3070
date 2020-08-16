@@ -71,7 +71,7 @@ prop.table(apply(ctable,2,sum))
 --
 
 .pull-right[
-Al parece que los hombres tienen una mayor probabilid que las mujeres de haber tenido un "affair".
+Al parece que los hombres tienen una mayor probabilidad que las mujeres de haber tenido un "affair".
 
 En lo que sigue vamos a usar este ejemplo para estudiar:
 
@@ -343,8 +343,7 @@ Si $\hat{p}_{H}$ es la proporción de hombres que han tenido una aventura y $\ha
   \hat{\theta} = \frac{\text{odds}_{H}}{\text{odds}_{M}} &= \\
          &= \frac{\hat{p}_{H}/(1 - \hat{p}_{H})}{\hat{p}_{M}/(1 - \hat{p}_{M})} \\ \\
          &= \frac{0.273/0.727}{0.229/0.771} \\ \\
-         &= \frac{0.38}{0.30} \\ \\
-         &= 1.27
+         &= \frac{0.38}{0.30} = 1.27
 \end{align}
 
 ---
@@ -352,7 +351,7 @@ Si $\hat{p}_{H}$ es la proporción de hombres que han tenido una aventura y $\ha
 
 Dado que estas proporciones se estiman a partir de los recuentos de la tabla, $\theta$ también puede expresarse de la siguiente manera, denominada .bold[cross-product ratio].
 
-In nuestro ejemplo,
+En nuestro ejemplo,
 
 .pull-left[
 ```{r, echo=FALSE}
@@ -363,8 +362,8 @@ ctable
 .pull-right[
 \begin{align}
   \hat{\theta} &= \frac{\hat{p}_{H}/(1 - \hat{p}_{H})}{\hat{p}_{M}/(1 - \hat{p}_{M})} \\ \\
-  \hat{\theta} &= \frac{\frac{n_{21}}{n_{2+}} / \frac{n_{22}}{n_{2+}}}{\frac{n_{11}}{n_{1+}}/ \frac{n_{12}}{n_{1+} }} \\ \\
-  \hat{\theta} &= \frac{n_{21} \times n_{12}}{n_{22} \times n_{11}} \\ \\
+   &= \frac{\frac{n_{21}}{n_{2+}} / \frac{n_{22}}{n_{2+}}}{\frac{n_{11}}{n_{1+}}/ \frac{n_{12}}{n_{1+} }} \\ \\
+   &= \frac{n_{21} \times n_{12}}{n_{22} \times n_{11}} \\ \\
 \end{align}
 ]
 
@@ -389,7 +388,7 @@ Notice that:
 
 --
 
-- $\theta=1$ odds iguales y, por lo tanto, independencia
+- $\theta=1$ indica igualdad de odds y, por lo tanto, independencia
 
 --
 
@@ -402,6 +401,427 @@ Notice that:
 --
 
 - Valores lejos de 1, en cualquier dirección, representan una fuerte evidencia contra independencia
+
+---
+### Propiedades de la Odds Ratio
+
+1) Invirtiendo el orden de las filas o columnas obtenemos el inverso la odds ratio original.
+
+```{r,echo=FALSE}
+prop.table(ctable,1)
+```
+
+Si $\hat{p}_{H}$ es la proporción de hombres que han tenido una aventura y $\hat{p}_{M}$ es la proporción de mujeres que han tenido una aventura. 
+
+.pull-left[
+\begin{align}
+  \hat{\theta}_{HM} &= \frac{\hat{p}_{H}/(1 - \hat{p}_{H})}{\hat{p}_{M}/(1 - \hat{p}_{M})} \\ \\
+         &= \frac{0.38}{0.30} \\ \\
+         &= 1.27
+\end{align}
+]
+
+.pull-right[
+\begin{align}
+  \hat{\theta}_{HM} &= \frac{\hat{p}_{M}/(1 - \hat{p}_{M})}{\hat{p}_{H}/(1 - \hat{p}_{H})} \\ \\
+         &= \frac{0.30}{0.38} \\ \\
+         &= 1/1.27 = 0.79
+\end{align}
+]
+
+.full-width[
+Tanto $\theta$ como $1/\theta$ expresan el .bold[mismo grado de asociación].
+]
+
+---
+### Propiedades de la Odds Ratio
+
+2) A diferencia de las otras medidas, la odds ratio no varia en función de que  variable actúa como dependiente e independiente. En otras palabras, no es necesario identificar una variable independiente para estimar correctamente $\theta$
+
+--
+
+En nuestro ejemplo, tomando género como variable dependiente, donde $\hat{p}_{A}$ es la probabilidad de ser hombre entre personar que han tenido un affair y $\hat{p}_{NA}$ es la misma probabilidad para personas que nunca han tenido un affair, la odd-ratio de ser hombre es:
+
+.pull-left[
+```{r, echo=FALSE}
+prop.table(ctable,2)
+```
+]
+
+.pull-right[
+\begin{align}
+  \hat{\theta} &= \frac{\hat{p}_{A}/(1 - \hat{p}_{A})}{\hat{p}_{NA}/(1 - \hat{p}_{NA})} \\ \\
+         &= \frac{0.52/0.48}{0.46/0.54} \\ \\
+         &= \frac{1.1}{0.85} \\ \\
+         &= 1.27
+\end{align}
+]
+
+---
+### Propiedades de la Odds Ratio
+
+3) La Odds Ratio es .bold[margins-free]: la odds ratio de una tabla de contingencia no se ven alteradas por el "escalamiento" (multiplicación por una constante) de filas o columnas.  
+
+--
+
+.pull-top[
+.pull-left[
+.bold[Movilidad educacional 1980]
+```{r, echo=FALSE}
+pais_1980 <- matrix(c(160,20,20,20),2,2)
+colnames(pais_1980) <- c("Hij@:NU","Hij@:U")
+rownames(pais_1980) <- c("Padre:NU","Padres:U")
+pais_1980
+```
+]
+.pull-right[
+.bold[Movilidad educacional 2020]
+```{r, echo=FALSE}
+pais_2020 <- matrix(c(160,20,80,80),2,2)
+colnames(pais_2020) <- c("Hij@:NU","Hij@:U")
+rownames(pais_2020) <-  c("Padre:NU","Padres:U")
+pais_2020
+```
+]
+]
+
+--
+
+.pull-bottom[
+.pull-left[
+- El .bold[13%] de los hijos padres sin estudios universitarios obtenía un grado universitario
+
+- El .bold[50%] de los hijos con padres con estudios universitarios obtenía también un grado universitario
+]
+.pull-right[
+- El .bold[33%] de los hijos padres sin estudios universitarios obtiene un grado universitario
+
+- El .bold[80%] de los hijos con padres con estudios universitarios obtiene también un grado universitario
+]
+]
+
+.full-width[
+.bold[Titular del diario:] _Aumentan oportunidades educacionales, especialmente para la así llamada "primera generación"_
+]
+
+--
+
+.bold[Correcto?]
+
+---
+### Propiedades de la Odds Ratio
+
+
+.bold[Correcto, pero engañoso:] el resultado refleja un .bold[cambio en la distribución marginal] de educación de los hijos, no un cambio en la asociación de las variables. 
+--
+ Concretamente, se duplicó la cantidad de gente que termina la universidad, independiente de su origen. 
+
+.pull-top[
+
+.pull-left[
+.bold[Movilidad educacional 1980]
+```{r, echo=FALSE}
+pais_1980 <- matrix(c(160,20,20,20),2,2)
+colnames(pais_1980) <- c("Hij@:NU","Hij@:U")
+rownames(pais_1980) <- c("Padre:NU","Padres:U")
+pais_1980
+```
+]
+.pull-right[
+.bold[Movilidad educacional 2020]
+```{r, echo=FALSE}
+pais_2020 <- matrix(c(160,20,80,80),2,2)
+colnames(pais_2020) <- c("Hij@:NU","Hij@:U")
+rownames(pais_2020) <-  c("Padre:NU","Padres:U")
+pais_2020
+```
+]
+
+]
+
+<br>
+--
+
+.pull-bottom[
+
+.full-width[La odds ratio es inmune a cambios en la distribución marginal de las variables, capturando sólo la asociación neta entre ellas ("margin-free association")] 
+
+.pull-left[
+$\hat{\theta}_{1980} =  \frac{160 \times 20}{20 \times 20} = 8$
+]
+.pull-right[
+$\hat{\theta}_{2020} =  \frac{160 \times 80}{20 \times 80} = \frac{160 \times (4 \times 20)}{20 \times (4 \times 20)} = 8$
+]
+]
+ 
+---
+### Log Odds Ratio
+
+Como sabemos, $\theta \in [0,\infty+)$. Esto crea un problema tanto para la .bold[interpretación] como para la .bold[inferencia estadística]. Por ejemplo:
+
+- Supongamos que la odds ratio (hombres a mujeres) de tener un affair es $\theta = 20$.
+- Por ende, la odds ratio (mujeres a hombres) de tener un affair es $\theta^{*} = 1/ \theta = 0.05$. 
+- Ambos resultados indican el .bold[mismo nivel de asociación], pero uno parece mucho más grande que el otro.
+
+--
+
+Transformando $\theta$ a escala logarítmica permite mapear  $[0,\infty+) \to (-\infty,\infty+)$, creando una medida de asociación  simétrica. 
+
+\begin{align}
+  \theta &=  \frac{1}{\theta^{*}}  \quad \text{entonces} \\ \\
+  \log(\theta) &= -1 \times \log(\theta^{*})
+\end{align}
+
+--
+En nuestro ejemplo:
+.pull-left[
+```{r}
+log(20)
+```
+]
+
+.pull-right[
+```{r}
+log(0.05)
+```
+]
+
+---
+### Log Odds Ratio
+
+.pull-left[
+-  $\log(\theta) \in (\infty-,\infty+)$ 
+
+- $\theta=0$ indica igualdad de odds y, por lo tanto, independencia
+
+- $\log(\theta) > 0$ indica que el éxito es más probable para el grupo en el numerador
+
+- $\log(\theta) < 0$ indica que el éxito es más probable para el grupo en el denominador
+
+- $\lvert \log(\theta) \rvert$ indica la fuerza de la asociación entre las variables
+
+- Valores lejos de 0, en cualquier dirección, representan fuerte evidencia contra independencia
+
+]
+
+.figure-right[
+```{r, echo=FALSE}
+units <- tibble(odds = seq(from=0, to=100, by=0.1)) %>% mutate(log_odds = log(odds))
+
+odds_logodds <- units %>% ggplot(aes(x=odds, y=log_odds, colour="")) + geom_line() +
+    scale_color_viridis_d() + guides(fill=FALSE, color=FALSE) +
+    labs(x="Odds ratio", y="log Odds ratio", title = "Odds ratio to log Odds ratio")
+odds_logodds
+```
+]
+
+---
+### Inferencia para la Odds Ratio
+
+¿Como podemos saber si nuestros resultados no son producidos por el el mero azar?
+--
+Para responder esta pregunta debemos conocer la .bold[sampling distribution] de nuestro estimador, especialmente su _variabilidad_.
+
+<br>
+
+- El caso canónico es el promedio muestral, para el cual sabemos que: $\bar{X} \sim \mathcal{N}(\mu,\frac{\sigma}{\sqrt{n}})$
+ - La desviación estándar del estimador (en este caso, $\frac{\sigma}{\sqrt{n}}$ ) es lo que denominamos .bold[error estándar (SE)].
+
+--
+
+ - Por qué? Si $x_1, \dots, x_n$ son _iid_, entonces:
+\begin{align}
+\mathbb{Var}\big(\bar{X}\big) &= \mathbb{Var}\Big(\frac{x_{i} + ... + x_{n}}{n}\Big) = \frac{1}{n^2} \Big(\mathbb{Var}(x_{i}) + ... + \mathbb{Var}(x_{n})\Big) \\
+ &= \frac{1}{n^2}( \sigma^2 + ... + \sigma^2 ) = \frac{n\sigma^2}{n^2} = \frac{\sigma^2}{n} 
+\end{align}
+
+<br>
+--
+
+- Cual es la .bold[sampling distribucion] de $\hat{\theta}$?
+  - Complicado ...
+
+
+---
+### Inferencia para la Odds Ratio
+
+- Cual es la .bold[sampling distribucion] de $\hat{\theta}$? 
+
+--
+  - Cual es el error estándar de $\hat{\theta}$? Es decir,  $\mathbb{Var}\Big(\frac{n_{11}n_{22}}{n_{12}n_{21}}\Big)$ ?
+  - Complicado, función no lineal de n's.
+  
+--
+
+- Más conveniente hacer inferencia sobre $\log \hat{\theta}$
+
+  - $\log \hat{\theta} = \log \frac{n_{11}n_{22}}{n_{12}n_{21}} = \log n_{11} + \log n_{22} - \log n_{12} - \log n_{21}$
+
+--
+
+- Importante resultado teórico: la sampling distribution de $\log \hat{\theta}$ es _asintóticamente_ normal:
+
+$$\log(\hat{\theta}) \sim N(\mu,\sigma)$$
+
+ - $\mu = \log \theta$ 
+ 
+ - $\sigma = \sqrt{ \frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}}}$
+
+---
+### Inferencia para la Odds Ratio
+
+#### Intervalo de confianza para log Odds ratio
+
+Podemos usar este resultado para construir un intervalo de confianza para el log Odds ratio, al 95% de confianza, de la siguiente manera:
+
+\begin{align}
+  95\% \text{ CI}_{\log \hat{\theta}} &= \log \hat{\theta} \pm 1.96 \times SE \\ \\
+          &= \log \hat{\theta} \pm 1.96 \times \sqrt{ \frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}} } 
+\end{align}
+
+#### Intervalo de confianza para Odds ratio
+
+Podemos obtener un intervalo de confianza estándar para la Odds ratio, al 95% de confianza, de la siguiente manera:
+
+\begin{align}
+  95\% \text{ CI}_{\hat{\theta}} &= e^{\log \hat{\theta} \pm 1.96 \times \sqrt{ \frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}}} } 
+\end{align}
+
+---
+### Inferencia para la Odds Ratio
+#### Ilustración via Monte Carlo simulation
+
+Escenario:
+- Tenemos datos de población de las variables binarias $X$ e $Y$.
+- Creamos tabla de contingencia y calculamos  $\theta$ y $\log \theta$.
+- Éstos son los parámetros "verdaderos", no estimaciones. 
+
+```{r, echo=FALSE}
+x <- c(rep(1,450),rep(0,550))  
+y <- rep(c(rep(1,270),rep(0,230)),2)
+population_data <- data.frame(x=x,y=y)
+```
+
+```{r}
+ct <- table(population_data$x,population_data$y); print(ct)
+
+theta     = (ct[1,1]*ct[2,2])/(ct[1,2]*ct[2,1])
+log_theta = log(theta)
+
+paste0("Theta= ",round(theta,2),"; log Theta = ",round(log_theta,2))
+```
+
+---
+### Inferencia para la Odds Ratio
+#### Ilustración via Monte Carlo simulation
+
+
+- Supón que ahora  tenemos acceso a una muestra aleatoria de los datos poblacionales
+- Creamos una tabla de contingencia y calculamos  $\hat{\theta}$ y $\log \hat{\theta}$
+- Éstas son nuestras estimaciones ...
+
+--
+
+.pull-left[
+```{r}
+set.seed(1234)
+sample_data <- sample_n(population_data, size=500, replace=TRUE)
+ct_sample <- table(sample_data$x,sample_data$y); print(ct_sample)
+```
+]
+.pull-right[
+```{r}
+theta_hat = (ct_sample[1,1]*ct_sample[2,2])/(ct_sample[1,2]*ct_sample[2,1])
+log_theta_hat = log(theta_hat)
+
+paste0("Theta_hat= ",round(theta_hat,2),"; log Theta_hat = ",round(log_theta_hat,2))
+```
+]
+
+<br>
+--
+
+- Estos valores son similares a los "verdaderos" parámetros, pero no exactamente los mismos
+- Si calculáramos $\hat{\theta}$ y $\log \hat{\theta}$ en una muestra diferente, obtendríamos un resultado diferente
+- Si pudiéramos tomar una infinidad de muestras y repetir el proceso, observaríamos la _distribución_ de  $\hat{\theta}$ y $\log \hat{\theta}$.
+
+---
+### Inferencia para la Odds Ratio
+#### Ilustración via Monte Carlo simulation
+
+- Podemos reproducir el proceso teórico de tomar infinitas muestras usando simulaciones.
+- Tomas 5000 muestras aleatorias de los datos poblacionales
+- Estimaremos $\hat{\theta_{1}} \dots \hat{\theta}_{5000}$ y $\log \hat{\theta_{1}} \dots \log \hat{\theta}_{5000}$
+
+
+```{r}
+  samp_dist_theta    <- NULL; samp_dist_logtheta <- NULL
+  
+  for (i in 1:5000) {
+    sample_data <- sample_n(population_data, size=500, replace=TRUE)
+    ct_sample <- table(sample_data$x,sample_data$y)
+    theta_hat     = (ct_sample[1,1]*ct_sample[2,2])/(ct_sample[1,2]*ct_sample[2,1])
+    log_theta_hat = log(theta_hat)
+    samp_dist_theta[i]    <-  theta_hat
+    samp_dist_logtheta[i] <-  log_theta_hat
+  }
+
+samp_dist_theta %>% glimpse();  samp_dist_logtheta %>% glimpse()
+```
+
+---
+### Inferencia para la Odds Ratio
+#### Ilustración via Monte Carlo simulation
+
+La distribución de nuestras estimaciones de $\hat{\theta}$ y $\log \hat{\theta}$ se ven así:
+
+.pull-left[
+```{r, echo=FALSE, fig.width=7, fig.height=6}
+ci95 = round(quantile(samp_dist_theta, p=c(0.025,0.975)),2)
+
+samp_dist_logtheta %>% as_tibble() %>% ggplot(aes(x=value)) + 
+      geom_density(colour="black", fill="black", alpha=0.1) +
+      scale_color_viridis_d() + 
+      geom_vline(aes(xintercept = log_theta, colour=paste0("Theta=",round(theta,2)) )) +
+      geom_vline(aes(xintercept = log_theta_hat, colour=paste0("Theta_hat=",round(theta_hat,2)) )) +
+      geom_vline(aes(xintercept = quantile(samp_dist_theta, p=0.025),
+                     colour=paste0("95% CI: (",ci95[1],",",ci95[2],")")), linetype="dashed") +
+      geom_vline(aes(xintercept = quantile(samp_dist_theta, p=0.975), 
+                     colour=paste0("95% CI: (",ci95[1],",",ci95[2],")")), linetype="dashed") +
+      guides(fill=FALSE) + labs(colour="", x="Theta_hat") +
+      theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+      axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+      legend.text = element_text(size = 18), legend.position="bottom") +
+      guides(color=guide_legend(nrow=3,byrow=TRUE))
+```
+]
+
+.pull-right[
+```{r, echo=FALSE, fig.width=7, fig.height=6}
+ci95 = round(quantile(samp_dist_logtheta, p=c(0.025,0.975)),2)
+
+samp_dist_logtheta %>% as_tibble() %>% ggplot(aes(x=value)) + 
+      geom_density(colour="black", fill="black", alpha=0.1) +
+      scale_color_viridis_d() + 
+      geom_vline(aes(xintercept = log_theta, colour=paste0("log Theta=",round(log_theta,2)) )) +
+      geom_vline(aes(xintercept = log_theta_hat, colour=paste0("log Theta_hat=",round(log_theta_hat,2)) )) +
+      geom_vline(aes(xintercept = quantile(samp_dist_logtheta, p=0.025),
+                     colour=paste0("95% CI: (",ci95[1],",",ci95[2],")")), linetype="dashed") +
+      geom_vline(aes(xintercept = quantile(samp_dist_logtheta, p=0.975), 
+                     colour=paste0("95% CI: (",ci95[1],",",ci95[2],")")), linetype="dashed") +
+      guides(fill=FALSE) + labs(colour="", x="log Theta_hat") +
+      theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+      axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+      legend.text = element_text(size = 18), legend.position="bottom") +
+      guides(color=guide_legend(nrow=3,byrow=TRUE))
+```
+]
+
+---
+### Inferencia para la Odds Ratio
+#### Ilustración via Monte Carlo simulation
+
+Comparando resultados teó
 
 ---
 class: inverse, center, middle

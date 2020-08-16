@@ -37,7 +37,7 @@ Si `\(\Omega\)` es el espacio muestral de un experimento, una variable aleatoria
 --
 Ejemplo:
 - Experimento: tirar 2 dados simultáneamente
-- Espacio de muestral: `\(\{(1;1),(1;2), \dots, (5;6),(6;6)\}\)`
+- Espacio muestral: `\(\{(1;1),(1;2), \dots, (5;6),(6;6)\}\)`
 
 
 &lt;br&gt;
@@ -46,12 +46,12 @@ A partir de un experimento es posible definir una variedad de variables aleatori
 
 --
 
-1) `\(X\)` es la variable que resulta de registar el valor de los dados (el experimento tal como es): 
+1) `\(X\)` es la variable que resulta de registrar el valor de los dados (el experimento tal como es): 
 * `\(X: \{(1;1),(1;2), \dots, (5;6),(6;6)\}\)`
 
 --
 
-2) `\(Y\)` es la variable que resulta de sumar el resultado de ambos dados. 
+2) `\(Y\)` es la variable que resulta de sumar el resultado de ambos dados:
 * `\(Y: \{2,3, \dots, 11,12 \}\)`
 
 
@@ -70,7 +70,7 @@ Cada valor posible de una variable aleatoria tiene una cierta probabilidad de oc
 
 .full-width[.content-box-red[
 .bold[Pregunta]:
-Cual es la probabilidad que la variable `\(Y\)` tome valor 12?
+¿Cuál es la probabilidad que la variable `\(Y\)` tome valor 12?
 ]
 ]
 
@@ -86,9 +86,7 @@ Cual es la probabilidad que la variable `\(Y\)` tome valor 12?
 
 ### Distribución de una variable aleatoria
 
-Cada valor posible de una variable aleatoria tiene una cierta probabilidad de ocurrencia.
---
-El conjunto de estas probabilidades se denomina la .bold[distribución] de la variable.
+Cada valor posible de una variable aleatoria tiene una cierta probabilidad de ocurrencia. El conjunto de estas probabilidades se denomina la .bold[distribución] de la variable.
 
 &lt;br&gt;
 --
@@ -132,7 +130,7 @@ Análogamente, si `\(X\)` es continua, entonces
 
 Continuando con nuestro ejemplo:
 
-- `\(Y\)` es la variable que resulta sumar el resultado de tirar dos dados justos
+- `\(Y\)` es la variable que resulta de sumar el resultado de tirar dos dados justos
 
 .pull-left[
 
@@ -157,12 +155,12 @@ Continuando con nuestro ejemplo:
 `\begin{align}
   f_{Y}(y) =
   \begin{cases}
-    \frac{1}{36}  &amp; \quad \text{if } y=2 \text{ or } y=12\\
-    \frac{2}{36}  &amp; \quad \text{if } y=3 \text{ or } y=11\\
-    \frac{3}{36}  &amp; \quad \text{if } y=4 \text{ or } y=10\\
-    \frac{4}{36}  &amp; \quad \text{if } y=5 \text{ or } y=9\\
-    \frac{5}{36}  &amp; \quad \text{if } y=6 \text{ or } y=8\\
-    \frac{6}{36}  &amp; \quad \text{if } y=7 \\
+    \frac{1}{36}  &amp; \quad \text{si } y=2 \text{ o } y=12\\
+    \frac{2}{36}  &amp; \quad \text{si } y=3 \text{ o } y=11\\
+    \frac{3}{36}  &amp; \quad \text{si } y=4 \text{ o } y=10\\
+    \frac{4}{36}  &amp; \quad \text{si } y=5 \text{ o } y=9\\
+    \frac{5}{36}  &amp; \quad \text{si } y=6 \text{ o } y=8\\
+    \frac{6}{36}  &amp; \quad \text{si } y=7 \\
     0             &amp; \quad \text{otherwise}
   \end{cases}
 \end{align}`
@@ -170,22 +168,22 @@ Continuando con nuestro ejemplo:
 
 ---
 
-### Distribuciónes discretas (categóricas)
+### Distribuciones discretas (categóricas)
 
 &lt;br&gt;
 
-- Una .bold[variable discreta] es una variable que sólo puede tomar un número contable de valores.
+- Una .bold[variable discreta] es una variable que sólo puede tomar un número contable de valores
 
 --
 
-- La función de probabilidad de las variables aleatorias discretas se denomina "función de masa de probabilidad" (pmf). 
+- La función de probabilidad de las variables aleatorias discretas se denomina "función de masa de probabilidad" (pmf) 
 
 --
-  - En el caso de las variables continuas, la función de probabilidad se denomina "función de densidad de probabilidad" (pdf).
+  - En el caso de las variables continuas, la función de probabilidad se denomina "función de densidad de probabilidad" (pdf)
 
 --
 
-- En lo que sigue cubriremos las distribución discreta más básicas: .bold[Bernoulli] y .bold[Binomial].
+- En lo que sigue cubriremos las distribuciones discretas fundamentales: .bold[Bernoulli] y .bold[Binomial]
 
 
 ---
@@ -198,7 +196,7 @@ Una variable aleatoria sigue una distribución de Bernoulli si solo puede tomar 
 
 Por ejemplo,
 - Experimento: tirar una moneda
-- Definamos la variable `\(X\)` tal que `\(X=1\)` si obtenemos Cara y `\(X=0\)` si obtenemos Sello.
+- Definamos la variable `\(X\)` tal que `\(X=1\)` si obtenemos Cara y `\(X=0\)` si obtenemos Sello
 
 --
 
@@ -207,8 +205,8 @@ Por ejemplo,
 `\begin{align}
 f_{X}(x) =
   \begin{cases}
-    p  &amp; \quad \text{if } x=1\\
-    1 - p  &amp; \quad \text{if } x=0 \\
+    p  &amp; \quad \text{si } x=1\\
+    1 - p  &amp; \quad \text{si } x=0 \\
     0 &amp; \quad \text{otherwise}
   \end{cases}
 \end{align}`
@@ -217,7 +215,7 @@ f_{X}(x) =
 
 En modo más sintético:
 
-`$$f_{X}(x) = p^{x}(1-p)^{1-x}  \quad \text{if } x=1 \text{ or } x=0$$`
+`$$f_{X}(x) = p^{x}(1-p)^{1-x}  \quad \text{si } x=1 \text{ o } x=0$$`
 ---
 
 ### Distribución Bernoulli
@@ -250,9 +248,8 @@ print(monedas)
 ```
 
 ```
-##   [1] 0 0 0 0 1 1 1 1 0 0 1 1 0 1 1 1 1 1 1 0 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 0
-##  [38] 0 1 1 0 1 0 0 1 1 1 1 1 1 0 0 1 1 0 1 0 1 1 1 0 1 0 0 0 1 0 1 1 0 1 1 1 1
-##  [75] 1 1 0 1 1 1 0 1 1 1 1 1 0 1 0 1 0 0 1 1 0 1 0 0 1 1
+##   [1] 0 0 0 0 1 1 1 1 0 0 1 1 0 1 1 1 1 1 1 0 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 0 0 1 1 0 1 0 0 1 1 1 1 1 1 0 0 1 1 0 1 0 1 1 1 0 1 0 0 0 1
+##  [67] 0 1 1 0 1 1 1 1 1 1 0 1 1 1 0 1 1 1 1 1 0 1 0 1 0 0 1 1 0 1 0 0 1 1
 ```
 
 ---
@@ -265,7 +262,7 @@ print(monedas)
 
 - Denotemos cada tiro como variables `\(X\)` e `\(Y\)`
 
-- `\(X\)` e `\(Y\)` distribuyen Bernoulli con parametro `\(\mathbb{P}(1)=p\)`.
+- `\(X\)` e `\(Y\)` distribuyen Bernoulli con parámetro `\(\mathbb{P}(1)=p\)`
 
 - `\(X\)` e `\(Y\)` son independientes 
 
@@ -274,7 +271,7 @@ print(monedas)
 
 .content-box-red[
 .bold[Pregunta]:
-Cual es la probabilidad de obtener "Sello" (0) en ambas ocasiones?
+¿Cuál es la probabilidad de obtener "Sello" (0) en ambas ocasiones?
 ]
 
 
@@ -282,7 +279,7 @@ Cual es la probabilidad de obtener "Sello" (0) en ambas ocasiones?
 
 ### Distribución Bernoulli
 
-* Ambas variables siguen misma distribución, `\(X\)` e `\(Y \sim \text{Bernoulli}(p)\)`. 
+* Ambas variables siguen misma distribución, `\(X\)` e `\(Y \sim \text{Bernoulli}(p)\)`
 &lt;br&gt;
 
 `$$p^{x}(1-p)^{1-x} = p^{y}(1-p)^{1-y}$$`
@@ -316,11 +313,10 @@ La distribución binomial es la distribución de la suma de variables Bernoulli 
 
 Ejemplo,
 
-- Supongamos que `\(X\)` es una variable de Bernoulli que toma el valor 1 cuando se obtiene 1 "Cara" al lanzar una moneda.
+- Supongamos que `\(X\)` es una variable de Bernoulli que toma el valor 1 cuando se obtiene "Cara" al lanzar una moneda
 
 - `\(\mathbb{P}(X=1)=p\)` 
 
-&lt;br&gt;
 --
 
 - Ahora, supongamos que lanzamos la misma moneda 3 veces. Llamamos a estas variables `\(X_{1}, X_{2}, X_{3}\)`
@@ -341,7 +337,7 @@ Ejemplo,
 
 .content-box-red[
 .bold[Pregunta 1]:
-¿Cuál es la probabilidad de conseguir 3 "Caras"? Es decir, ¿Cuál es la probabilidad de que `\(Y=3\)`?]
+¿Cuál es la probabilidad de obtener tres "Caras"? Es decir, ¿Cuál es la probabilidad de que `\(Y=3\)`?]
 
 --
 
@@ -351,7 +347,7 @@ Ejemplo,
 `$$\mathbb{P}(Y=3) =  \mathbb{P}(X_{1}=1,X_{2}=1,X_{3}=1) = \mathbb{P}(X_{1}=1)\mathbb{P}(X_{2}=1)\mathbb{P}(X_{3}=1)$$`
 &lt;br&gt;
 
-- Y dado tres variables distribuyen Bernoulli con la misma probabilidad `\(p\)`, obtenemos: 
+- Y dado que las tres variables distribuyen Bernoulli con la misma probabilidad `\(p\)`, obtenemos: 
 
 `$$\mathbb{P}(Y=3) = p \times p \times p =  p^{3}$$`
 ]
@@ -360,7 +356,7 @@ Ejemplo,
 
 .content-box-red[
 .bold[Pregunta 2]:
-¿Cuál es la probabilidad de conseguir 2 "Caras" con 3 tiros? Es decir, ¿Cuál es la probabilidad de que `\(Y=2\)`?
+¿Cuál es la probabilidad de obtener dos "Caras" con 3 tiros? Es decir, ¿Cuál es la probabilidad de que `\(Y=2\)`?
 ]
 
 --
@@ -385,7 +381,7 @@ Ejemplo,
 --
 
 .content-box-blue[
-.bold[Respuesta]: la probabilidad de conseguir 2 "Caras" con 3 tiros es
+.bold[Respuesta]: la probabilidad de conseguir dos "Caras" con 3 tiros es:
 `$$\mathbb{P}(Y=2) = 3 \times  p^{2}(1-p)^{1}$$`
 ]
 
@@ -405,7 +401,7 @@ Generalización: lanzamos la misma moneda `\(n\)` veces y la variable `\(Y\)` cu
 
 --
 
-* La probabilidad de que una secuencia particular con `\(k\)` se salga de los ensayos de `\(n\)` es `\(p^{k}(1-p)^{n-k}\)` 
+* La probabilidad de obtener una secuencia particular con `\(k\)` "Caras" a partir de `\(n\)` lanzamientos es `\(p^{k}(1-p)^{n-k}\)` 
 
 * Existen `\({n \choose k}\)` secuencias de este tipo...
 
@@ -444,11 +440,11 @@ En práctica ...
 
 Si la probabilidad de obtener "Cara" es 90% ( `\(p=0.9\)` ) ...
 
-- ¿Cuál es la probabilidad de obtener 5 "Caras" con 10 lanzamientos 
+- ¿Cuál es la probabilidad de obtener 5 "Caras" con 10 lanzamientos? 
 
 --
 
-`$$\mathbb{P}(Y=5) =  {10 \choose 5} \times (0.9)^{5} \times (0.1)^{5} = 252 \times \text{numero muy chico}= 0.0015$$`
+`$$\mathbb{P}(Y=5) =  {10 \choose 5} \times (0.9)^{5} \times (0.1)^{5} = 252 \times \text{número muy chico}= 0.0015$$`
 
 ---
 ### Distribución Binomial 
@@ -480,7 +476,7 @@ dbinom(x=5,size=10,prob=0.9)
 ---
 ### Distribución Binomial 
 
-Veamos cómo se ve la distribución completa para differentes valores de `\(p\)` y `\(n=100\)`.
+Veamos cómo se ve la distribución completa para diferentes valores de `\(p\)`, y `\(n=100\)`.
 
 --
 
