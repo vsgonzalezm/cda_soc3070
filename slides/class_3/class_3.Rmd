@@ -365,7 +365,7 @@ $$\mathbb{P}(Y=3) = p \times p \times p =  p^{3}$$
 
 - Sin embargo, hay 3 secuencias que satisfacen $Y=2$.
 --
- También $\{X_{1}=1,X_{2}=0,X_{3}=1\}$ y $\{X_{0}=1,X_{2}=1,X_{3}=1\}$, cada una con probabilidad de ocurrencia $p^{2}(1-p)^{1}$. Por tanto:
+ También $\{X_{1}=1,X_{2}=0,X_{3}=1\}$ y $\{X_{1}=0,X_{2}=1,X_{3}=1\}$, cada una con probabilidad de ocurrencia $p^{2}(1-p)^{1}$. Por tanto:
 
 --
 
@@ -395,12 +395,10 @@ $$Y = \sum^{n}_{i=1} X_{i}$$
 * Existen ${n \choose k}$ secuencias de este tipo...
 
 --
-
 Por lo tanto,
 
 $$\mathbb{P}(Y=k) = f_{Y}(k) = {n \choose k} \times p^{k} (1-p)^{n-k}$$
 --
-
 En otras palabras, $Y$ distribuye binomial con parámetros $n$ y $p$: $Y \sim \text{Binomial}(n,p)$
 
 ---

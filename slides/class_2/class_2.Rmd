@@ -336,7 +336,7 @@ A partir de esta definición podemos derivar un test matemático de independenci
 
 <br>
 --
-Si dos eventos A y B son independientes entonces debe ser cierto que $\mathbb{P}(A,B)=\mathbb{P}(A)(B)$
+Si dos eventos A y B son independientes entonces debe ser cierto que $\mathbb{P}(A,B)=\mathbb{P}(A)\mathbb{P}(B)$
 
 ---
 ### Independencia

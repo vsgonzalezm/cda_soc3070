@@ -4,7 +4,6 @@
     <title>Análisis de Datos Categóricos (SOL3070)</title>
     <meta charset="utf-8" />
     <meta name="author" content="  Mauricio Bucca  Profesor Asistente, Sociología UC" />
-    <script src="libs/header-attrs-2.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link rel="stylesheet" href="gentle-r.css" type="text/css" />
@@ -377,7 +376,7 @@ Ejemplo,
 
 - Sin embargo, hay 3 secuencias que satisfacen `\(Y=2\)`.
 --
- También `\(\{X_{1}=1,X_{2}=0,X_{3}=1\}\)` y `\(\{X_{0}=1,X_{2}=1,X_{3}=1\}\)`, cada una con probabilidad de ocurrencia `\(p^{2}(1-p)^{1}\)`. Por tanto:
+ También `\(\{X_{1}=1,X_{2}=0,X_{3}=1\}\)` y `\(\{X_{1}=0,X_{2}=1,X_{3}=1\}\)`, cada una con probabilidad de ocurrencia `\(p^{2}(1-p)^{1}\)`. Por tanto:
 
 --
 
@@ -407,12 +406,10 @@ Generalización: lanzamos la misma moneda `\(n\)` veces y la variable `\(Y\)` cu
 * Existen `\({n \choose k}\)` secuencias de este tipo...
 
 --
-
 Por lo tanto,
 
 `$$\mathbb{P}(Y=k) = f_{Y}(k) = {n \choose k} \times p^{k} (1-p)^{n-k}$$`
 --
-
 En otras palabras, `\(Y\)` distribuye binomial con parámetros `\(n\)` y `\(p\)`: `\(Y \sim \text{Binomial}(n,p)\)`
 
 ---
@@ -499,10 +496,6 @@ class: inverse, center, middle
 Mauricio Bucca &lt;br&gt;
 https://mebucca.github.io/ &lt;br&gt;
 github.com/mebucca
-
-
-
-
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
