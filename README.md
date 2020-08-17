@@ -14,7 +14,7 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
 - Fundamentos de teoría de la Probabilidad
   - Basics: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_1/class_1#1) [`[Código]`](slides/class_1/class_1.Rmd) 
   - Probabilidad condicional: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_2/class_2#1) [`[Código]`](slides/class_2/class_2.Rmd) 
-- Variables Aleatorias y Distribuciones Discretas
+- Variables Aleatorias y Distribuciones Discretas: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_3/class_3#1) [`[Código]`](slides/class_3/class_3.Rmd) 
 - Estimación via Maximum Likelihood (MLE)
 - Tablas de Contingencia
 - Modelo Lineal de Probabilidad 
