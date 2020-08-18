@@ -25,6 +25,7 @@ class: inverse, center, middle
 
 #Valor Esperado y Varianza de variables discretas
 
+
 ---
 ## Valor Esperado
 
@@ -87,7 +88,7 @@ Por ejemplo, supongamos que `\(Y\)` es una variable que resulta de tirar un dado
 `$$\mathbb{E}(XY) = \mathbb{E}(X)\mathbb{E}(Y)$$`
 ---
 
-## Valor Esperado, algunas propiedades útiles  
+## Valor Esperado, ejemplo
 
 Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
 --
@@ -182,7 +183,7 @@ Por ejemplo, supongamos que `\(Y\)` es una variable que resulta de tirar un dado
 
 `$$\mathbb{Var}(X + Y) =  \mathbb{Var}(X) + \mathbb{Var}(Y)$$`
 ---
-## Varianza, algunas propiedades útiles  
+## Varianza, ejemplo  
 
 Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
 --
@@ -242,6 +243,62 @@ Si X es una variable Binomial, su varianza viene dada por:
 .bold[Respuesta]: varianza es `\(n \times p(1-p) = 200 \times 0.5 \times 0.5 = 50\)`. La desviación estándar es `\(\sqrt{50} = 7.01\)`.
 
 ---
+## Varianza de variables discretas
+
+### Binomial, ilustración via simulación
+
+
+
+```r
+# Repeat experiment of tossing 200 coins 10000 times
+coins200 &lt;- rbinom(10000, size=200, p=0.5)
+glimpse(coins200)
+```
+
+```
+##  int [1:10000] 103 94 104 108 106 113 90 115 97 105 ...
+```
+
+```r
+moments = list(mean=mean(coins200), var=var(coins200))
+print(moments)
+```
+
+```
+## $mean
+## [1] 99.9942
+## 
+## $var
+## [1] 49.91216
+```
+
+---
+## Distribución Binomial es asintóticamente Normal
+
+.pull-left[
+
+
+- Si `\(X \sim \text{Binomial}(n,p)\)`, entonces:
+
+$$ X \xrightarrow[]{d} \mathcal{N}(\mu=np, \sigma= \sqrt{np(1-p)})$$
+(cuando `\(n \to \infty\)` )
+
+
+- guideline: `\(\min \{np,  n(1-p) \} \geq 5\)` 
+
+- Resultado muy conveniente para inferencia estadística
+
+
+]
+
+.pull-right[
+
+![](class_4_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+]
+
+
+
+---
 class: inverse, center, middle
 
 #Estimación
@@ -267,13 +324,13 @@ dbinom(x=9,size=10,prob=0.5)
 ---
 ##Estimación 
 
-.bold[Modelos estadísticos]:  ¿Cuáles son los valores más plausible de los *parámetros* dado los *datos* que observamos? 
+.bold[Modelos estadísticos]:  ¿Cuáles son los valores más .bold[plausibles][1].footnote[[1] Notar que no dije "probabilidad"!] de los *parámetros* dado los *datos* que observamos? 
 
 
 E.j. Supongamos que alguien lanza 100 veces la misma moneda y registra los resultados en una base de datos. Los datos se ven así:  
 
 .pull-left[
-![](class_4_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+![](class_4_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
 ]
 
 --
@@ -288,7 +345,7 @@ E.j. Supongamos que alguien lanza 100 veces la misma moneda y registra los resul
 
 - Datos nos da una pista sobre cuál podría ser esa distribución.
 
-- .bold[Estadística]: aprender de los datos para *estimar* los parámetros los generan. 
+- .bold[Estadística]: aprender de los datos para .bold[*estimar*] los parámetros los generan. 
 
 ]
 
@@ -297,7 +354,7 @@ E.j. Supongamos que alguien lanza 100 veces la misma moneda y registra los resul
 
 Previamente lanzamos la misma moneda 100 veces y obtuvimos "Cara" (1) 82 veces.
 --
- ¿Qué valor de `\(p\)` es más probable que genere estos datos?
+ ¿Qué valor de `\(p\)` es más plausible ("likely") que genere estos datos?
 
 MLE es justamente la formalización de esta pregunta. Pasos:
 
@@ -317,7 +374,7 @@ MLE es justamente la formalización de esta pregunta. Pasos:
 &lt;br&gt;
 --
 
-  * `\(\mathcal{L}(p) = \mathbb{P}(X_{1})\mathbb{P}(X_{2}) \dots \mathbb{P}(X_{100}) = p^{82}(1-p)^{18}\)`
+  * `\(\mathcal{L}(p) = \mathbb{P}(x_{1})\mathbb{P}(x_{2}) \dots \mathbb{P}(x_{100}) = p^{82}(1-p)^{18}\)`
 
 
 ---
@@ -325,7 +382,7 @@ MLE es justamente la formalización de esta pregunta. Pasos:
 
 Podemos inspeccionar visualmente la "likelihood" de diferentes valores `\(p\)`.
 
-![](class_4_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+![](class_4_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
 
 Intuitivamente: habiendo obtenido 82 caras, `\(p=0.82\)` es el valor más plausible de `\(p\)`
 
@@ -337,7 +394,7 @@ Intuitivamente: habiendo obtenido 82 caras, `\(p=0.82\)` es el valor más plausi
 3) Encontrar matemáticamente el valor de `\(p\)` que maximiza `\(\mathcal{L}(p)\)`.
 
 
-- `\(\mathcal{L}(p) = P(X_{1})P(X_{2}) \dots P(X_{n}) = p^{k}(1-p)^{n-k} \quad \text{   donde  } k= \sum X_{i}\)`
+- `\(\mathcal{L}(p) = P(x_{1})P(x_{2}) \dots P(x_{n}) = p^{x}(1-p)^{n-k} \quad \text{   donde  } k= \sum x_{i}\)`
 
 --
 
@@ -346,7 +403,7 @@ Intuitivamente: habiendo obtenido 82 caras, `\(p=0.82\)` es el valor más plausi
   - `\(\ell\ell(p) = \ln \mathcal{L}(p)  = k \ln(p) + (n - k) \ln(1-p)\)` 
 
 --
--  Calcular la derivada de `\(\ell\ell(p)\)` con respecto a `\(p\)`: pendiente de la curva en cada valor de `\(p\)`.
+-  Calcular la primera* derivada de `\(\ell\ell(p)\)` con respecto a `\(p\)`: pendiente de la curva en cada valor de `\(p\)`.
 
   - `\(\ell\ell^{\text{ '}}(p) = \frac{k}{p} -  \frac{n-k}{1-p}\)`
 
@@ -360,7 +417,7 @@ Intuitivamente: habiendo obtenido 82 caras, `\(p=0.82\)` es el valor más plausi
 
 Después de resolver por `\(p\)` obtenemos:
   
-  - `\(p = \frac{k}{n} = \frac{\sum X_{i}}{n}\)`
+  - `\(p = \frac{k}{n} = \frac{\sum x_{i}}{n}\)`
 
 
 ---
@@ -371,7 +428,7 @@ Después de resolver por `\(p\)` obtenemos:
 - El estimador ML de `\(p\)` es ....
 
 
-- `\(\hat{p} = \frac{\sum X_{i}}{n}\)`
+- `\(\hat{p} = \frac{\sum x s_{i}}{n}\)`
 
 
 - Es decir, el porcentaje de 1's en la muestra!
@@ -381,6 +438,12 @@ Después de resolver por `\(p\)` obtenemos:
 - Intuitivo y elegante.
 --
  No siempre tan simple....
+
+---
+class: fullscreen,left, top, text-white
+background-image: url(valdorcia.jpeg)
+
+##Estimación via Maximum Likelihood (MLE) 
 
 
 ---
@@ -430,16 +493,10 @@ m[which.max(m[,2]),]
 ---
 .bold[Ejemplo via simulación en R]
 
-
-```r
-library("viridis")
-parameter_space %&gt;% as.data.frame() %&gt;% ggplot(aes(x=p, y=loglik, colour=loglik)) + 
-geom_line(size=1) + geom_point(aes(x=m[which.max(m[,2]),1], m[which.max(m[,2]),2])) +
-scale_color_viridis() + guides(fill=FALSE, color=FALSE) + labs(x="p", y="log-Likelihood") +
-annotate(geom="text", x=0.82, y=-35, label='bold("0.82")', color="black", parse=TRUE) 
-```
-
+.center[
 ![](class_4_files/figure-html/loglik_density-1.png)&lt;!-- --&gt;
+]
+
 
 ---
 class: inverse, center, middle
