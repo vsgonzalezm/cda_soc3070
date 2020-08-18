@@ -392,12 +392,12 @@ $$Y = \sum^{n}_{i=1} X_{i}$$
 
 * La probabilidad de obtener una secuencia particular con $k$ "Caras" a partir de $n$ lanzamientos es $p^{k}(1-p)^{n-k}$ 
 
-* Existen ${n \choose k}$ secuencias de este tipo...
+* Existen ${n \choose k} = \frac{n!}{y! (n-y)!}$ secuencias de este tipo...
 
 --
 Por lo tanto,
 
-$$\mathbb{P}(Y=k) = f_{Y}(k) = {n \choose k} \times p^{k} (1-p)^{n-k}$$
+$$\mathbb{P}(Y=k) = f_{Y}(k) = \frac{n!}{y! (n-y)!} \times p^{k} (1-p)^{n-k}$$
 --
 En otras palabras, $Y$ distribuye binomial con parámetros $n$ y $p$: $Y \sim \text{Binomial}(n,p)$
 
@@ -414,14 +414,14 @@ En práctica ...
 
 --
 
-$$\mathbb{P}(Y=3) =  {10 \choose 3} \times (0.5)^{3} \times (1-0.5)^{7} = 120 \times (0.5)^{10} = 0.12$$
+$$\mathbb{P}(Y=3) =  \frac{10!}{3! 7!} \times (0.5)^{3} \times (1-0.5)^{7} = 120 \times (0.5)^{10} = 0.12$$
 --
 
 - ¿Cuál es la probabilidad de obtener 5 "Caras" con 10 lanzamientos?
 
 --
 
-$$\mathbb{P}(Y=5) =  {10 \choose 5} \times (0.5)^{5} \times (1-0.5)^{5} = 252 \times (0.5)^{10} = 0.25$$
+$$\mathbb{P}(Y=5) =  \frac{10!}{5! 5!} \times (0.5)^{5} \times (1-0.5)^{5} = 252 \times (0.5)^{10} = 0.25$$
 <br>
 --
 
@@ -431,9 +431,33 @@ Si la probabilidad de obtener "Cara" es 90% ( $p=0.9$ ) ...
 
 --
 
-$$\mathbb{P}(Y=5) =  {10 \choose 5} \times (0.9)^{5} \times (0.1)^{5} = 252 \times \text{número muy chico}= 0.0015$$
+$$\mathbb{P}(Y=5) =   \frac{10!}{5! 5!} \times (0.9)^{5} \times (0.1)^{5} = 252 \times \text{número muy chico}= 0.0015$$
+---
+### Bernoulli es Binomial con un "intento" (n=1)
+
+
+Si $Y \sim \text{Binomial}(p,n)$ su función de probabilidad es:
+
+$$\mathbb{P}(Y=k) = f_{Y}(k) = \frac{n!}{y! (n-y)!}  p^{k} (1-p)^{n-k}$$
+La función describe la probabilidad de obtener $k$ éxitos con $n$ intentos.
+
+<br>
+--
+
+Cual es la probabilidad de obtener $k$ éxitos con $1$ intento? ( $k \in [0,1]$ ).
+--
+ Evaluemos la .bold[pf] para $n=1$:
+ 
+\begin{align}
+\mathbb{P}(Y=k) = f_{Y}(k) = \begin{cases}
+  \frac{1!}{0!1!} p^{0} (1-p)^{1}  = (1-p) &\quad \text{si } k=0 \\ \\
+  \frac{1!}{1!0!} p^{1} (1-p)^{0}  = p &\quad \text{si } k=1 
+\end{cases}
+\end{align}
+
 
 ---
+
 ### Distribución Binomial 
 
 Puedes comprobar estos cálculos en `R`:
