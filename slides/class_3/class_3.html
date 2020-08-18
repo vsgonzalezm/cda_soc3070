@@ -248,8 +248,9 @@ print(monedas)
 ```
 
 ```
-##   [1] 0 0 0 0 1 1 1 1 0 0 1 1 0 1 1 1 1 1 1 0 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 0 0 1 1 0 1 0 0 1 1 1 1 1 1 0 0 1 1 0 1 0 1 1 1
-##  [61] 0 1 0 0 0 1 0 1 1 0 1 1 1 1 1 1 0 1 1 1 0 1 1 1 1 1 0 1 0 1 0 0 1 1 0 1 0 0 1 1
+##   [1] 0 0 0 0 1 1 1 1 0 0 1 1 0 1 1 1 1 1 1 0 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 0
+##  [38] 0 1 1 0 1 0 0 1 1 1 1 1 1 0 0 1 1 0 1 0 1 1 1 0 1 0 0 0 1 0 1 1 0 1 1 1 1
+##  [75] 1 1 0 1 1 1 0 1 1 1 1 1 0 1 0 1 0 0 1 1 0 1 0 0 1 1
 ```
 
 ---
@@ -356,7 +357,7 @@ Ejemplo,
 
 .content-box-red[
 .bold[Pregunta 2]:
-¿Cuál es la probabilidad de obtener dos "Caras" con 3 tiros? Es decir, ¿Cuál es la probabilidad de que `\(Y=2\)`?
+¿Cuál es la probabilidad de obtener 2 "Caras" con 3 tiros? Es decir, ¿Cuál es la probabilidad de que `\(Y=2\)`?
 ]
 
 --
@@ -381,7 +382,7 @@ Ejemplo,
 --
 
 .content-box-blue[
-.bold[Respuesta]: la probabilidad de conseguir dos "Caras" con 3 tiros es:
+.bold[Respuesta]: la probabilidad de conseguir 2 "Caras" con 3 tiros es:
 `$$\mathbb{P}(Y=2) = 3 \times  p^{2}(1-p)^{1}$$`
 ]
 
@@ -396,21 +397,21 @@ Generalización: lanzamos la misma moneda `\(n\)` veces y la variable `\(Y\)` cu
 
 .content-box-red[
 .bold[Pregunta]:
-¿Cuál es la probabilidad de conseguir `\(k\)` "Caras" con `\(n\)` tiros?
+¿Cuál es la probabilidad de conseguir `\(y\)` "Caras" con `\(n\)` tiros?
 ]
 
 --
 
-* La probabilidad de obtener una secuencia particular con `\(k\)` "Caras" a partir de `\(n\)` lanzamientos es `\(p^{k}(1-p)^{n-k}\)` 
+* La probabilidad de obtener una secuencia particular con `\(y\)` "Caras" a partir de `\(n\)` lanzamientos es `\(p^{y}(1-p)^{n-y}\)` 
 
-* Existen `\({n \choose k} = \frac{n!}{y! (n-y)!}\)` secuencias de este tipo...
+* Existen `\({n \choose y} = \frac{n!}{y! (n-y)!}\)` secuencias de este tipo...
 
 --
-Por lo tanto,
+Por tanto,
 
-`$$\mathbb{P}(Y=k) = f_{Y}(k) = \frac{n!}{y! (n-y)!} \times p^{k} (1-p)^{n-k}$$`
+`$$\mathbb{P}(Y=y) = f_{Y}(y) = \frac{n!}{y! (n-y)!} \times p^{k} (1-p)^{n-y}$$`
 --
-En otras palabras, `\(Y\)` distribuye binomial con parámetros `\(n\)` y `\(p\)`: `\(Y \sim \text{Binomial}(n,p)\)`
+En otras palabras, `\(Y\)` distribuye binomial con .bold[parámetros] `\(n\)` y `\(p\)`: `\(Y \sim \text{Binomial}(n,p)\)`
 
 ---
 ### Distribución Binomial 
@@ -444,31 +445,6 @@ Si la probabilidad de obtener "Cara" es 90% ( `\(p=0.9\)` ) ...
 
 `$$\mathbb{P}(Y=5) =   \frac{10!}{5! 5!} \times (0.9)^{5} \times (0.1)^{5} = 252 \times \text{número muy chico}= 0.0015$$`
 ---
-### Bernoulli es Binomial con un "intento" (n=1)
-
-
-Si `\(Y \sim \text{Binomial}(p,n)\)` su función de probabilidad es:
-
-`$$\mathbb{P}(Y=k) = f_{Y}(k) = \frac{n!}{y! (n-y)!}  p^{k} (1-p)^{n-k}$$`
-La función describe la probabilidad de obtener `\(k\)` éxitos con `\(n\)` intentos.
-
-&lt;br&gt;
---
-
-Cual es la probabilidad de obtener `\(k\)` éxitos con `\(1\)` intento? ( `\(k \in [0,1]\)` ).
---
- Evaluemos la .bold[pf] para `\(n=1\)`:
- 
-`\begin{align}
-\mathbb{P}(Y=k) = f_{Y}(k) = \begin{cases}
-  \frac{1!}{0!1!} p^{0} (1-p)^{1}  = (1-p) &amp;\quad \text{si } k=0 \\ \\
-  \frac{1!}{1!0!} p^{1} (1-p)^{0}  = p &amp;\quad \text{si } k=1 
-\end{cases}`
-\end{align}`
-
-
----
-
 ### Distribución Binomial 
 
 Puedes comprobar estos cálculos en `R`:
@@ -506,6 +482,27 @@ Veamos cómo se ve la distribución completa para diferentes valores de `\(p\)`,
 
 
 Más detalles: https://seeing-theory.brown.edu/es.html
+
+---
+### Bernoulli es Binomial con un "intento" (n=1)
+
+Si `\(Y \sim \text{Binomial}(p,n)\)` su función de probabilidad es:
+
+`$$\mathbb{P}(Y=y) = f_{Y}(y) = \frac{n!}{y! (n-y)!}  p^{k} (1-p)^{n-y}$$`
+La función describe la probabilidad de obtener `\(y\)` éxitos con `\(n\)` intentos.
+
+&lt;br&gt;
+--
+
+Cual es la probabilidad de obtener `\(y\)` éxitos con `\(1\)` intento? ( `\(y \in [0,1]\)` )? Evaluemos la .bold[pf] para `\(n=1\)`:
+
+&lt;br&gt;
+--
+
+`$$\mathbb{P}(Y=y) = f_{Y}(y) = \begin{cases}
+  \frac{1!}{0!1!} \text{ } p^{0} (1-p)^{1}  = (1-p) &amp;\quad \text{si } y=0 \\ \\
+  \frac{1!}{1!0!} \text{ } p^{1} (1-p)^{0}  = p &amp;\quad \text{si } y=1 
+\end{cases}$$`
 
 
 
