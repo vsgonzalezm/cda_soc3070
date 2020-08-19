@@ -665,7 +665,7 @@ Para responder esta pregunta debemos conocer la .bold[sampling distribution] de 
   - Complicado, función no lineal de n's.
   
 --
-
+ 
 - Más conveniente hacer inferencia sobre $\log \hat{\theta}$
 
   - $\log \hat{\theta} = \log \frac{n_{11}n_{22}}{n_{12}n_{21}} = \log n_{11} + \log n_{22} - \log n_{12} - \log n_{21}$
@@ -674,7 +674,7 @@ Para responder esta pregunta debemos conocer la .bold[sampling distribution] de 
 
 - Importante resultado teórico: la sampling distribution de $\log \hat{\theta}$ es _asintóticamente_ normal:
 
-$$\log(\hat{\theta}) \sim N(\mu,\sigma)$$
+$$\log(\hat{\theta}) \sim \mathcal{N}(\mu,\sigma)$$
 
  - $\mu = \log \theta$ 
  

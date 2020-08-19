@@ -282,7 +282,7 @@ glimpse(coins200)
 ```
 
 ```
-##  int [1:10000] 96 99 99 94 101 97 103 112 107 97 ...
+##  int [1:10000] 89 96 124 110 97 96 90 92 99 93 ...
 ```
 
 ```r
@@ -292,10 +292,10 @@ print(moments)
 
 ```
 ## $mean
-## [1] 99.906
+## [1] 100.0751
 ## 
 ## $var
-## [1] 50.22699
+## [1] 49.59782
 ```
 
 ---
@@ -622,7 +622,7 @@ class: inverse, center, middle
 
 --
 
-  - `\(\mathbb{Var}\big(\hat{p}\big) = \mathbb{Var}\Big( \frac{\sum x_{i}}{n} \Big) = \mathbb{Var}\Big(\frac{x_{i} + ... + x_{n}}{n}\Big)\)`
+  - `\(\mathbb{Var}\big(\hat{p}\big) = \mathbb{Var}\Big( \frac{\sum_{i} x_{i}}{n} \Big) = \mathbb{Var}\Big(\frac{x_{i} + ... + x_{n}}{n}\Big)\)`
 
 --
 
@@ -639,6 +639,28 @@ class: inverse, center, middle
 `$$\sigma_{\hat{p}} =  \frac{\sigma}{\sqrt{n}} =  \sqrt{\frac{p(1-p)}{n}}$$`
 ]
 
+---
+##"Sampling distribution" de una proporción
+
+
+- `\(\mathbb{E}\big(\hat{p}\big)\)` ?
+
+--
+
+  - `\(\mathbb{E}\big(\hat{p}\big) = \mathbb{E}\Big( \frac{\sum_{i} x_{i}}{n} \Big) =  \frac{1}{n} \sum_{i} \mathbb{E}(x_{i}) =  \frac{1}{n}\sum_{i} p = \frac{np}{n} = p\)`
+
+
+&lt;br&gt;
+--
+
+- Importante resultado teórico: la sampling distribution de `\(\hat{p}\)` es _asintóticamente_ normal:
+
+`$$\hat{p} \sim \mathcal{N}(\mu,\sigma)$$`
+
+
+  - `\(\mu = p\)` 
+  
+  - `\(\sigma = \sqrt{\frac{p(1-p)}{n}}\)`
 
 
 ---

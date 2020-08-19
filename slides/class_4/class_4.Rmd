@@ -288,17 +288,20 @@ print(moments)
 
 
 ```{r, echo=FALSE, fig.height=8, fig.width=12, message=FALSE}
+library("cowplot")
+theme_set(theme_cowplot())
+
 plot <- ggplot(data = data.frame(p = 0), mapping = aes(x = p, color=""))
 var_binom <- function(p,n) n*p*(1-p)
 
-plot + stat_function(fun =var_binom, args = list(n= 1000)) + 
+plot + stat_function(fun =var_binom, args = list(n= 1000), size=1.5) + 
   xlim(0,1) + labs(title="Varianza Binomial(n,p)", x="p", y=expression(paste(n,p,(1-p))) ) +
-    scale_color_viridis_d(option = "plasma") + 
+    scale_color_viridis_d() + 
     guides(fill=FALSE, color=FALSE) +
     theme(axis.text.y = element_text(size = 10), axis.text.x = element_text(size = 16),
     axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
     legend.text = element_text(size = 12), legend.position="bottom") +
-    geom_point(aes(x=0.5,y=1000/4)) +
+    geom_point(aes(x=0.5,y=1000/4), color="green", size=2.5) +
    annotate(geom="text", x=0.5, y=1040/4, label='bold("n/4")', color="black", parse=TRUE, size=8) 
 ```
 
@@ -336,10 +339,10 @@ mydata <- data_frame(x = seq(from = 0, to = n, by = 1),
 
 plot <- ggplot(data = mydata, mapping = aes(x = x)) +
     ## Entire curve
-    geom_path(aes(y=binom,color="red")) +
-    geom_path(aes(y=norm,color="blue")) +
+    geom_path(aes(y=binom,color="red"), size=1.5, alpha=0.8) +
+    geom_path(aes(y=norm,color="blue"), size=1.5, alpha=0.7) +
   labs(y="f(y)", x="y", title="Probability function of Y | n=25, p=0.4") +
-     scale_color_viridis_d(option = "plasma", name = "",
+     scale_color_viridis_d(name = "",
                           breaks = c("red", "blue"),
                           labels = c("Binomial(n,p)", "N(mean=np,var=np(1-p))"),
                           guide = "legend") +
@@ -388,13 +391,13 @@ data_bin  <- with(density(mydata$binom), data.frame(x, y))
 data_norm <- with(density(mydata$normal), data.frame(x, y))
 
 plot <- data_bin %>% ggplot(aes(x=x)) +
-    geom_line(aes(y=y, color="red")) +
-    geom_line(data =data_norm, aes(y=y, color="blue")) +
+    geom_line(aes(y=y, color="red"), size=1.5, alpha=0.8) +
+    geom_line(data =data_norm, aes(y=y, color="blue"), size=1.5, alpha=0.7) +
     geom_ribbon(data = data_norm %>% filter(x >= qnorm(0.975)), aes(ymin = 0, ymax = y), fill="blue", colour="blue", alpha=0.5) +
     geom_ribbon(data = data_norm %>% filter(x <= qnorm(0.025)), aes(ymin = 0, ymax = y), fill="blue", colour="blue", alpha=0.5) +
     xlim(-4,4) +
     labs(y="f(y)", x="y", title="Probability function of Y") +
-     scale_color_viridis_d(option = "plasma", name = "",
+     scale_color_viridis_d(name = "",
                           breaks = c("red", "blue"),
                           labels = c("(Binomial(np) - np)/sqrt(np(1-p))", "N(0,1)"),
                           guide = "legend") +
@@ -442,7 +445,7 @@ data_coins <- data.frame(X = rbinom(n=100, size=1, prob=0.8))
 data_coins %>% ggplot(aes(x=factor(X), fill="")) + 
     geom_bar() +
     geom_text(aes(label=..count..), stat='count', vjust=-0.2) +
-    scale_fill_viridis_d(option = "plasma") + 
+    scale_fill_viridis_d() + 
     guides(fill=FALSE, color=FALSE) + labs(x="") +
     theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
     axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
@@ -503,9 +506,9 @@ Podemos inspeccionar visualmente la "likelihood" de diferentes valores $p$.
 plot <- ggplot(data = data.frame(p = 0), mapping = aes(x = p, color=""))
 binom_distrib <- function(p,n,k) (p^(k))*((1-p)^(n-k))
 
-plot + stat_function(fun = binom_distrib, args = list(n= 100, k= 82)) + 
+plot + stat_function(fun = binom_distrib, args = list(n= 100, k= 82), size=1.5) + 
   xlim(0,1) + labs(title="Likelihood of p", x="p", y=expression(paste(p^{82}, (1-p)^{18})) ) +
-    scale_color_viridis_d(option = "plasma") + 
+    scale_color_viridis_d() + 
     guides(fill=FALSE, color=FALSE) +
     theme(axis.text.y = element_text(size = 10), axis.text.x = element_text(size = 16),
     axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
@@ -603,8 +606,8 @@ m[which.max(m[,2]),]
 .center[
 ```{r loglik_density,  include=TRUE, echo=FALSE, warning=FALSE, message=FALSE, fig.height=10, fig.width=12}
 parameter_space %>% as.data.frame() %>% ggplot(aes(x=p, y=loglik, colour=loglik)) + 
-geom_line(size=1) + geom_point(aes(x=m[which.max(m[,2]),1], m[which.max(m[,2]),2])) +
-scale_color_viridis(option = "plasma") + guides(fill=FALSE, color=FALSE) + labs(title="Log-likelihood function",x="p", y="82*log(p) + (100 - 82)*log(1-p)") +
+geom_line(size=1.5) + geom_point(aes(x=m[which.max(m[,2]),1], m[which.max(m[,2]),2]), size=2.5) +
+scale_color_viridis() + guides(fill=FALSE, color=FALSE) + labs(title="Log-likelihood function",x="p", y="82*log(p) + (100 - 82)*log(1-p)") +
 annotate(geom="text", x=0.82, y=-35, label='bold("0.82")', color="black", parse=TRUE, size=8) +
 theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
 axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), title=element_text(size = 24),
@@ -689,7 +692,7 @@ class: inverse, center, middle
 
 --
 
-  - $\mathbb{Var}\big(\hat{p}\big) = \mathbb{Var}\Big( \frac{\sum x_{i}}{n} \Big) = \mathbb{Var}\Big(\frac{x_{i} + ... + x_{n}}{n}\Big)$
+  - $\mathbb{Var}\big(\hat{p}\big) = \mathbb{Var}\Big( \frac{\sum_{i} x_{i}}{n} \Big) = \mathbb{Var}\Big(\frac{x_{i} + ... + x_{n}}{n}\Big)$
 
 --
 
@@ -706,6 +709,28 @@ class: inverse, center, middle
 $$\sigma_{\hat{p}} =  \frac{\sigma}{\sqrt{n}} =  \sqrt{\frac{p(1-p)}{n}}$$
 ]
 
+---
+##"Sampling distribution" de una proporción
+
+
+- $\mathbb{E}\big(\hat{p}\big)$ ?
+
+--
+
+  - $\mathbb{E}\big(\hat{p}\big) = \mathbb{E}\Big( \frac{\sum_{i} x_{i}}{n} \Big) =  \frac{1}{n} \sum_{i} \mathbb{E}(x_{i}) =  \frac{1}{n}\sum_{i} p = \frac{np}{n} = p$
+
+
+<br>
+--
+
+- Importante resultado teórico: la sampling distribution de $\hat{p}$ es _asintóticamente_ normal:
+
+$$\hat{p} \sim \mathcal{N}(\mu,\sigma)$$
+
+
+  - $\mu = p$ 
+  
+  - $\sigma = \sqrt{\frac{p(1-p)}{n}}$
 
 
 ---

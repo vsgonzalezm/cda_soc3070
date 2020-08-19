@@ -129,8 +129,8 @@ Continuando con nuestro ejemplo:
 - $Y$ es la variable que resulta de sumar el resultado de tirar dos dados justos
 
 .pull-left[
-```{r, echo=FALSE}
-library("tidyverse", "knitr", "cowplot")
+```{r, echo=FALSE,message=FALSE, warning=FALSE}
+library("tidyverse", "knitr")
 
 d1 = 1:6
 d2 = 1:6
@@ -456,15 +456,17 @@ Veamos cómo se ve la distribución completa para diferentes valores de $p$, y $
 --
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=6, fig.width=10}
-library("tidyverse")
-plot <- ggplot(data = data.frame(y = 0), mapping = aes(Y = y))
+library("cowplot")
+theme_set(theme_cowplot())
+
+plot <- ggplot(data = data.frame(y = 0), mapping = aes(Y = y), )
 binom_distrib <- function(p,n,y) choose(n,y)*(p^(y))*((1-p)^(n-y))
 
-plot <- plot + stat_function(fun = binom_distrib, args = list(n= 100, p= 0.2), aes(color="red")) +
-  stat_function(fun = binom_distrib, args = list(n= 100,p=0.5), aes(color="blue")) +
-  stat_function(fun = binom_distrib, args = list(n= 100,p=0.8), aes(color="green")) +
+plot <- plot + stat_function(fun = binom_distrib, args = list(n= 100, p= 0.2), aes(color="red"), size=1.5) +
+  stat_function(fun = binom_distrib, args = list(n= 100,p=0.5), aes(color="blue"), size=1.5) +
+  stat_function(fun = binom_distrib, args = list(n= 100,p=0.8), aes(color="green"), size=1.5) +
   xlim(0,100) + labs(y="P(Y=y)", title="Probability function of Y, f(y | n=100, p)") +
-     scale_color_viridis_d(option = "plasma", name = "Legend",
+     scale_color_viridis_d( name = "Legend",
                           breaks = c("red", "blue", "green"),
                           labels = c("p=0.2", "p=0.5", "p=0.8"),
                           guide = "legend") +
