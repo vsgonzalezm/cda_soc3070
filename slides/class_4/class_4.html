@@ -282,7 +282,7 @@ glimpse(coins200)
 ```
 
 ```
-##  int [1:10000] 89 96 124 110 97 96 90 92 99 93 ...
+##  int [1:10000] 96 99 99 94 101 97 103 112 107 97 ...
 ```
 
 ```r
@@ -292,10 +292,10 @@ print(moments)
 
 ```
 ## $mean
-## [1] 100.0751
+## [1] 99.906
 ## 
 ## $var
-## [1] 49.59782
+## [1] 50.22699
 ```
 
 ---
@@ -329,7 +329,6 @@ $$ X \xrightarrow[]{d} \mathcal{N}(\mu=np, \sigma= \sqrt{np(1-p)})$$
 ![](class_4_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
 ]
 
----
 ---
 ## Distribución Binomial es asintóticamente Normal
 
@@ -553,7 +552,8 @@ m[which.max(m[,2]),]
 
 &lt;br&gt;
 
-$$\hat{\boldsymbol{\beta}}_{MLE} = \text{arg max } \text{ } \mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X}) $$
+
+`$$\hat{\boldsymbol{\beta}}_{MLE} = \underset{\beta}{\arg\max\ } \mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X})$$`
 `\(\hat{\boldsymbol{\beta}}\)` es el MLE de `\(\boldsymbol{\beta}\)` si es valor(es) que maximiza la "likelihood function" condicional en los datos observados.
 
 &lt;br&gt;
@@ -638,7 +638,6 @@ class: inverse, center, middle
 .content-box-blue[
 `$$\sigma_{\hat{p}} =  \frac{\sigma}{\sqrt{n}} =  \sqrt{\frac{p(1-p)}{n}}$$`
 ]
-
 
 
 

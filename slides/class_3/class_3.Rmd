@@ -129,8 +129,9 @@ Continuando con nuestro ejemplo:
 - $Y$ es la variable que resulta de sumar el resultado de tirar dos dados justos
 
 .pull-left[
-```{r,echo=FALSE, message=FALSE}
-library("tidyverse", "knitr")
+```{r, echo=FALSE}
+library("tidyverse", "knitr", "cowplot")
+
 d1 = 1:6
 d2 = 1:6
 
@@ -469,7 +470,7 @@ plot <- plot + stat_function(fun = binom_distrib, args = list(n= 100, p= 0.2), a
                           guide = "legend") +
       theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
       axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
-      legend.text = element_text(size = 18), legend.position="bottom")
+      legend.text = element_text(size = 18), legend.position="bottom") 
 
 print(plot)
 ```

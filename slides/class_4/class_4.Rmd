@@ -351,7 +351,6 @@ print(plot)
 ]
 
 ---
----
 ## Distribución Binomial es asintóticamente Normal
 
 .pull-left[
@@ -620,7 +619,8 @@ legend.text = element_text(size = 18), legend.position="bottom")
 
 <br>
 
-$$\hat{\boldsymbol{\beta}}_{MLE} = \text{arg max } \text{ } \mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X}) $$
+
+$$\hat{\boldsymbol{\beta}}_{MLE} = \underset{\beta}{\arg\max\ } \mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X})$$
 $\hat{\boldsymbol{\beta}}$ es el MLE de $\boldsymbol{\beta}$ si es valor(es) que maximiza la "likelihood function" condicional en los datos observados.
 
 <br>
@@ -705,7 +705,6 @@ class: inverse, center, middle
 .content-box-blue[
 $$\sigma_{\hat{p}} =  \frac{\sigma}{\sqrt{n}} =  \sqrt{\frac{p(1-p)}{n}}$$
 ]
-
 
 
 
