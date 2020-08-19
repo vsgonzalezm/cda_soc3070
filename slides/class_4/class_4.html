@@ -29,7 +29,7 @@ class: inverse, center, middle
 ---
 ## Valor Esperado
 
-El valor esperado de una v.a. es el análogo teórico de un promedio. Los posibles valores de la variable se ponderan por su probabilidad de ocurrencia:
+El valor esperado de una variable es el análogo teórico de un promedio. Los posibles valores de la variable se ponderan por su probabilidad de ocurrencia. En el caso de variables discretas:
 
 &lt;br&gt;
 --
@@ -42,6 +42,14 @@ El valor esperado de una v.a. es el análogo teórico de un promedio. Los posibl
 &lt;br&gt;
 --
 Es teórico porque esta información la podemos saber *a priori*, sin necesidad de datos. 
+
+--
+
+Análogamente, para variables continuas:
+
+`\begin{align}
+\mathbb{E}(X) =  \int x f(x)dx
+\end{align}`
 
 ---
 ## Valor Esperado
@@ -90,25 +98,25 @@ Por ejemplo, supongamos que `\(Y\)` es una variable que resulta de tirar un dado
 
 ## Valor Esperado, ejemplo
 
-Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
+Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio (G) es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
 --
 
  ¿Cuánto es el premio esperado?
 
 --
 
-`$$P = 1000 + \sum^{n=100}_{i=1} X_{i} \times 10 \quad \text{ por tanto,}$$`
+`$$G = 1000 + \sum^{n=100}_{i=1} X_{i} \times 10 \quad \text{ por tanto,}$$`
 --
 
-`$$\mathbb{E}(P) = \mathbb{E}(1000 + \sum^{n=100}_{i=1} X_{i} \times 10)$$`
-
---
-
-`$$\mathbb{E}(P) = 1000 + 10 \times \sum^{n=100}_{i=1}\mathbb{E}(X_{i})$$`
+`$$\mathbb{E}(G) = \mathbb{E}(1000 + \sum^{n=100}_{i=1} X_{i} \times 10)$$`
 
 --
 
-$$\mathbb{E}(P) = 1000 + 10 (3.5 + 3.5 + \dots + 3.5)) = 1000 + 10 \times 100 \times 3.5 = \$4500$$ 
+`$$\mathbb{E}(G) = 1000 + 10 \times \sum^{n=100}_{i=1}\mathbb{E}(X_{i})$$`
+
+--
+
+$$\mathbb{E}(G) = 1000 + 10 (3.5 + 3.5 + \dots + 3.5)) = 1000 + 10 \times 100 \times 3.5 = \$4500$$ 
 
 ---
 
@@ -147,11 +155,22 @@ Si X es una variable Binomial, su valor esperado viene dado por:
 
 La varianza de una variable aleatoria es el análogo teórico de la varianza de los datos.
 --
- Mide cuánta dispersión existe entonce al centro (la media). Formalmente:
- 
+ Mide cuánta dispersión existe entonce al centro (la media). Formalmente, en el caso variables aleatorias discretas:
+
+&lt;br&gt;
+
 `$$\mathbb{Var}(X) = \sum_{i} \bigg( x_{i} - \mathbb{E}(X) \bigg)^{2} \times f_{X}(x_{i})$$`
+&lt;br&gt;
 --
 
+Análogamente, para variables continuas:
+
+`\begin{align}
+\mathbb{Var}(X) =  \int \bigg(x -  \mathbb{E}(X)\bigg)^{2} f(x)dx
+\end{align}`
+
+---
+## Varianza
 Por ejemplo, supongamos que `\(Y\)` es una variable que resulta de tirar un dado "justo".  ¿Cuál es la varianza de `\(Y\)`?
 
 &lt;br&gt;
@@ -185,29 +204,29 @@ Por ejemplo, supongamos que `\(Y\)` es una variable que resulta de tirar un dado
 ---
 ## Varianza, ejemplo  
 
-Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
+Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio (G) es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
 --
  ¿Cuánto es la desviación estándar del premio?
 
 --
 
-`$$P = 1000 + \sum^{n=100}_{i=1} X_{i} \times 10 \quad \text{ por tanto,}$$`
+`$$G = 1000 + \sum^{n=100}_{i=1} X_{i} \times 10 \quad \text{ por tanto,}$$`
 
 --
 
-`$$\mathbb{Var}(P) = \mathbb{Var}(1000 + \sum^{n=100}_{i=1} X_{i} \times 10)$$`
+`$$\mathbb{Var}(G) = \mathbb{Var}(1000 + \sum^{n=100}_{i=1} X_{i} \times 10)$$`
 
 --
 
-`$$\mathbb{Var}(P) = \mathbb{Var}(1000) + 10^{2} \times \sum^{n=100}_{i=1}\mathbb{Var}(X_{i})$$`
+`$$\mathbb{Var}(G) = \mathbb{Var}(1000) + 10^{2} \times \sum^{n=100}_{i=1}\mathbb{Var}(X_{i})$$`
 
 --
 
-$$\mathbb{Var}(P) =  0 +  10^{2} \times 100 \times 2.91 = \$29100$$ 
+$$\mathbb{Var}(G) =  0 +  10^{2} \times 100 \times 2.91 = \$29100$$ 
 
 --
 
-$$\sigma_{P} = \sqrt{0 + 100 \times 100 \times 2.91} = \$ 170.6$$
+$$\sigma_{G} = \sqrt{0 + 100 \times 100 \times 2.91} = \$ 170.6$$
 ---
 ## Varianza de variables discretas
 
@@ -256,7 +275,7 @@ glimpse(coins200)
 ```
 
 ```
-##  int [1:10000] 105 99 95 90 107 108 88 110 115 104 ...
+##  int [1:10000] 95 104 97 103 97 107 108 99 100 100 ...
 ```
 
 ```r
@@ -266,10 +285,10 @@ print(moments)
 
 ```
 ## $mean
-## [1] 99.869
+## [1] 99.9948
 ## 
 ## $var
-## [1] 50.68551
+## [1] 49.12729
 ```
 
 ---
@@ -324,7 +343,7 @@ dbinom(x=9,size=10,prob=0.5)
 ---
 ##Estimación 
 
-.bold[Modelos estadísticos]:  ¿Cuáles son los valores más .bold[plausibles][1].footnote[[1] Notar que no dije "probabilidad"!] de los *parámetros* dado los *datos* que observamos? 
+.bold[Modelos estadísticos]:  ¿Cuáles son los valores más .bold[plausibles][1].footnote[[1] Notar que no dice "más probables"!] de los *parámetros* dado los *datos* que observamos? 
 
 
 E.j. Supongamos que alguien lanza 100 veces la misma moneda y registra los resultados en una base de datos. Los datos se ven así:  
@@ -369,12 +388,12 @@ MLE es justamente la formalización de esta pregunta. Pasos:
 2)  Escribir una función que cuantifique la plausibilidad de diferentes valores del parámetro. Dicha función se denomina .bold[likelihood function]: 
 
 &lt;br&gt;
-  * `\(\mathcal{L}(p) = \mathbb{P}(\text{ Data : \{1,0,1,1,....0,1\}} | \text{ } p)\)`
+  * `\(\mathcal{L}(p \mid \text{ Datos}) = \mathbb{P}(\text{ Datos : \{1,0,1,1,....0,1\}} | \text{ } p)\)`
 
 &lt;br&gt;
 --
 
-  * `\(\mathcal{L}(p) = \mathbb{P}(x_{1})\mathbb{P}(x_{2}) \dots \mathbb{P}(x_{100}) = p^{82}(1-p)^{18}\)`
+  * `\(\mathcal{L}(p \mid \text{ Datos}) = \mathbb{P}(x_{1})\mathbb{P}(x_{2}) \dots \mathbb{P}(x_{100}) = p^{82}(1-p)^{18}\)`
 
 
 ---
@@ -391,16 +410,16 @@ Intuitivamente: habiendo obtenido 82 caras, `\(p=0.82\)` es el valor más plausi
 
 ##Estimación via Maximum Likelihood (MLE) 
 
-3) Encontrar matemáticamente el valor de `\(p\)` que maximiza `\(\mathcal{L}(p)\)`.
+3) Encontrar matemáticamente el valor de `\(p\)` que maximiza `\(\mathcal{L}(p \mid \text{ Datos})\)`.
 
 
-- `\(\mathcal{L}(p) = P(x_{1})P(x_{2}) \dots P(x_{n}) = p^{x}(1-p)^{n-k} \quad \text{   donde  } k= \sum x_{i}\)`
+- `\(\mathcal{L}(p \mid \text{ Datos}) = \mathbb{P}(x_{1})\mathbb{P}(x_{2}) \dots \mathbb{P}(x_{n}) = p^{x}(1-p)^{n-k} \quad \text{   donde  } k= \sum x_{i}\)`
 
 --
 
 - Para facilitar el cálculo tomamos logaritmo natural el ambos lados (.bold[log-likelihood])
 
-  - `\(\ell\ell(p) = \ln \mathcal{L}(p)  = k \ln(p) + (n - k) \ln(1-p)\)` 
+  - `\(\ell\ell(p) = \ln \mathcal{L}(p \mid \text{ Datos})  = k \ln(p) + (n - k) \ln(1-p)\)` 
 
 --
 -  Calcular la primera* derivada de `\(\ell\ell(p)\)` con respecto a `\(p\)`: pendiente de la curva en cada valor de `\(p\)`.
@@ -436,14 +455,6 @@ Después de resolver por `\(p\)` obtenemos:
 --
 
 - Intuitivo y elegante.
---
- No siempre tan simple....
-
----
-class: fullscreen,left, top, text-white
-background-image: url(valdorcia.jpeg)
-
-##Estimación via Maximum Likelihood (MLE) 
 
 
 ---
@@ -496,6 +507,40 @@ m[which.max(m[,2]),]
 .center[
 ![](class_4_files/figure-html/loglik_density-1.png)&lt;!-- --&gt;
 ]
+
+---
+##Estimación via Maximum Likelihood (MLE) 
+
+.bold[Generalización]
+
+&lt;br&gt;
+
+$$\hat{\boldsymbol{\beta}}_{MLE} = \text{arg max } \text{ } \mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X}) $$
+- `\(\hat{\boldsymbol{\beta}}\)` es el MLE de `\(\boldsymbol{\beta}\)` si es valor(es) que maximiza la "likelihood function" condicional en los datos observados.
+
+&lt;br&gt;
+
+--
+
+  - Recordar que   `\(\mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X}) = \mathbb{P}(\boldsymbol{X} \mid \boldsymbol{\beta})\)`. Requiere especificar de antemano la distribución conjunta de las observaciones.
+
+--
+
+  - ML es probablemente el approach de estimación más popular. 
+
+--
+
+  - Intuitivo, pero, por lo general, no tan simple como el ejemplo que vimos hoy.
+
+--
+
+  - Normalmente la maximización se realiza numéricamente (ej. método Newton–Raphson)
+
+---
+class: fullscreen,left, top, text-white
+background-image: url(valdorcia.jpeg)
+
+##Estimación via Maximum Likelihood (MLE) 
 
 
 ---
