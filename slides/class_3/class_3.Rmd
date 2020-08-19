@@ -482,7 +482,7 @@ Más detalles: https://seeing-theory.brown.edu/es.html
 
 Si $Y \sim \text{Binomial}(p,n)$ su función de probabilidad es:
 
-$$\mathbb{P}(Y=y) = f_{Y}(y) = \frac{n!}{y! (n-y)!}  p^{k} (1-p)^{n-y}$$
+$$\mathbb{P}(Y=y) = f_{Y}(y) = \frac{n!}{y! (n-y)!}  p^{y} (1-p)^{n-y}$$
 La función describe la probabilidad de obtener $y$ éxitos con $n$ intentos.
 
 <br>
@@ -499,6 +499,29 @@ $$\mathbb{P}(Y=y) = f_{Y}(y) = \begin{cases}
 \end{cases}$$
 
 
+---
+### Bernoulli/Binomial
+
+.bold[Recordatorio:] Como toda distribución de probabilidad 
+
+
+$$\sum_{\text{all }y} \mathbb{P}(Y=y) = \sum_{\text{all }y}  f_{Y}(y) = \frac{n!}{y! (n-y)!}  p^{y} (1-p)^{n-y} = 1$$
+--
+
+E.j, evaluemos la suma para el caso el caso con 2 intentos $n=2$.
+
+<br>
+--
+
+$$\sum_{\text{de 0 a 2}}  f_{Y}(y) = \frac{n!}{y! (n-y)!}  p^{y} (1-p)^{n-y}$$
+<br>
+--
+
+$$ \frac{2!}{0!2!}  p^{0} (1-p)^{2} + \frac{2!}{1!1!}  p^{1} (1-p)^{1} + \frac{2!}{2!0!}  p^{2} (1-p)^{0}$$
+<br>
+--
+
+$$ (1-p)^{2} + 2p(1-p) + p^{2}  = 1 - 2p + p^{2} + 2p - 2p^{2} + p^{2} = 1$$
 
 ---
 class: inverse, center, middle

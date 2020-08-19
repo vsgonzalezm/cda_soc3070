@@ -419,7 +419,7 @@ Supongamos que el 60% de la población son mujeres, y el 50% ha tenido un "affai
 
 .full-width[.content-box-red[
 .bold[Pregunta]:
-Si la probabilidad de tener una aventura fuera independiente del género, cual sería la probabilidad de que al seleccionar una persona al azar encontremos una mujer que ha tenido un "affair"? 
+Si la probabilidad de tener una aventura fuera independiente del género, cual sería la probabilidad de que, al seleccionar una persona al azar, encontremos una mujer que ha tenido un "affair"? 
 ]
 ]
 

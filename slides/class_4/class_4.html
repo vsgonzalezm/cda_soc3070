@@ -171,7 +171,7 @@ Análogamente, para variables continuas:
 
 ---
 ## Varianza
-Por ejemplo, supongamos que `\(Y\)` es una variable que resulta de tirar un dado "justo".  ¿Cuál es la varianza de `\(Y\)`?
+Por ejemplo, si que `\(Y\)` es una variable que resulta de tirar un dado "justo".  ¿Cuál es la varianza de `\(Y\)`?
 
 &lt;br&gt;
 --
@@ -189,18 +189,26 @@ Por ejemplo, supongamos que `\(Y\)` es una variable que resulta de tirar un dado
 1) La varianzade una constante es cero.
 
 `$$\mathbb{Var}(c)=0$$`
-&lt;br&gt;
 --
 
 2) Si `\(X\)` es una variable aleatoria y `\(c\)` una constante, entonces 
 
 `$$\mathbb{Var}(c X)= c^{2} \mathbb{Var}(X)$$`
-&lt;br&gt;
 --
 
 3) Si `\(X\)` e `\(Y\)` son dos variables aleatorias independientes, entonces
 
 `$$\mathbb{Var}(X + Y) =  \mathbb{Var}(X) + \mathbb{Var}(Y)$$`
+--
+
+4) Si `\(X\)` e `\(Y\)` son dos variables aleatorias no independientes, entonces
+
+`$$\mathbb{Var}(X + Y) =  \mathbb{Var}(X) + \mathbb{Var}(Y) + \mathbb{Cov}(X,Y)$$`
+&lt;br&gt;
+--
+
+ - Def: `\(\mathbb{Cov}(X,Y) = \mathbb{E}(X,Y) -  \mathbb{E}(X)\mathbb{E}(Y)\)`
+
 ---
 ## Varianza, ejemplo  
 
@@ -262,10 +270,9 @@ Si X es una variable Binomial, su varianza viene dada por:
 .bold[Respuesta]: varianza es `\(n \times p(1-p) = 200 \times 0.5 \times 0.5 = 50\)`. La desviación estándar es `\(\sqrt{50} = 7.01\)`.
 
 ---
-## Varianza de variables discretas
+## Varianza de variables Binomial
 
-### Binomial, ilustración via simulación
-
+.bold[Ilustración via simulación]
 
 
 ```r
@@ -275,7 +282,7 @@ glimpse(coins200)
 ```
 
 ```
-##  int [1:10000] 95 104 97 103 97 107 108 99 100 100 ...
+##  int [1:10000] 89 96 124 110 97 96 90 92 99 93 ...
 ```
 
 ```r
@@ -285,11 +292,18 @@ print(moments)
 
 ```
 ## $mean
-## [1] 99.9948
+## [1] 100.0751
 ## 
 ## $var
-## [1] 49.12729
+## [1] 49.59782
 ```
+
+---
+## Varianza de variables Binomial
+
+
+![](class_4_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
 
 ---
 ## Distribución Binomial es asintóticamente Normal
@@ -305,17 +319,41 @@ $$ X \xrightarrow[]{d} \mathcal{N}(\mu=np, \sigma= \sqrt{np(1-p)})$$
 
 - guideline: `\(\min \{np,  n(1-p) \} \geq 5\)` 
 
-- Resultado muy conveniente para inferencia estadística
+- Resultado muy conveniente
 
 
 ]
 
 .pull-right[
 
-![](class_4_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+![](class_4_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
 ]
 
+---
+---
+## Distribución Binomial es asintóticamente Normal
 
+.pull-left[
+
+
+- Si `\(X \sim \text{Binomial}(n,p)\)`, entonces:
+
+`$$\frac{X - np}{\sqrt{np(1-p)}}  \xrightarrow[]{d} \mathcal{N}(\mu=0, \sigma= 1)$$`
+
+(cuando `\(n \to \infty\)` )
+
+&lt;br&gt;
+
+- Distribución "Standard Normal"
+
+- La base de casi todas las aproximaciones para inferencia estadística
+
+]
+
+.pull-right[
+
+![](class_4_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+]
 
 ---
 class: inverse, center, middle
@@ -349,7 +387,7 @@ dbinom(x=9,size=10,prob=0.5)
 E.j. Supongamos que alguien lanza 100 veces la misma moneda y registra los resultados en una base de datos. Los datos se ven así:  
 
 .pull-left[
-![](class_4_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+![](class_4_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
 ]
 
 --
@@ -401,7 +439,7 @@ MLE es justamente la formalización de esta pregunta. Pasos:
 
 Podemos inspeccionar visualmente la "likelihood" de diferentes valores `\(p\)`.
 
-![](class_4_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+![](class_4_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
 
 Intuitivamente: habiendo obtenido 82 caras, `\(p=0.82\)` es el valor más plausible de `\(p\)`
 
@@ -447,7 +485,7 @@ Después de resolver por `\(p\)` obtenemos:
 - El estimador ML de `\(p\)` es ....
 
 
-- `\(\hat{p} = \frac{\sum x s_{i}}{n}\)`
+- `\(\hat{p} = \frac{\sum x_{i}}{n}\)`
 
 
 - Es decir, el porcentaje de 1's en la muestra!
@@ -516,31 +554,92 @@ m[which.max(m[,2]),]
 &lt;br&gt;
 
 $$\hat{\boldsymbol{\beta}}_{MLE} = \text{arg max } \text{ } \mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X}) $$
-- `\(\hat{\boldsymbol{\beta}}\)` es el MLE de `\(\boldsymbol{\beta}\)` si es valor(es) que maximiza la "likelihood function" condicional en los datos observados.
+`\(\hat{\boldsymbol{\beta}}\)` es el MLE de `\(\boldsymbol{\beta}\)` si es valor(es) que maximiza la "likelihood function" condicional en los datos observados.
 
 &lt;br&gt;
+--
+
+- Recordar que   `\(\mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X}) = \mathbb{P}(\boldsymbol{X} \mid \boldsymbol{\beta})\)`.
+  
+--
+
+- Requiere especificar de antemano la distribución conjunta de las observaciones (dif. de OLS, por ejemplo).
 
 --
 
-  - Recordar que   `\(\mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X}) = \mathbb{P}(\boldsymbol{X} \mid \boldsymbol{\beta})\)`. Requiere especificar de antemano la distribución conjunta de las observaciones.
+- ML es probablemente el approach de estimación más popular. 
 
 --
 
-  - ML es probablemente el approach de estimación más popular. 
+- Intuitivo, pero, por lo general, no tan simple como el ejemplo que vimos hoy.
 
 --
 
-  - Intuitivo, pero, por lo general, no tan simple como el ejemplo que vimos hoy.
-
---
-
-  - Normalmente la maximización se realiza numéricamente (ej. método Newton–Raphson)
+- Normalmente la maximización se realiza numéricamente (ej. método Newton–Raphson)
 
 ---
 class: fullscreen,left, top, text-white
 background-image: url(valdorcia.jpeg)
 
 ##Estimación via Maximum Likelihood (MLE) 
+
+
+---
+class: inverse, center, middle
+
+#Inferencia
+##Inferencia Estadística para una proporción
+
+---
+##"Sampling distribution" de una proporción
+
+
+- Nuestro MLE para una poporción es `\(\hat{p} = \frac{\sum x_{i}}{n}\)`
+
+  - Donde `\(x_{i} \sim \text{Bernoulli}(p)\)`
+
+&lt;br&gt;
+--
+
+- ¿Como podemos cuantificar incertidumbre en torno a nuestras estimaciones?
+
+  - En ejemplo anterior `\(\hat{p} = 0.82\)`, pero los datos fueron simulados con `\(p=0.8\)` (parametro verdadero)
+
+
+&lt;br&gt;
+--
+
+- Para responder esta pregunta debemos conocer la .bold[sampling distribution] de nuestro estimador, especialmente su _variabilidad_.
+
+ - El estimador, aplicado a diferentes muestras, produce distintos resultados, pero sigue una distribución
+
+
+---
+##"Sampling distribution" de una proporción
+
+
+- `\(\mathbb{Var}\big(\hat{p}\big)\)` ?
+
+--
+
+  - `\(\mathbb{Var}\big(\hat{p}\big) = \mathbb{Var}\Big( \frac{\sum x_{i}}{n} \Big) = \mathbb{Var}\Big(\frac{x_{i} + ... + x_{n}}{n}\Big)\)`
+
+--
+
+  - `\(\mathbb{Var}\big(\hat{p}\big) = \frac{1}{n^2} \Big(\mathbb{Var}(x_{i}) + ... + \mathbb{Var}(x_{n})\Big)\)`
+
+--
+
+  - `\(\mathbb{Var}\big(\hat{p}\big) = \frac{1}{n^2}( \sigma^2 + ... + \sigma^2 ) = \frac{n\sigma^2}{n^2} = \frac{\sigma^2}{n} = \frac{p(1-p)}{n}\)`
+
+&lt;br&gt;
+--
+
+.content-box-blue[
+`$$\sigma_{\hat{p}} =  \frac{\sigma}{\sqrt{n}} =  \sqrt{\frac{p(1-p)}{n}}$$`
+]
+
+
 
 
 ---
