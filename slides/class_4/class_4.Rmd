@@ -686,7 +686,8 @@ class: inverse, center, middle
 ##"Sampling distribution" de una proporción
 
 
-- $\mathbb{Var}\big(\hat{p}\big)$ o "Error Estándar" (SE)?
+- $\mathbb{Var}\big(\hat{p}\big)$ o  $\sqrt{\mathbb{Var}\big(\hat{p}\big)}$ "Error Estándar" (SE)?
+
 
 --
 
