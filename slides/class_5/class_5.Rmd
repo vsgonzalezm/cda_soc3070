@@ -188,6 +188,25 @@ sum(marginf_j)
 ```
 
 ---
+## Distribución conjunta y marginal de frecuencias
+
+En resumen,
+
+<br>
+
+|           	| $Y=y_{1}$ 	| $Y=y_{2}$ 	| $\dots$ 	| $Y=y_{J}$ 	|   Total  	|
+|:---------:	|:---------:	|:---------:	|:-------:	|:---------:	|:--------:	|
+| $X=x_{1}$ 	|  $n_{11}$ 	|  $n_{12}$ 	| $\dots$ 	|  $n_{1J}$ 	| $n_{1+}$ 	|
+| $X=x_{2}$ 	|  $n_{21}$ 	|  $n_{22}$ 	| $\dots$ 	|  $n_{2J}$ 	| $n_{2+}$ 	|
+|  $\dots$  	|  $\dots$  	|  $\dots$  	| $\dots$ 	|  $\dots$  	|  $\dots$ 	|
+| $X=x_{I}$ 	|  $n_{I1}$ 	|  $n_{I2}$ 	| $\dots$ 	|  $n_{IJ}$ 	| $n_{I+}$ 	|
+|   Total   	|  $n_{+1}$ 	|  $n_{+2}$ 	| $\dots$ 	|  $n_{+J}$ 	| $n_{++}$ 	|
+
+
+<br>
+Estructura general del una tabla 2-ways, $I \times J$
+
+---
 ## Estructura de probabilidad en tablas de contingencia 
 
 Supongamos que elegimos al azar un individuo de nuestra población. ¿Cuáles son las probabilidades de que caiga en cada una de las celdas de la tabla de contingencia?
@@ -280,10 +299,31 @@ margin_j <- apply(joint_dis,2,sum); margin_j
 --
 Como toda distribución de probabilidad, .bold[suma a 1]
 
+
+---
+## Distribución conjunta y marginal de probabilidades 
+
+En resumen,
+
+<br>
+
+|           	| $Y=y_{1}$ 	| $Y=y_{2}$ 	| $\dots$ 	| $Y=y_{J}$ 	|   Total  	|
+|:---------:	|:---------:	|:---------:	|:-------:	|:---------:	|:--------:	|
+| $X=x_{1}$ 	|  $p_{11}$ 	|  $p_{12}$ 	| $\dots$ 	|  $p_{1J}$ 	| $p_{1+}$ 	|
+| $X=x_{2}$ 	|  $p_{21}$ 	|  $p_{22}$ 	| $\dots$ 	|  $p_{2J}$ 	| $p_{2+}$ 	|
+|  $\dots$  	|  $\dots$  	|  $\dots$  	| $\dots$ 	|  $\dots$  	|  $\dots$ 	|
+| $X=x_{I}$ 	|  $p_{I1}$ 	|  $p_{I2}$ 	| $\dots$ 	|  $p_{IJ}$ 	| $p_{I+}$ 	|
+|   Total   	|  $p_{+1}$ 	|  $p_{+2}$ 	| $\dots$ 	|  $p_{+J}$ 	| 1	|
+
+
+<br>
+Estructura general de probabilidades en una  tabla 2-ways, $I \times J$
+
+
 ---
 class: middle
 
-## Distribuciones conjuntas y marginales
+## Distribución conjunta y marginal de probabilidades 
 
 ![joint_marginal](joint_marginal.jpg)
 
@@ -378,7 +418,6 @@ Por ejemplo, la probabilidad condicional de haber tenido un "affair" dado que el
 \end{align}
 
 ---
-
 ## Distribuciones condicionales 
 
 .pull-left[
@@ -404,8 +443,37 @@ joint_gender_affair/margin_gender # conditional affair given gender
 # can also be computed using prop.table(ctable,1)
 ```
 
+---
+## Frecuencias, ...
+--
+
+.pull-left[
+### De donde vienen?
+
+]
+.pull-right[
+![confusion](https://media.giphy.com/media/iHe7mA9M9SsyQ/giphy.gif)
+]
+
+--
+
+Pensemos en una tabla I-por-2: 
+
+
+- Las frecuencias en cada fila son generadas por $I$ variables Binomiales $X_{i}$?
+
+
+--
+
+- Las frecuencias en cada celda son generadas por una variable Multinomial $X$ con $I \times 2$ posibles valores $ij$.
+
+--
+
+- Las frecuencias en cada celda son generadas por $I \times 2$ variables Poisson con parámetros $\lambda_{ij}$ respectivamente? 
+
 
 ---
+
 ## Independencia estadística
 
 - Recuerden, dos variables $X$ y $Y$ son independientes si al saber algo sobre $X$ no aprendemos nada sobre $Y$, y viceversa: $\mathbb{P}(Y|X) = \mathbb{P}(Y)$.
@@ -419,7 +487,7 @@ Supongamos que el 60% de la población son mujeres, y el 50% ha tenido un "affai
 
 .full-width[.content-box-red[
 .bold[Pregunta]:
-Si la probabilidad de tener una aventura fuera independiente del género, cual sería la probabilidad de que, al seleccionar una persona al azar, encontremos una mujer que ha tenido un "affair"? 
+Si la probabilidad de tener un "affair" fuera independiente del género, cual sería la probabilidad de que, al seleccionar una persona al azar, encontremos una mujer que ha tenido un "affair"? 
 ]
 ]
 

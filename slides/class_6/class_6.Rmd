@@ -84,6 +84,7 @@ En lo que sigue vamos a usar este ejemplo para estudiar:
 ---
 ### Test de indepencia estadística 
 
+Un primer paso en el ana
 
 
 ---
