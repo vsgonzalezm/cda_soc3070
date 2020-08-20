@@ -282,7 +282,7 @@ glimpse(coins200)
 ```
 
 ```
-##  int [1:10000] 89 96 124 110 97 96 90 92 99 93 ...
+##  int [1:10000] 94 101 98 96 90 106 97 103 96 99 ...
 ```
 
 ```r
@@ -292,10 +292,10 @@ print(moments)
 
 ```
 ## $mean
-## [1] 100.0751
+## [1] 99.946
 ## 
 ## $var
-## [1] 49.59782
+## [1] 48.84017
 ```
 
 ---
@@ -522,7 +522,7 @@ ll(p=0.1,n=100,k=82); ll(p=0.7,n=100,k=82)
 
 
 ```r
-# Evaluate the log-likelihood function for many possible combinatios values of p
+# Evaluate the log-likelihood function for many possible values of p
 
 parameter_space &lt;- tibble(p=seq(0,1,by=0.01)) %&gt;% 
   rowwise() %&gt;% mutate(loglik = ll(p,n=100,k=82)) 
@@ -618,7 +618,7 @@ class: inverse, center, middle
 ##"Sampling distribution" de una proporción
 
 
-- `\(\mathbb{Var}\big(\hat{p}\big)\)` ?
+- `\(\mathbb{Var}\big(\hat{p}\big)\)` o "Error Estándar" (SE)?
 
 --
 
@@ -656,14 +656,102 @@ class: inverse, center, middle
 - Importante resultado teórico: la sampling distribution de `\(\hat{p}\)` es _asintóticamente_ normal:
 
 `$$\hat{p} \sim \mathcal{N}(\mu,\sigma)$$`
+- `\(\mu = p \quad\)` y `\(\quad \sigma = \sqrt{\frac{p(1-p)}{n}}\)`
 
+--
 
-  - `\(\mu = p\)` 
-  
-  - `\(\sigma = \sqrt{\frac{p(1-p)}{n}}\)`
+Podemos usar este resultado para construir un intervalo de confianza para `\(\hat{p}\)`, al (1 - `\(\alpha\)`)% de confianza, de la siguiente manera:
 
+`\begin{align}
+  95\% \text{ CI}_{\hat{p}} &amp;= \hat{p} \pm 1.96 \times SE \\ \\
+          &amp;=\hat{p} \pm 1.96  \sqrt{\frac{p(1-p)}{n}} 
+\end{align}`
 
 ---
+##"Sampling distribution" de una proporción
+
+.bold[Ilustración via simulación]
+
+
+```r
+# Theoretical parameters of Bernoulli random variable X: "tosing a coin"
+p = 0.35
+
+# Our sample: a random sample of 500 coin toses 
+n = 500
+our_sample &lt;- rbinom(n,size=1,prob=p); our_sample %&gt;% glimpse()
+```
+
+```
+##  int [1:500] 1 0 0 0 0 1 1 0 1 0 ...
+```
+
+```r
+p_hat &lt;- mean(our_sample); p_hat
+```
+
+```
+## [1] 0.348
+```
+
+---
+##"Sampling distribution" de una proporción
+
+.bold[Ilustración via simulación]
+
+
+```r
+#  Demonstration of the distrution of p_hat across 1000 samples of size 500.
+p_hat_n = NULL
+for (i in 1:1000) {
+  a_sample &lt;- rbinom(n,size=1,prob=p)
+  p_hat_n[i] &lt;- mean(a_sample)
+}
+```
+
+```
+##  num [1:1000] 0.342 0.334 0.33 0.372 0.34 0.346 0.37 0.356 0.324 0.35 ...
+```
+
+--
+
+
+```r
+# mean of p_hat_n  = p
+moment_1 &lt;- c(mean_samp_dis = mean(p_hat_n), our_estimate_p= p_hat)
+```
+
+```
+##  mean_samp_dis our_estimate_p 
+##       0.349816       0.348000
+```
+
+--
+
+
+```r
+# sd of p_hat_n  = sqrt(p*(1-p)/n)
+moment_2 &lt;- c(sd_samp_dis = sd(p_hat_n), our_estimate_sd= sqrt((p_hat*(1-p_hat))/n))
+```
+
+```
+##     sd_samp_dis our_estimate_sd 
+##      0.02050587      0.02130239
+```
+
+---
+##"Sampling distribution" de una proporción
+
+.bold[Ilustración via simulación]
+
+
+
+
+![](class_4_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+
+---
+
+
 class: inverse, center, middle
 
 .huge[

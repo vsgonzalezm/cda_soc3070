@@ -393,8 +393,6 @@ data_norm <- with(density(mydata$normal), data.frame(x, y))
 plot <- data_bin %>% ggplot(aes(x=x)) +
     geom_line(aes(y=y, color="red"), size=1.5, alpha=0.8) +
     geom_line(data =data_norm, aes(y=y, color="blue"), size=1.5, alpha=0.7) +
-    geom_ribbon(data = data_norm %>% filter(x >= qnorm(0.975)), aes(ymin = 0, ymax = y), fill="blue", colour="blue", alpha=0.5) +
-    geom_ribbon(data = data_norm %>% filter(x <= qnorm(0.025)), aes(ymin = 0, ymax = y), fill="blue", colour="blue", alpha=0.5) +
     xlim(-4,4) +
     labs(y="f(y)", x="y", title="Probability function of Y") +
      scale_color_viridis_d(name = "",
@@ -589,7 +587,7 @@ ll(p=0.1,n=100,k=82); ll(p=0.7,n=100,k=82)
 
 ```{r, include=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
 
-# Evaluate the log-likelihood function for many possible combinatios values of p
+# Evaluate the log-likelihood function for many possible values of p
 
 parameter_space <- tibble(p=seq(0,1,by=0.01)) %>% 
   rowwise() %>% mutate(loglik = ll(p,n=100,k=82)) 
@@ -688,7 +686,7 @@ class: inverse, center, middle
 ##"Sampling distribution" de una proporción
 
 
-- $\mathbb{Var}\big(\hat{p}\big)$ ?
+- $\mathbb{Var}\big(\hat{p}\big)$ o "Error Estándar" (SE)?
 
 --
 
@@ -726,14 +724,106 @@ $$\sigma_{\hat{p}} =  \frac{\sigma}{\sqrt{n}} =  \sqrt{\frac{p(1-p)}{n}}$$
 - Importante resultado teórico: la sampling distribution de $\hat{p}$ es _asintóticamente_ normal:
 
 $$\hat{p} \sim \mathcal{N}(\mu,\sigma)$$
+- $\mu = p \quad$ y $\quad \sigma = \sqrt{\frac{p(1-p)}{n}}$
 
+--
 
-  - $\mu = p$ 
-  
-  - $\sigma = \sqrt{\frac{p(1-p)}{n}}$
+Podemos usar este resultado para construir un intervalo de confianza para $\hat{p}$, al (1 - $\alpha$)% de confianza, de la siguiente manera:
 
+\begin{align}
+  95\% \text{ CI}_{\hat{p}} &= \hat{p} \pm 1.96 \times SE \\ \\
+          &=\hat{p} \pm 1.96  \sqrt{\frac{p(1-p)}{n}} 
+\end{align}
 
 ---
+##"Sampling distribution" de una proporción
+
+.bold[Ilustración via simulación]
+
+```{r}
+# Theoretical parameters of Bernoulli random variable X: "tosing a coin"
+p = 0.35
+
+# Our sample: a random sample of 500 coin toses 
+n = 500
+our_sample <- rbinom(n,size=1,prob=p); our_sample %>% glimpse()
+p_hat <- mean(our_sample); p_hat
+
+```
+
+---
+##"Sampling distribution" de una proporción
+
+.bold[Ilustración via simulación]
+
+```{r}
+#  Demonstration of the distrution of p_hat across 1000 samples of size 500.
+p_hat_n = NULL
+for (i in 1:1000) {
+  a_sample <- rbinom(n,size=1,prob=p)
+  p_hat_n[i] <- mean(a_sample)
+}
+```
+```{r,echo=FALSE}
+p_hat_n %>% glimpse()
+```
+
+--
+
+```{r}
+# mean of p_hat_n  = p
+moment_1 <- c(mean_samp_dis = mean(p_hat_n), our_estimate_p= p_hat)
+```
+```{r,echo=FALSE} 
+print(moment_1) 
+```
+
+--
+
+```{r}
+# sd of p_hat_n  = sqrt(p*(1-p)/n)
+moment_2 <- c(sd_samp_dis = sd(p_hat_n), our_estimate_sd= sqrt((p_hat*(1-p_hat))/n))
+```
+```{r,echo=FALSE} 
+print(moment_2) 
+```
+
+---
+##"Sampling distribution" de una proporción
+
+.bold[Ilustración via simulación]
+
+
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=12}
+library("tidyverse")
+
+# our estimate, z-score
+
+ci_ll = p_hat - 1.96*(((p_hat*(1-p_hat))/n)^(1/2))
+ci_ul = p_hat + 1.96*(((p_hat*(1-p_hat))/n)^(1/2))
+
+samp_distrib <- with(density(p_hat_n), data.frame(x, y)) 
+
+plot <- samp_distrib %>% ggplot(aes(x=x, y=y)) +
+    geom_line(aes(color=""), size=1.5, alpha=0.8) +
+    geom_ribbon(data = samp_distrib %>% as_tibble() %>% filter(x >= ci_ul), aes(ymin = 0, ymax = y), alpha=0.5) +
+    geom_ribbon(data = samp_distrib %>% as_tibble() %>% filter(x <= ci_ll), aes(ymin = 0, ymax = y), alpha=0.5) +
+    labs(y="f(y)", x="y", title="Sampling Distribution p_hat") +
+    scale_color_viridis_d() +
+    theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+    axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+    legend.text = element_text(size = 16), legend.position="none") +
+    geom_vline(xintercept = p_hat, color = "blue", size=1.5) +
+    annotate(geom="text", x=p_hat+0.017, y=20, label='bold("nuestro p_hat")', color="black", parse=TRUE, size=8) 
+
+print(plot)
+```
+
+---
+
+
 class: inverse, center, middle
 
 .huge[
