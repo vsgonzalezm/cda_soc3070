@@ -88,8 +88,186 @@ En lo que sigue vamos a usar este ejemplo para estudiar:
 ]
 
 ---
-### Test de indepencia estadística 
+### Test `\(\chi^{2}\)` de indepencia estadística 
 
+Primer paso, testear que exista _algo_ de asociación: ¿son estas tablas _suficientemente distintas_? 
+
+
+
+.pull-left[
+.bold[Frecuencias observadas]
+
+```
+##         everaffair
+## sex      At least once Never
+##   female            72   243
+##   male              78   208
+```
+]
+
+--
+
+.pull-right[
+.bold[Frecuencias esperadas bajo independencia]
+
+```
+##        At least once   Never
+## female      78.61897 236.381
+## male        71.38103 214.619
+```
+]
+
+Donde cada frecuencia esperada bajo independencia está dada por: `\(\tilde{n}_{ij} = n \cdot \hat{p}_{i+} \cdot  \hat{p}_{+j}\)`
+
+--
+
+- El test (Pearson) `\(\chi^{2}\)` mide el grado asociación en la tabla de la siguiente manera:
+
+.content-box-blue[
+`$$\text{test} \chi^{2}=\sum_{\text{all k: } i,j} \frac{(n_{ij} - \tilde{n}_{ij})^{2}}{\tilde{n}_{ij}}$$`
+]
+
+Un valor alto en el test de `\(\chi^{2}\)` sugiere que las variables no son independientes.
+--
+Pero, ¿cuánto es "alto"?
+
+---
+### Test `\(\chi^{2}\)` de indepencia estadística 
+
+.bold[Nota:]
+- Si `\(Z_{1}, \dots , Z_{k}\)` son variables independientes y cada `\(Z \sim \mathcal{N}(0,1)\)`, 
+- Entonces la variable `\(Y = \sum_{k} Z^{2} \sim \chi^{2}_{k}\)`. `\(Y\)` distribuye `\(\chi^{2}\)` con `\(k\)` grados de libertad.
+
+--
+
+.bold[Heuristica:]
+
+- Si `\(X ~ \text{Binomial(n,p)}\)` entonces, asintóticamente `\(\frac{X - np}{\sqrt{np(1-p)}}  \sim \mathcal{N}(0,1)\)`
+- Por tanto, `\(\sum_{k} \frac{ (X - np)^{2} }{np(1-p)}  \sim \chi^{2}_{k}\)`  
+
+--
+
+.content-box-blue[
+Pearson probó que tambien `\(\text{test}\chi^{2} \sim \chi_{df}^{2}\)` :
+`$$\sum_{\text{all } i,j} \frac{(n_{ij} - \tilde{n}_{ij})^{2}}{\tilde{n}_{ij}} = \sum_{\text{all k: } i,j} \frac{(n_{ij} - n\tilde{p}_{ij})^{2}}{n\tilde{p}_{ij}} \sim \chi^{2}_{df} \quad \quad \text{donde } \quad  df= (I-1)(J-1)$$`
+
+]
+---
+### Test `\(\chi^{2}\)` de indepencia estadística 
+
+.pull-left[
+.bold[Frecuencias observadas]
+
+```
+##         everaffair
+## sex      At least once Never
+##   female            72   243
+##   male              78   208
+```
+]
+
+.pull-right[
+.bold[Frecuencias esperadas bajo independencia]
+
+```
+##        At least once   Never
+## female      78.61897 236.381
+## male        71.38103 214.619
+```
+]
+
+&lt;br&gt;
+--
+
+.bold[(O-E)^2/E]
+
+
+```r
+(((ctable - ctable_independence)^(2))/ctable_independence) %&gt;% print()
+```
+
+```
+##         everaffair
+## sex      At least once     Never
+##   female     0.5572541 0.1853395
+##   male       0.6137589 0.2041327
+```
+
+
+--
+
+.bold[Test Chi-2 : ∑ (O-E)^2/E]
+
+
+```
+## [1] 1.560485
+```
+
+---
+### Test `\(\chi^{2}\)` de indepencia estadística 
+
+
+.pull-left[
+![](class_6_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+.bold[Para ser claros:] Si la hipótesis de independencia ( `\(H_{0}\)` ) es cierta, nuestro `\(\text{test} \chi^{2}\)` distribuye `\(\chi^{2}\)` con  `\(df= (I-1)(J-1)=1\)`
+]
+
+--
+
+.pull-right[
+.bold[p-value]
+
+`$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test} \chi^{2} \mid H_{0})$$`
+
+```r
+1- pchisq(our_chi2,df=1)
+```
+
+```
+## [1] 0.2115942
+```
+
+]
+
+
+---
+### Test `\(\chi^{2}\)` de indepencia estadística 
+
+.pull-left[
+![](class_6_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+.bold[Para ser claros:] Si la hipótesis de independencia ( `\(H_{0}\)` ) es cierta, nuestro `\(\text{test} \chi^{2}\)` distribuye `\(\chi^{2}\)` con  `\(df= (I-1)(J-1)=1\)`
+]
+
+
+.pull-right[
+.bold[p-value]
+
+`$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test} \chi^{2} \mid H_{0})$$`
+
+```r
+1- pchisq(our_chi2,df=1)
+```
+
+```
+## [1] 0.2115942
+```
+
+
+
+```r
+# Versión automática
+chisq.test(ctable,correct = FALSE)
+```
+
+```
+## 
+## 	Pearson's Chi-squared test
+## 
+## data:  ctable
+## X-squared = 1.5605, df = 1, p-value = 0.2116
+```
+
+]
 
 
 ---
@@ -275,7 +453,7 @@ radicalmente el resultado:
 
 - Parámetro de interés en el modelo más importante de datos categóricos: regresión logística.
 
-- `\(\theta\)` está formulada para tablas de 2-por-2, pero también puede calcularse para tablas de mayor dimensión: toda tabla `\(n\)`-ways, `\(I \times J\)`, puede ser re-escrita como  `\((I-1) \times (J-1) \times (n-1)\)` tablas de 2-por-2.
+- `\(\theta\)` está formulada para tablas de 2-por-2, pero también puede calcularse para tablas de mayor dimensión: toda tabla `\(n\)`-ways, `\(I \cdot J\)`, puede ser re-escrita como  `\((I-1) \cdot (J-1) \cdot (n-1)\)` tablas de 2-por-2.
 
 ---
 #### Odds
@@ -319,7 +497,7 @@ p &amp;= \frac{3}{1 + 3} \\ \\
 
 .pull-right[
 
-.content-box-grey[
+.content-box-blue[
 .tiny[.bold[Derivación]:
 `\begin{align}
   \text{odds} &amp;= \frac{p}{1-p}  \text{  } \\ \\
@@ -399,7 +577,7 @@ En nuestro ejemplo,
 `\begin{align}
   \hat{\theta} &amp;= \frac{\hat{p}_{H}/(1 - \hat{p}_{H})}{\hat{p}_{M}/(1 - \hat{p}_{M})} \\ \\
    &amp;= \frac{\frac{n_{21}}{n_{2+}} / \frac{n_{22}}{n_{2+}}}{\frac{n_{11}}{n_{1+}}/ \frac{n_{12}}{n_{1+} }} \\ \\
-   &amp;= \frac{n_{21} \times n_{12}}{n_{22} \times n_{11}} \\ \\
+   &amp;= \frac{n_{21} \cdot n_{12}}{n_{22} \cdot n_{11}} \\ \\
 \end{align}`
 ]
 
@@ -601,10 +779,10 @@ En nuestro ejemplo, tomando género como variable dependiente, donde `\(\hat{p}_
 .full-width[La odds ratio es inmune a cambios en la distribución marginal de las variables, capturando sólo la asociación neta entre ellas ("margin-free association")] 
 
 .pull-left[
-`\(\hat{\theta}_{1980} =  \frac{160 \times 20}{20 \times 20} = 8\)`
+`\(\hat{\theta}_{1980} =  \frac{160 \cdot 20}{20 \cdot 20} = 8\)`
 ]
 .pull-right[
-`\(\hat{\theta}_{2020} =  \frac{160 \times 80}{20 \times 80} = \frac{160 \times (4 \times 20)}{20 \times (4 \times 20)} = 8\)`
+`\(\hat{\theta}_{2020} =  \frac{160 \cdot 80}{20 \cdot 80} = \frac{160 \cdot (4 \cdot 20)}{20 \cdot (4 \cdot 20)} = 8\)`
 ]
 ]
  
@@ -623,7 +801,7 @@ Transformando `\(\theta\)` a escala logarítmica permite mapear  `\([0,\infty+) 
 
 `\begin{align}
   \theta &amp;=  \frac{1}{\theta^{*}}  \quad \text{entonces} \\ \\
-  \log(\theta) &amp;= -1 \times \log(\theta^{*})
+  \log(\theta) &amp;= -1 \cdot \log(\theta^{*})
 \end{align}`
 
 --
@@ -669,7 +847,7 @@ log(0.05)
 ]
 
 .figure-right[
-![](class_6_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+![](class_6_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -739,8 +917,8 @@ Para responder esta pregunta debemos conocer la .bold[sampling distribution] de 
 Podemos usar este resultado para construir un intervalo de confianza para el log Odds ratio, al 95% de confianza, de la siguiente manera:
 
 `\begin{align}
-  95\% \text{ CI}_{\log \hat{\theta}} &amp;= \log \hat{\theta} \pm 1.96 \times SE \\ \\
-          &amp;= \log \hat{\theta} \pm 1.96 \times \sqrt{ \frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}} } 
+  95\% \text{ CI}_{\log \hat{\theta}} &amp;= \log \hat{\theta} \pm 1.96 \cdot SE \\ \\
+          &amp;= \log \hat{\theta} \pm 1.96 \cdot \sqrt{ \frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}} } 
 \end{align}`
 
 #### Intervalo de confianza para Odds ratio
@@ -748,7 +926,7 @@ Podemos usar este resultado para construir un intervalo de confianza para el log
 Podemos obtener un intervalo de confianza estándar para la Odds ratio, al 95% de confianza, de la siguiente manera:
 
 `\begin{align}
-  95\% \text{ CI}_{\hat{\theta}} &amp;= e^{\log \hat{\theta} \pm 1.96 \times \sqrt{ \frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}}} } 
+  95\% \text{ CI}_{\hat{\theta}} &amp;= e^{\log \hat{\theta} \pm 1.96 \cdot \sqrt{ \frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}}} } 
 \end{align}`
 
 ---
@@ -869,11 +1047,11 @@ samp_dist_theta %&gt;% glimpse();  samp_dist_logtheta %&gt;% glimpse()
 La distribución de nuestras estimaciones de `\(\hat{\theta}\)` y `\(\log \hat{\theta}\)` se ven así:
 
 .pull-left[
-![](class_6_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
+![](class_6_files/figure-html/unnamed-chunk-36-1.png)&lt;!-- --&gt;
 ]
 
 .pull-right[
-![](class_6_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
+![](class_6_files/figure-html/unnamed-chunk-37-1.png)&lt;!-- --&gt;
 ]
 
 ---
