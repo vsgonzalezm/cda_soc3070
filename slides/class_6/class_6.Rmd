@@ -85,6 +85,11 @@ En lo que sigue vamos a usar este ejemplo para estudiar:
 ]
 
 ---
+class: inverse, center, middle
+
+## Tests de Independencia 
+
+---
 ### Test $\chi^{2}$ de indepencia estadística 
 
 Primer paso, testear que exista _algo_ de asociación: ¿son estas tablas _suficientemente distintas_? 
@@ -126,7 +131,7 @@ Donde cada frecuencia esperada bajo independencia está dada por: $\tilde{n}_{ij
 - El test (Pearson) $\chi^{2}$ mide el grado asociación en la tabla de la siguiente manera:
 
 .content-box-blue[
-$$\text{test} \chi^{2}=\sum_{\text{all k: } i,j} \frac{(n_{ij} - \tilde{n}_{ij})^{2}}{\tilde{n}_{ij}}$$
+$$\text{test } \chi^{2}=\sum_{\text{all k: } i,j} \frac{(n_{ij} - \tilde{n}_{ij})^{2}}{\tilde{n}_{ij}}$$
 ]
 
 Un valor alto en el test de $\chi^{2}$ sugiere que las variables no son independientes.
@@ -151,7 +156,7 @@ Pero, ¿cuánto es "alto"?
 
 .content-box-blue[
 Pearson probó que tambien $\text{test}\chi^{2} \sim \chi_{df}^{2}$ :
-$$\sum_{\text{all } i,j} \frac{(n_{ij} - \tilde{n}_{ij})^{2}}{\tilde{n}_{ij}} = \sum_{\text{all k: } i,j} \frac{(n_{ij} - n\tilde{p}_{ij})^{2}}{n\tilde{p}_{ij}} \sim \chi^{2}_{df} \quad \quad \text{donde } \quad  df= (I-1)(J-1)$$
+$$\sum_{\text{all } i,j} \frac{(n_{ij} - \tilde{n}_{ij})^{2}}{\tilde{n}_{ij}} = \sum_{\text{all } i,j} \frac{(n_{ij} - n\tilde{p}_{ij})^{2}}{n\tilde{p}_{ij}} \sim \chi^{2}_{df} \quad \quad \text{donde } \quad  df= (I-1)(J-1)$$
 
 ]
 ---
@@ -214,7 +219,7 @@ plot <- ggplot(data = mydata, mapping = aes(x = x)) +
 
 print(plot)
 ```
-.bold[Para ser claros:] Si la hipótesis de independencia ( $H_{0}$ ) es cierta, nuestro $\text{test} \chi^{2}$ distribuye $\chi^{2}$ con  $df= (I-1)(J-1)=1$
+.bold[Para ser claros:] Si la hipótesis de independencia ( $H_{0}$ ) es cierta, nuestro $\text{test } \chi^{2}$ distribuye $\chi^{2}$ con  $df= (I-1)(J-1)=1$
 ]
 
 --
@@ -222,7 +227,7 @@ print(plot)
 .pull-right[
 .bold[p-value]
 
-$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test} \chi^{2} \mid H_{0})$$
+$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test } \chi^{2} \mid H_{0})$$
 ```{r}
 1- pchisq(our_chi2,df=1)
 ```
@@ -254,14 +259,14 @@ plot <- ggplot(data = mydata, mapping = aes(x = x)) +
 
 print(plot)
 ```
-.bold[Para ser claros:] Si la hipótesis de independencia ( $H_{0}$ ) es cierta, nuestro $\text{test} \chi^{2}$ distribuye $\chi^{2}$ con  $df= (I-1)(J-1)=1$
+.bold[Para ser claros:] Si la hipótesis de independencia ( $H_{0}$ ) es cierta, nuestro $\text{test } \chi^{2}$ distribuye $\chi^{2}$ con  $df= (I-1)(J-1)=1$
 ]
 
 
 .pull-right[
 .bold[p-value]
 
-$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test} \chi^{2} \mid H_{0})$$
+$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test } \chi^{2} \mid H_{0})$$
 ```{r}
 1- pchisq(our_chi2,df=1)
 ```
@@ -274,11 +279,152 @@ chisq.test(ctable,correct = FALSE)
 
 ]
 
+---
+### Test Likelihood-Ratio $G^{2}$
+
+- .bold[Recordar]:  El MLE $\hat{\beta}$ de; parámetro $\beta$ es el valor que maximiza la probabilidad de ocurrencia los datos. Decimos que tal es el valor más "plausible" del parámetro 
+  - Formalmente: $\hat{\boldsymbol{\beta}}_{MLE} = \underset{\beta}{\arg\max\ } \mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X})$
+  
+- El estimador es una función de los datos: $\hat{\beta}_{MLE} = f(x_{1}, x_{2}, \dots, x_{n})$
+
+<br>
+--
+
+.bold[Test Likelihood-Ratio] $G^{2}$
+
+
+$$G^{2} = -2 \log \Bigg(  \frac{\hat{\beta}_{MLE} \text{ bajo } H_{0}}{\hat{\beta}_{MLE} \text{ sin restricción}}\Bigg)$$
+
+--
+
+- Si $H_{0}$ es falsa el ratio generalmente es una número negativo muy cercano a cero. Por tanto, $G^2$ será un número grande y positivo.
+
+- $G^{2} \sim \chi^{2}_{df=k} \quad \quad \text{donde k = # parametros sin restricciones - # parameteros bajo } H_{0}$
+
 
 ---
+### Test Likelihood-Ratio $G^{2}$
+
+
+.bold[Test Likelihood-Ratio] $G^{2}$, en el caso de evaluar independencia en una tabla de contingencia 2-ways:
+
+
+$$G^{2} = -2 \log \Bigg(  \frac{\hat{\beta}_{MLE} \text{ bajo } H_{0}}{\hat{\beta}_{MLE} \text{ sin restricción}}\Bigg) = -2 \log \frac{f(\tilde{n}_{ij},  \dots, \tilde{n}_{IJ})}{f(n_{ij},  \dots, n_{IJ})}$$
+
+
+<br>
+--
+En tabla de contingencia 2-ways donde las frecuencias vienen de una distribución Multinomial, :
+
+
+.content-box-blue[
+Pearson demostró que $G^{2} \sim \chi_{df}^{2}$:
+
+$$2 \sum_{\text{all } i,j} n_{ij} \log \Big( \frac{n_{ij}}{\tilde{n}_{ij}} \Big) \quad \quad \text{donde } \quad  df= (I
+-1)(J-1)$$
+]
+
+--
+
+- $G^{2}=0$ cuando $n_{ij}=\tilde{n}_{ij} \quad \text{ para todo } i,j$
+
+- $G^{2}$ "grande" sugiere que variables no son independientes
+
+---
+### Test Likelihood-Ratio $G^{2}$
+
+.pull-left[
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=6, fig.width=8.5}
+library("tidyverse")
+
+our_g2 = 2*sum(ctable*log((ctable/ctable_independence))); print(our_g2)
+df=1
+
+mydata <- data_frame(x = seq(from = 0, to = 10, by =0.01), chi2 = dchisq(x,df))
+
+plot <- ggplot(data = mydata, mapping = aes(x = x)) +
+    ## Entire curve
+    geom_path(aes(y=chi2,color=""), size=1.5, alpha=0.8) +
+  labs(y="f(y)", x="y", title="Probability function X^2 con df=1") +
+     scale_color_viridis_d() +
+      theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+      axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+      legend.text = element_text(size = 18), legend.position="none") +
+      geom_vline(xintercept = our_chi2, color = "blue", size=1.5) +
+      annotate(geom="text", x=our_g2+2.8, y=3.7, label='bold("nuestro test G^2: 1.56")', color="black", parse=TRUE, size=8) 
+
+print(plot)
+```
+Si la hipótesis de independencia ( $H_{0}$ ) es cierta, nuestro $\text{test } G^{2}$ distribuye $\chi^{2}$ con $df= (I-1)(J-1)=1$
+]
+
+--
+
+.pull-right[
+.bold[p-value]
+
+$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test } G^{2} \mid H_{0})$$
+```{r}
+1- pchisq(our_g2,df=1)
+```
+
+]
+
+---
+### Test Likelihood-Ratio $G^{2}$
+
+.pull-left[
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=6, fig.width=8.5}
+library("tidyverse")
+
+our_g2 = 2*sum(ctable*log((ctable/ctable_independence))); print(our_g2)
+df=1
+
+mydata <- data_frame(x = seq(from = 0, to = 10, by =0.01), chi2 = dchisq(x,df))
+
+plot <- ggplot(data = mydata, mapping = aes(x = x)) +
+    ## Entire curve
+    geom_path(aes(y=chi2,color=""), size=1.5, alpha=0.8) +
+  labs(y="f(y)", x="y", title="Probability function X^2 con df=1") +
+     scale_color_viridis_d() +
+      theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+      axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+      legend.text = element_text(size = 18), legend.position="none") +
+      geom_vline(xintercept = our_chi2, color = "blue", size=1.5) +
+      annotate(geom="text", x=our_g2+2.8, y=3.7, label='bold("nuestro test G^2: 1.56")', color="black", parse=TRUE, size=8) 
+
+print(plot)
+```
+Si la hipótesis de independencia ( $H_{0}$ ) es cierta, nuestro $\text{test } G^{2}$ distribuye $\chi^{2}$ con $df= (I-1)(J-1)=1$
+]
+
+
+.pull-right[
+.bold[p-value]
+
+$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test } G^{2} \mid H_{0})$$
+```{r}
+1- pchisq(our_g2,df=1)
+```
+
+```{r, message=FALSE}
+# Versión automática
+library("DescTools")
+GTest(ctable, correct="none")
+```
+
+]
+
+---
+class: inverse, center, middle
+
+## Medidas de Asociación
+
+---
+
 ### Diferencia de proporciones
 
-- Supongamos que tenemos una tabla de contingencia 2-ways que cruza las variables binarias $X$ (independiente) y $Y$ (dependiente).  Éxito se codifica con valor 1 y el fracaso con el valor cero.
+- Supongamos que tenemos una tabla de contingencia 2-ways que cruza las variables binarias $X$ (independiente) y $Y$ (dependiente).  Éxito se codifica con valor 1 y el fracaso con el valor 0.
 
 - Para detectar la asociación necesitamos medir diferencias en la distribución de $Y$ condicional en $X$
 
