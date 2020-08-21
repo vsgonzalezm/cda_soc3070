@@ -421,6 +421,27 @@ class: inverse, center, middle
 ## Medidas de Asociación
 
 ---
+##  Asociación en tablas de contingencia 
+
+Retomando nuestro ejemplo,
+
+.pull-left[
+$f(\text{everaffair} \mid \text{sex})$
+```{r}
+prop.table(ctable,1)
+```
+
+
+$f(\text{everaffair})$
+```{r}
+prop.table(apply(ctable,2,sum))
+```
+
+]
+
+
+
+---
 
 ### Diferencia de proporciones
 
@@ -463,7 +484,7 @@ En nuestro ejemplo:
 prop.table(ctable,2)
 ```
 
-Si tratamos género como variable independiente y definimos "mujeres" como la categoría de éxito, la diferencia en las proporciones es $\delta = 0.48 - 0.54 = -0.06$. 
+Si tratamos género como variable dependiente y definimos "mujeres" como la categoría de éxito, la diferencia en las proporciones es $\delta = 0.48 - 0.54 = -0.06$. 
 
 ---
 ### Diferencia de proporciones
@@ -527,7 +548,7 @@ En nuestro ejemplo:
 prop.table(ctable,2)
 ```
 
-Si tratamos género como variable independiente y definimos "mujeres" como la categoría de éxito, la diferencia en las proporciones es $RR = 0.48/0.54 = 0.89$. 
+Si tratamos género como variable dependiente y definimos "mujeres" como la categoría de éxito, la diferencia en las proporciones es $RR = 0.48/0.54 = 0.89$. 
 
 ---
 ### Riesgo Relativo (RR)
@@ -588,7 +609,11 @@ radicalmente el resultado:
 
 - Parámetro de interés en el modelo más importante de datos categóricos: regresión logística.
 
-- $\theta$ está formulada para tablas de 2-por-2, pero también puede calcularse para tablas de mayor dimensión: toda tabla $n$-ways, $I \cdot J$, puede ser re-escrita como  $(I-1) \cdot (J-1) \cdot (n-1)$ tablas de 2-por-2.
+--
+
+- $\theta$ está formulada para tablas de 2-por-2, pero también puede calcularse para tablas de mayor dimensión:
+
+  - Toda tabla $n$-ways, $I \cdot J$, puede ser re-escrita como  $(I-1) \cdot (J-1) \cdot (n-1)$ tablas de 2-por-2.
 
 ---
 #### Odds
@@ -605,9 +630,9 @@ La Odds Ratio es el ratio de dos "odds", donde las "odds" una variable binaria $
 <br>
 --
 
-Por ejemplo, si $Y$ tiene una probabilidad de éxito $p=0.75$, las odds de éxito son $\text{odds}=\frac{0.75}{0.25} = 3$. 
+Por ejemplo, si $Y$ tiene una probabilidad de éxito $p=0.75$, las odds de éxito son $\text{odds}=\frac{0.75}{0.25} = 3$
 
-- Esto significa que el éxito es 3 veces más probable que el fracaso.
+- Esto significa que las "chances" éxito son 3:1
 
 
 ---
@@ -652,7 +677,7 @@ Las .bold[odds] resumen la distribución de una sola variable binaria. Para medi
 
 --
 
-Si $X$ e $Y$ son las variables independiente y dependiente, la distribución condicional $f(Y \mid X)$ se puede resumir con dos .bold[odds]:
+Si $X$ e $Y$ son las variables binarias -- independiente y dependiente -- la distribución condicional $f(Y \mid X)$ se puede resumir con dos .bold[odds]:
 
 \begin{align}
   \text{odds}_{0} &=  \frac{\mathbb{P}(Y=1 | X=0) }{1 - \mathbb{P}(Y=1 | X=0) } \quad \text{y} \\ \\
@@ -661,7 +686,7 @@ Si $X$ e $Y$ son las variables independiente y dependiente, la distribución con
 
 --
 
-El .bold[odds *ratio*], por tanto, es:
+La .bold[odds *ratio*], por tanto, es:
 
 \begin{align}
   \theta &= \frac{\text{odds}_{1}}{\text{odds}_{0}} \\ \\\
@@ -703,7 +728,7 @@ ctable
 .pull-right[
 \begin{align}
   \hat{\theta} &= \frac{\hat{p}_{H}/(1 - \hat{p}_{H})}{\hat{p}_{M}/(1 - \hat{p}_{M})} \\ \\
-   &= \frac{\frac{n_{21}}{n_{2+}} / \frac{n_{22}}{n_{2+}}}{\frac{n_{11}}{n_{1+}}/ \frac{n_{12}}{n_{1+} }} \\ \\
+   &= \frac{\frac{n_{21}}{n_{2+}} / \frac{n_{22}}{n_{2+}}}{\frac{n_{11}}{n_{1+}}/ \frac{n_{12}}{n_{1+} }} = \frac{n_{21}/n_{22}}{n_{11}/n_{12}}  \\ \\
    &= \frac{n_{21} \cdot n_{12}}{n_{22} \cdot n_{11}} \\ \\
 \end{align}
 ]
@@ -841,6 +866,8 @@ pais_2020
 ]
 ]
 
+--
+
 .full-width[
 .bold[Titular del diario:] _Aumentan oportunidades educacionales, especialmente para la así llamada "primera generación"_
 ]
@@ -853,7 +880,7 @@ pais_2020
 ### Propiedades de la Odds Ratio
 
 
-.bold[Correcto, pero engañoso:] el resultado refleja un .bold[cambio en la distribución marginal] de educación de los hijos, no un cambio en la asociación de las variables. 
+.bold[Correcto, pero parcialmente:] el resultado refleja un .bold[cambio en la distribución marginal] de educación de los hijos, no un cambio en la asociación de las variables. 
 --
  Concretamente, se duplicó la cantidad de gente que termina la universidad, independiente de su origen. 
 
@@ -885,7 +912,7 @@ pais_2020
 
 .pull-bottom[
 
-.full-width[La odds ratio es inmune a cambios en la distribución marginal de las variables, capturando sólo la asociación neta entre ellas ("margin-free association")] 
+.full-width[La odds ratio es "inmune a cambios" en la distribución marginal de las variables, capturando sólo la asociación neta entre ellas ("margin-free association")] 
 
 .pull-left[
 $\hat{\theta}_{1980} =  \frac{160 \cdot 20}{20 \cdot 20} = 8$
@@ -945,24 +972,78 @@ log(0.05)
 
 ]
 
-.figure-right[
-```{r, echo=FALSE}
+.pull-right[
+```{r, echo=FALSE, fig.width= 6}
 units <- tibble(odds = seq(from=0, to=100, by=0.1)) %>% mutate(log_odds = log(odds))
 
-odds_logodds <- units %>% ggplot(aes(x=odds, y=log_odds, colour="")) + geom_line() +
+odds_logodds <- units %>% ggplot(aes(x=odds, y=log_odds, colour="")) + geom_line(size=1.5) +
     scale_color_viridis_d() + guides(fill=FALSE, color=FALSE) +
-    labs(x="Odds ratio", y="log Odds ratio", title = "Odds ratio to log Odds ratio")
-odds_logodds
+    labs(x="Odds ratio", y="log Odds ratio", title = "Odds ratio to log Odds ratio") +
+    theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+    axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+    legend.text = element_text(size = 18), legend.position="none") 
+
+  print(odds_logodds)
 ```
 ]
-
----
-### Relación entre Odds ratio y Riesgo Relativo
 
 ---
 ### No free lunch 
 
 ![paper](paper_22table.png)
+
+
+---
+### Relación entre Odds ratio y Riesgo Relativo
+
+.pull-left[
+![meme_rr](or_rr.jpg)
+]
+
+--
+
+.pull-right[
+Se puede mostrar que al calcular las odds ratio entre dos grupos 1 y 2, 
+
+$$\theta = RR \cdot \frac{1 - p_{2}}{1 - p_{1}}$$
+<br>
+Por tanto, si las proporciones $p_{1}$ y $p_{2}$ son ambas cercanas a cero, entonces $\theta \approx RR$
+]
+
+---
+class: inverse, center, middle
+
+## Inferencia para Medidas de Asociación
+
+
+---
+### Inferencia para Diferencia de proporciones
+
+Como recordarán de clases anteriores, asintóticamente, la "sampling distribution" de una proporción es:
+
+$$\hat{p} \sim \mathcal{N}(\mu,\sigma) \quad \quad \text{ donde }\mu = p \quad \text{ y }\quad \sigma = \sqrt{p(1-p)/n}$$
+
+--
+
+Por tanto, la "sampling distribution" de la differencia entre dos proporciones _independientes_,  $\delta = \hat{p}_{1} - \hat{p}_{2} \sim$ es:
+
+
+$$\mathcal{N}\Big(\mu_{1} = p_{1}, \sigma_{1} = \sqrt{p_{1}(1-p_{1})/n_{1}}\Big) - \mathcal{N}\Big(\mu_{2} = p_{2},  \sigma_{2} = \sqrt{p_{2}(1-p_{2})/n_{2}}\Big)$$
+--
+
+dado que para variables independiente X e Y: 
+  - $\mathbb{E}(X - Y)  = E(X) -  E(Y)$ y $\mathbb{Var}(X - Y)  = \mathbb{Var}(X) + \mathbb{Var}(Y)$
+
+entonces:
+
+--
+
+.content-box-blue[
+$$\hat{p}_{1} - \hat{p}_{2} \sim \mathcal{N}\Big(\mu_{\delta} = p_{1} - p_{1}, \sigma_{\delta} = \sqrt{p_{1}(1-p_{1})/n_{1} + p_{2}(1-p_{2})/n_{2}}\Big)$$
+]
+
+
+
 ---
 ### Inferencia para la Odds Ratio
 
