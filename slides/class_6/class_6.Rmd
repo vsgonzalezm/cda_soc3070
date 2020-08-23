@@ -1017,6 +1017,34 @@ class: inverse, center, middle
 
 
 ---
+### Inferencia para medidas de Asociación
+
+O, sobre como podemos saber si nuestros resultados no son, o no, producidos por el mero azar.
+
+--
+
+- Para responder esta pregunta debemos conocer la .bold[sampling distribution] de nuestro estimador, especialmente su _variabilidad_.
+
+- Los parámetros que "generan" los datos no varían pero nuestra estimaciones si: de muestra en muestra.
+
+--
+
+<br>
+
+.bold[Caso canónico] es el _promedio muestral_, para el cual sabemos que: $\bar{X} \sim \mathcal{N}(\mu,\frac{\sigma}{\sqrt{n}})$
+ - La desviación estándar del estimador (en este caso, $\frac{\sigma}{\sqrt{n}}$ ) es lo que denominamos .bold[error estándar (SE)].
+
+--
+
+ - Por qué? Si $x_1, \dots, x_n$ son _iid_, entonces:
+\begin{align}
+\mathbb{Var}\big(\bar{X}\big) &= \mathbb{Var}\Big(\frac{x_{i} + ... + x_{n}}{n}\Big) = \frac{1}{n^2} \Big(\mathbb{Var}(x_{i}) + ... + \mathbb{Var}(x_{n})\Big) \\
+ &= \frac{1}{n^2}( \sigma^2 + ... + \sigma^2 ) = \frac{n\sigma^2}{n^2} = \frac{\sigma^2}{n} 
+\end{align}
+
+
+
+---
 ### Inferencia para Diferencia de proporciones
 
 Como recordarán de clases anteriores, asintóticamente, la "sampling distribution" de una proporción es:
@@ -1025,7 +1053,7 @@ $$\hat{p} \sim \mathcal{N}(\mu,\sigma) \quad \quad \text{ donde }\mu = p \quad \
 
 --
 
-Por tanto, la "sampling distribution" de la differencia entre dos proporciones _independientes_,  $\delta = \hat{p}_{1} - \hat{p}_{2} \sim$ es:
+Por tanto, la "sampling distribution" de la diferencia entre dos proporciones _independientes_,  $\hat{\delta} = \hat{p}_{1} - \hat{p}_{2}$, es:
 
 
 $$\mathcal{N}\Big(\mu_{1} = p_{1}, \sigma_{1} = \sqrt{p_{1}(1-p_{1})/n_{1}}\Big) - \mathcal{N}\Big(\mu_{2} = p_{2},  \sigma_{2} = \sqrt{p_{2}(1-p_{2})/n_{2}}\Big)$$
@@ -1042,34 +1070,70 @@ entonces:
 $$\hat{p}_{1} - \hat{p}_{2} \sim \mathcal{N}\Big(\mu_{\delta} = p_{1} - p_{1}, \sigma_{\delta} = \sqrt{p_{1}(1-p_{1})/n_{1} + p_{2}(1-p_{2})/n_{2}}\Big)$$
 ]
 
-
-
 ---
-### Inferencia para la Odds Ratio
+### Inferencia para Diferencia de proporciones
 
-¿Como podemos saber si nuestros resultados no son producidos por el el mero azar?
---
-Para responder esta pregunta debemos conocer la .bold[sampling distribution] de nuestro estimador, especialmente su _variabilidad_.
+Podemos usar este resultado para construir un intervalo de confianza para $\hat{\delta} = \hat{p_{1}} - \hat{p_{2}}$, al (1 - $\alpha$)% de confianza. Para un nivel de significación estadística de $\alpha=0.05$,
 
-<br>
-
-- El caso canónico es el promedio muestral, para el cual sabemos que: $\bar{X} \sim \mathcal{N}(\mu,\frac{\sigma}{\sqrt{n}})$
- - La desviación estándar del estimador (en este caso, $\frac{\sigma}{\sqrt{n}}$ ) es lo que denominamos .bold[error estándar (SE)].
-
---
-
- - Por qué? Si $x_1, \dots, x_n$ son _iid_, entonces:
 \begin{align}
-\mathbb{Var}\big(\bar{X}\big) &= \mathbb{Var}\Big(\frac{x_{i} + ... + x_{n}}{n}\Big) = \frac{1}{n^2} \Big(\mathbb{Var}(x_{i}) + ... + \mathbb{Var}(x_{n})\Big) \\
- &= \frac{1}{n^2}( \sigma^2 + ... + \sigma^2 ) = \frac{n\sigma^2}{n^2} = \frac{\sigma^2}{n} 
+  95\% \text{ CI}_{\hat{\delta}} &= \hat{\delta} \pm 1.96 \times SE \\ \\
+          &= (\hat{p_{1}} - \hat{p_{2}}) \pm 1.96  \sqrt{p_{1}(1-p_{1})/n_{1} + p_{2}(1-p_{2})/n_{2}}
 \end{align}
 
 <br>
+.bold[Nota importante]: cuando no conocemos los _verdaderos_ parámetros reemplazamos por sus valores estimados  (en este caso, $\hat{p_{1}}$ y $\hat{p_{2}}$ en vez de $p_{1}$ y $p_{2}$).
+
+
+---
+### Inferencia para Diferencia de proporciones
+
+$$95\% \text{ CI}_{\hat{\delta}} = (\hat{p_{1}} - \hat{p_{2}}) \pm 1.96  \sqrt{p_{1}(1-p_{1})/n_{1} + p_{2}(1-p_{2})/n_{2}}$$
+
+En nuestro ejemplo,
+
+.pull-left[
+```{r}
+print(ctable)
+```
+]
+
+.pull-right[
+```{r}
+n1 = sum(ctable[2,])
+n2 = sum(ctable[1,])
+p1_hat = ctable[2,1]/n1
+p2_hat = ctable[1,1]/n2
+
+```
+]
+
+
+```{r diff-prop, eval=FALSE}
+delta = p1_hat - p2_hat
+se = sqrt((p1_hat*(1 - p1_hat))/n1 +  (p2_hat*(1 - p2_hat))/n2)
+ci95_delta= c(ll=(delta - 1.96*se), ul=(delta + 1.96*se)); print(ci95_delta)
+```
+
 --
 
-- Cual es la .bold[sampling distribucion] de $\hat{\theta}$?
-  - Complicado ...
+.pull-left[
+Nuestro 95% CI:
+```{r diff-prop-out, ref.label="diff-prop", echo=FALSE}
+```
+]
 
+.pull-right[
+Versión automática con `prop.test()` en `R`:
+```{r, echo=FALSE}
+test_props <- prop.test(rev(ctable[,1]), rev(apply(ctable,1,sum)), p = NULL, alternative = "two.sided", correct=FALSE)
+print(test_props$conf.int[c(1,2)])
+```
+]
+
+```{css, echo=FALSE}
+.pull-right ~ * { clear: unset; }
+.pull-right + * { clear: both; }
+```
 
 ---
 ### Inferencia para la Odds Ratio
@@ -1077,40 +1141,69 @@ Para responder esta pregunta debemos conocer la .bold[sampling distribution] de 
 - Cual es la .bold[sampling distribucion] de $\hat{\theta}$? 
 
 --
-  - Cual es el error estándar de $\hat{\theta}$? Es decir,  $\mathbb{Var}\Big(\frac{n_{11}n_{22}}{n_{12}n_{21}}\Big)$ ?
-  - Complicado, función no lineal de n's.
+
+  - Si para un proporción sabemos que $\hat{p} \sim \mathcal{N}(\mu,\sigma) \quad \quad \text{ donde }\mu = p \quad \text{ y }\quad \sigma = \sqrt{p(1-p)/n}$
   
+
+<br>
+La sampling distribution de $\hat{\theta}$ debe ser ...
+
 --
- 
+
+
+.pull-left[
+$$\frac{\frac{\mathcal{N}(\mu_{1},\sigma_{1})}{1 - \mathcal{N}(\mu_{1},\sigma_{1})}}{\frac{\mathcal{N}(\mu_{2},\sigma_{2})}{1 - \mathcal{N}(\mu_{2},\sigma_{2})}}$$  
+]
+
+--
+
+.pull-right[
+![meme](meme.png)
+]
+
+
+Complicado ...
+  
+  
+---
+### Inferencia para la Odds Ratio
+
 - Más conveniente hacer inferencia sobre $\log \hat{\theta}$
 
-  - $\log \hat{\theta} = \log \frac{n_{11}n_{22}}{n_{12}n_{21}} = \log n_{11} + \log n_{22} - \log n_{12} - \log n_{21}$
+- Usando la definición de $\hat{\theta}$ como cross-product, obtenemos:
 
+
+  $$\log \hat{\theta} = \log \frac{n_{11}n_{22}}{n_{12}n_{21}} = \log n_{11} + \log n_{22} - \log n_{12} - \log n_{21}$$
+
+<br>
 --
 
-- Importante resultado teórico: la sampling distribution de $\log \hat{\theta}$ es _asintóticamente_ normal:
+Importante resultado teórico: la sampling distribution de $\log \hat{\theta}$ es _asintóticamente_ normal:
 
 $$\log(\hat{\theta}) \sim \mathcal{N}(\mu,\sigma)$$
+con parámetros _estimados_ por:
 
- - $\mu = \log \theta$ 
+ - $\hat{\mu} = \log \hat{\theta}$ 
  
- - $\sigma = \sqrt{ \frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}}}$
+ - $\hat{\sigma} = \sqrt{ \frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}}}$
 
 ---
 ### Inferencia para la Odds Ratio
 
 #### Intervalo de confianza para log Odds ratio
 
-Podemos usar este resultado para construir un intervalo de confianza para el log Odds ratio, al 95% de confianza, de la siguiente manera:
+Podemos usar este resultado para construir un intervalo de confianza para el log Odds ratio, al (1 - $\alpha$) de confianza. Para un nivel de significación estadística de $\alpha=0.05$,
 
 \begin{align}
   95\% \text{ CI}_{\log \hat{\theta}} &= \log \hat{\theta} \pm 1.96 \cdot SE \\ \\
           &= \log \hat{\theta} \pm 1.96 \cdot \sqrt{ \frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}} } 
 \end{align}
 
+--
+
 #### Intervalo de confianza para Odds ratio
 
-Podemos obtener un intervalo de confianza estándar para la Odds ratio, al 95% de confianza, de la siguiente manera:
+Podemos obtener un intervalo de confianza estándar para la Odds ratio, al (1 - $\alpha$) de confianza tomando el exponencial del intervalo obtenido para $\log \hat{\theta}$.
 
 \begin{align}
   95\% \text{ CI}_{\hat{\theta}} &= e^{\log \hat{\theta} \pm 1.96 \cdot \sqrt{ \frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}}} } 
@@ -1121,20 +1214,17 @@ Podemos obtener un intervalo de confianza estándar para la Odds ratio, al 95% d
 #### Ilustración via Monte Carlo simulation
 
 Escenario:
-- Tenemos datos de población de las variables binarias $X$ e $Y$.
-- Creamos tabla de contingencia y calculamos  $\theta$ y $\log \theta$.
-- Éstos son los parámetros "verdaderos", no estimaciones. 
+- Conocemos las verdaderas probabilidad $Y \mid X$ (ambas binarias).
+- A partir de ellas calculamos  $\theta$ y $\log \theta$.
+- Estos son los parámetros "verdaderos", no estimaciones. 
+
+
 
 ```{r, echo=FALSE}
-x <- c(rep(1,450),rep(0,550))  
-y <- rep(c(rep(1,270),rep(0,230)),2)
-population_data <- data.frame(x=x,y=y)
-```
+probs <- matrix(c(0.6, 0.4, 0.4000000,0.6000000),2,2)
+print(round(probs,2))
 
-```{r}
-ct <- table(population_data$x,population_data$y); print(ct)
-
-theta     = (ct[1,1]*ct[2,2])/(ct[1,2]*ct[2,1])
+theta     = (probs[1,1]/probs[2,1])/(probs[1,2]/probs[2,2])
 log_theta = log(theta)
 
 paste0("Theta= ",round(theta,2),"; log Theta = ",round(log_theta,2))
@@ -1144,7 +1234,7 @@ paste0("Theta= ",round(theta,2),"; log Theta = ",round(log_theta,2))
 #### Ilustración via Monte Carlo simulation
 
 
-- Supón que ahora  tenemos acceso a una muestra aleatoria de los datos poblacionales
+- Supón que ahora tenemos acceso a una _muestra_ de 500 casos generados con estas probabilidades 
 - Creamos una tabla de contingencia y calculamos  $\hat{\theta}$ y $\log \hat{\theta}$
 - Éstas son nuestras estimaciones ...
 
@@ -1152,9 +1242,9 @@ paste0("Theta= ",round(theta,2),"; log Theta = ",round(log_theta,2))
 
 .pull-left[
 ```{r}
-set.seed(1234)
-sample_data <- sample_n(population_data, size=500, replace=TRUE)
-ct_sample <- table(sample_data$x,sample_data$y); print(ct_sample)
+set.seed(98711)
+ct_sample <- matrix(rpois(4,probs*500),2,2)
+print(ct_sample)
 ```
 ]
 .pull-right[
@@ -1177,20 +1267,20 @@ paste0("Theta_hat= ",round(theta_hat,2),"; log Theta_hat = ",round(log_theta_hat
 #### Ilustración via Monte Carlo simulation
 
 - Podemos reproducir el proceso teórico de tomar infinitas muestras usando simulaciones.
-- Tomas 5000 muestras aleatorias de los datos poblacionales
-- Estimaremos $\hat{\theta_{1}} \dots \hat{\theta}_{5000}$ y $\log \hat{\theta_{1}} \dots \log \hat{\theta}_{5000}$
+- Generamos 10,000 muestras aleatorias de 500 casos, generadas con las probabilidades "verdaderas"
+- Estimaremos $\hat{\theta_{1}} \dots \hat{\theta}_{10000}$ y $\log \hat{\theta_{1}} \dots \log \hat{\theta}_{10000}$
 
 
 ```{r}
+  set.seed(98711)
   samp_dist_theta    <- NULL; samp_dist_logtheta <- NULL
   
-  for (i in 1:5000) {
-    sample_data <- sample_n(population_data, size=500, replace=TRUE)
-    ct_sample <- table(sample_data$x,sample_data$y)
-    theta_hat     = (ct_sample[1,1]*ct_sample[2,2])/(ct_sample[1,2]*ct_sample[2,1])
-    log_theta_hat = log(theta_hat)
-    samp_dist_theta[i]    <-  theta_hat
-    samp_dist_logtheta[i] <-  log_theta_hat
+  for (i in 1:10000) {
+    ct_sim <- matrix(rpois(4,probs*500),2,2)
+    sim_theta_hat     = (ct_sim[1,1]*ct_sim[2,2])/(ct_sim[1,2]*ct_sim[2,1])
+    sim_log_theta_hat = log(sim_theta_hat)
+    samp_dist_theta[i]    <-  sim_theta_hat
+    samp_dist_logtheta[i] <-  sim_log_theta_hat
   }
 
 samp_dist_theta %>% glimpse();  samp_dist_logtheta %>% glimpse()
@@ -1206,14 +1296,14 @@ La distribución de nuestras estimaciones de $\hat{\theta}$ y $\log \hat{\theta}
 ci95 = round(quantile(samp_dist_theta, p=c(0.025,0.975)),2)
 
 samp_dist_logtheta %>% as_tibble() %>% ggplot(aes(x=value)) + 
-      geom_density(colour="black", fill="black", alpha=0.1) +
+      geom_density(colour="black", fill="blue", alpha=0.1, size=1.5) +
       scale_color_viridis_d() + 
-      geom_vline(aes(xintercept = log_theta, colour=paste0("Theta=",round(theta,2)) )) +
-      geom_vline(aes(xintercept = log_theta_hat, colour=paste0("Theta_hat=",round(theta_hat,2)) )) +
+      geom_vline(aes(xintercept = theta, colour=paste0("Theta=",round(theta,2)) ), size=1.5) +
+      geom_vline(aes(xintercept = theta_hat, colour=paste0("Theta_hat=",round(theta_hat,2)) ), size=1.5) +
       geom_vline(aes(xintercept = quantile(samp_dist_theta, p=0.025),
-                     colour=paste0("95% CI: (",ci95[1],",",ci95[2],")")), linetype="dashed") +
+                     colour=paste0("95% CI: (",ci95[1],",",ci95[2],")")), linetype="dashed", size=1.5) +
       geom_vline(aes(xintercept = quantile(samp_dist_theta, p=0.975), 
-                     colour=paste0("95% CI: (",ci95[1],",",ci95[2],")")), linetype="dashed") +
+                     colour=paste0("95% CI: (",ci95[1],",",ci95[2],")")), linetype="dashed", size=1.5) +
       guides(fill=FALSE) + labs(colour="", x="Theta_hat") +
       theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
       axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
@@ -1227,14 +1317,14 @@ samp_dist_logtheta %>% as_tibble() %>% ggplot(aes(x=value)) +
 ci95 = round(quantile(samp_dist_logtheta, p=c(0.025,0.975)),2)
 
 samp_dist_logtheta %>% as_tibble() %>% ggplot(aes(x=value)) + 
-      geom_density(colour="black", fill="black", alpha=0.1) +
+      geom_density(colour="black", fill="blue", alpha=0.1, size=1.5) +
       scale_color_viridis_d() + 
-      geom_vline(aes(xintercept = log_theta, colour=paste0("log Theta=",round(log_theta,2)) )) +
-      geom_vline(aes(xintercept = log_theta_hat, colour=paste0("log Theta_hat=",round(log_theta_hat,2)) )) +
+      geom_vline(aes(xintercept = log_theta, colour=paste0("log Theta=",round(log_theta,2)) ), size=1.5) +
+      geom_vline(aes(xintercept = log_theta_hat, colour=paste0("log Theta_hat=",round(log_theta_hat,2)) ), size=1.5) +
       geom_vline(aes(xintercept = quantile(samp_dist_logtheta, p=0.025),
-                     colour=paste0("95% CI: (",ci95[1],",",ci95[2],")")), linetype="dashed") +
+                     colour=paste0("95% CI: (",ci95[1],",",ci95[2],")")), linetype="dashed", size=1.5) +
       geom_vline(aes(xintercept = quantile(samp_dist_logtheta, p=0.975), 
-                     colour=paste0("95% CI: (",ci95[1],",",ci95[2],")")), linetype="dashed") +
+                     colour=paste0("95% CI: (",ci95[1],",",ci95[2],")")), linetype="dashed", size=1.5) +
       guides(fill=FALSE) + labs(colour="", x="log Theta_hat") +
       theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
       axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
@@ -1277,7 +1367,6 @@ ci_theta = quantile(samp_dist_theta, p=c(0.025,0.975));
 print(c(ci_ll=ci_theta[1], ci_ll=ci_theta[2]))
 ```
 
-<br>
 --
 
 - 95% CI $\hat{\theta}$ basados en aproximación teórica y datos muestrales
@@ -1286,10 +1375,48 @@ print(c(ci_ll=ci_theta[1], ci_ll=ci_theta[2]))
 ci_theta_hat = exp(ci_logtheta_hat); ci_theta_hat
 ```
 
-<br>
+- Versión automática en `R`
+
+```{r, message=FALSE}
+library("DescTools")
+OddsRatio(ct_sample, conf.level = 0.95, method = "mle")
+```
+
 --
 
 .bold[Conclusión]: asociación entre variables es estadísticamente significativa 
+
+---
+
+### Inferencia para Riesgo Relativo
+
+- El Riesgo Relativo es el ratio entre dos proporciones _independientes_,  $\hat{RR} = \hat{p}_{1}/\hat{p}_{2}$
+
+- Cada $\hat{p} \sim \mathcal{N}(\mu,\sigma) \quad \text{ con } \quad \mu = p \quad \text{ y }\quad \sigma = \sqrt{p(1-p)/n}$
+
+--
+
+- Cual es la distribución del ratio de dos normales, $\mathcal{N}(\mu_{1},\sigma_{1})/ \mathcal{N}(\mu_{2},\sigma_{2})$ ?
+
+  -  No-negativo y muy asimétrica (cola derecha larga)
+
+--
+
+- Más simple (y más fácil interpretación) realizar inferencia sobre el $\log\hat{RR} = \log \hat{p}_{1} - \log \hat{p}_{2}$
+
+
+<br>
+--
+
+- Asintóticamente $\log \hat{RR} \sim \mathcal{N}(\mu,\sigma)$, con parametros _estimados_ por: 
+
+  -  $\quad \hat{\mu}: \hat{p}_{1}/\hat{p}_{2} \quad \text{ y }\quad \hat{\sigma} = \sqrt{1/n_{11} - 1/n_{1+} + 1/n_{21} - 1/n_{2+} }$
+
+
+--
+
+- Podemos usar este resultado para construir un intervalo de confianza para el $\log RR$ al (1 - $\alpha$) de confianza.
+
 
 ---
 class: inverse, center, middle

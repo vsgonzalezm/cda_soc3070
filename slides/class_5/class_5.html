@@ -88,7 +88,7 @@ Caso simple:
 
 --
 
-Una tabla rectangular que clasifica todas las combinaciones posibles de `\(X\)` y `\(Y\)` tendrá `\(I\)` filas para las categorías de `\(X\)`, `\(J\)` columnas para las categorías de `\(Y\)`, y `\(I \times J\)` celdas.
+Una tabla rectangular que clasifica todas las combinaciones posibles de `\(X\)` y `\(Y\)` tendrá `\(I\)` filas para las categorías de `\(X\)`, `\(J\)` columnas para las categorías de `\(Y\)`, y `\(I \cdot J\)` celdas.
 
 ---
 ## Tablas de contingencia
@@ -96,7 +96,7 @@ Una tabla rectangular que clasifica todas las combinaciones posibles de `\(X\)` 
 
  - Una tabla que clasifica `\(n\)` variables se llama se denomina una tabla `\(n\)`-ways
  
- - Una tabla con `\(I\)` filas y `\(J\)` columnas se denomina una `\(I \times J\)` (léase I-por-J)
+ - Una tabla con `\(I\)` filas y `\(J\)` columnas se denomina una `\(I \cdot J\)` (léase I-por-J)
 
 &lt;br&gt; 
 --
@@ -252,7 +252,7 @@ En resumen,
 
 
 &lt;br&gt;
-Estructura general del una tabla 2-ways, `\(I \times J\)`
+Estructura general del una tabla 2-ways, `\(I \cdot J\)`
 
 ---
 ## Estructura de probabilidad en tablas de contingencia 
@@ -383,7 +383,7 @@ En resumen,
 
 
 &lt;br&gt;
-Estructura general de probabilidades en una  tabla 2-ways, `\(I \times J\)`
+Estructura general de probabilidades en una  tabla 2-ways, `\(I \cdot J\)`
 
 
 ---
@@ -554,11 +554,11 @@ Pensemos en una tabla I-por-2:
 
 --
 
-- Las frecuencias en cada celda son generadas por una variable Multinomial `\(X\)` con `\(I \times 2\)` posibles valores `\(ij\)`.
+- Las frecuencias en cada celda son generadas por una variable Multinomial `\(X\)` con `\(I \cdot 2\)` posibles valores `\(ij\)`.
 
 --
 
-- Las frecuencias en cada celda son generadas por `\(I \times 2\)` variables Poisson con parámetros `\(\lambda_{ij}\)` respectivamente? 
+- Las frecuencias en cada celda son generadas por `\(I \cdot 2\)` variables Poisson con parámetros `\(\lambda_{ij}\)` respectivamente? 
 
 
 ---
@@ -584,7 +584,7 @@ Si la probabilidad de tener un "affair" fuera independiente del género, cual se
 
 .full-width[.content-box-blue[
 .bold[Respuesta]:
-  `$$\mathbb{P}(\text{affair},\text{mujer}) = \mathbb{P}(\text{affair})\mathbb{P}(\text{mujer}) = 0.6 \times 0.5 = 0.3$$`
+  `$$\mathbb{P}(\text{affair},\text{mujer}) = \mathbb{P}(\text{affair})\mathbb{P}(\text{mujer}) = 0.6 \cdot 0.5 = 0.3$$`
 ]
 ]
 
@@ -598,13 +598,13 @@ Podemos usar esta propiedad para comprobar independencia en una tabla de conting
 
 - Si `\(X \bot Y\)` las probabilidades conjuntas .bold[esperadas bajo el supuesto de independencia]  están dadas por:
 
-`$$\tilde{p}_{ij} = p_{i+} \times  p_{+j}$$`
+`$$\tilde{p}_{ij} = p_{i+} \cdot  p_{+j}$$`
 &lt;br&gt;
 --
 
 - Asimismo, las frecuencias esperadas bajo independencia están dadas por:
 
-`$$\tilde{n}_{ij} = n \times p_{i+} \times  p_{+j}$$`
+`$$\tilde{n}_{ij} = n \cdot p_{i+} \cdot  p_{+j}$$`
 
 &lt;br&gt;
 --
