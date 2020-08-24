@@ -13,7 +13,3 @@ Para ejecutar el código inserto en las diapositivas sólo tienes que instalar l
 ```{r, eval=FALSE}
 install.packages(c("tidyverse",))
 ```
-
-## Uso
-
-El material contenido es esta estas diapositivas puede ser usado libremente para tus propios proyectos.
