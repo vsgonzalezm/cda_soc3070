@@ -133,9 +133,70 @@ Notar que  LM describe los datos con $k + 2$ parametros: $\beta_{0}, \beta_{1}, 
 ---
 ##  Estructura de un modelo de regresión lineal
 
-Asemble
+"Ensamblemos" el modelo via Monte Carlo Simulation ...
+--
+ Ingredientes:
+
+```{r}
+set.seed("87742") # seed
+n <- 1000 # observaciones
+x <- sample(1:1000,1000,replace=TRUE) # 1 predictor o var independiente
+```
+
+```{r, echo=FALSE}
+glimpse(x)
+```
+
+```{r}
+# parámetros
+sigma <- 5
+beta_0 <- 10
+beta_1 <- 0.1
+mu <- beta_0 + beta_1*x
+```
+
+```{r, echo=FALSE}
+glimpse(mu)
+```
+
+```{r}
+# variable dependiente
+y <- rnorm(mu,sigma) # equivalente: y <- mu + rnorm(0,sigma)
+```
+
+```{r, echo=FALSE}
+glimpse(y)
+```
+
+---
+##  Estructura de un modelo de regresión lineal
+
+Es común encontrar el modelo lineal escrito en forma matricial:
+
+$$\newcommand{\vect}[1]{\boldsymbol{#1}}$$
 
 
+
+.pull-left[
+$$\vect{y} \sim \mathcal{N}_{n}(\vect{X}\vect{\beta},\vect{\Sigma})$$
+
+donde ...
+]
+.pull-right[
+- $\vect{y}$ es un vector que contiene las diferentes $y_{i}, \dots, y_{n}$
+
+- $\vect{X}\vect{\beta} = \beta_{0} + \beta_{1}\vect{x}_{1} + \dots + \beta_{k}\vect{x}_{k}$
+
+- $\vect{\Sigma}$ es la matriz de varianza-covarianza entre las observaciones.
+]
+
+--
+$$\begin{bmatrix}
+y_{i} \\  \vdots \\ y_{n}
+\end{bmatrix} \sim \begin{bmatrix}
+beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki} \\ 
+ \vdots \\ beta_{0} + \beta_{1}x_{1b} + \dots \beta_{k}x_{kn}
+\end{bmatrix}$$
 
 ---
 class: inverse, center, middle

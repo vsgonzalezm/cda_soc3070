@@ -136,9 +136,76 @@ Notar que  LM describe los datos con `\(k + 2\)` parametros: `\(\beta_{0}, \beta
 ---
 ##  Estructura de un modelo de regresión lineal
 
-Asemble
+"Ensamblemos" el modelo via Monte Carlo Simulation ...
+--
+ Ingredientes:
 
 
+```r
+set.seed("87742") # seed
+n &lt;- 1000 # observaciones
+x &lt;- sample(1:1000,1000,replace=TRUE) # 1 predictor o var independiente
+```
+
+
+```
+##  int [1:1000] 104 285 403 190 646 702 90 518 979 833 ...
+```
+
+
+```r
+# parámetros
+sigma &lt;- 5
+beta_0 &lt;- 10
+beta_1 &lt;- 0.1
+mu &lt;- beta_0 + beta_1*x
+```
+
+
+```
+##  num [1:1000] 20.4 38.5 50.3 29 74.6 ...
+```
+
+
+```r
+# variable dependiente
+y &lt;- rnorm(mu,sigma) # equivalente: y &lt;- mu + rnorm(0,sigma)
+```
+
+
+```
+##  num [1:1000] 5.08 7.08 4.89 4.59 3.88 ...
+```
+
+---
+##  Estructura de un modelo de regresión lineal
+
+Es común encontrar el modelo lineal escrito en forma matricial:
+
+`$$\newcommand{\vect}[1]{\boldsymbol{#1}}$$`
+
+
+
+.pull-left[
+`$$\vect{y} \sim \mathcal{N}_{n}(\vect{X}\vect{\beta},\vect{\Sigma})$$`
+
+donde ...
+]
+.pull-right[
+- `\(\vect{y}\)` es un vector que contiene las diferentes `\(y_{i}, \dots, y_{n}\)`
+
+- `\(\vect{X}\vect{\beta} = \beta_{0} + \beta_{1}\vect{x}_{1} + \dots + \beta_{k}\vect{x}_{k}\)`
+
+- `\(\vect{\Sigma}\)` es la matriz de varianza-covarianza entre las observaciones.
+]
+
+--
+`$$\begin{bmatrix}
+y_{i} \\  \vdots \\ y_{n}
+\end{bmatrix} \sim \begin{bmatrix}
+beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki} \\ 
+ \vdots \\ beta_{0} + \beta_{1}x_{1b} + \dots \beta_{k}x_{kn}
+\end{bmatrix}$$`
 
 ---
 class: inverse, center, middle
