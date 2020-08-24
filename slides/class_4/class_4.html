@@ -4,7 +4,6 @@
     <title>Análisis de Datos Categóricos (SOL3070)</title>
     <meta charset="utf-8" />
     <meta name="author" content="  Mauricio Bucca  Profesor Asistente, Sociología UC" />
-    <script src="libs/header-attrs-2.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link rel="stylesheet" href="gentle-r.css" type="text/css" />
@@ -91,14 +90,14 @@ Por ejemplo, supongamos que `\(Y\)` es una variable que resulta de tirar un dado
 
 --
 
-5. Si `\(X\)` e `\(Y\)` son variables aleatorias independientes, entonces
+5) Si `\(X\)` e `\(Y\)` son variables aleatorias independientes, entonces
 
 `$$\mathbb{E}(XY) = \mathbb{E}(X)\mathbb{E}(Y)$$`
 ---
 
 ## Valor Esperado, ejemplo
 
-Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio (G) es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
+Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. El premio (G) es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
 --
 
  ¿Cuánto es el premio esperado?
@@ -155,7 +154,7 @@ Si X es una variable Binomial, su valor esperado viene dado por:
 
 La varianza de una variable aleatoria es el análogo teórico de la varianza de los datos.
 --
- Mide cuánta dispersión existe entonce al centro (la media). Formalmente, en el caso variables aleatorias discretas:
+ Mide cuánta dispersión existe en torno al centro (la media). Formalmente, en el caso de variables aleatorias discretas:
 
 &lt;br&gt;
 
@@ -171,7 +170,7 @@ Análogamente, para variables continuas:
 
 ---
 ## Varianza
-Por ejemplo, si que `\(Y\)` es una variable que resulta de tirar un dado "justo".  ¿Cuál es la varianza de `\(Y\)`?
+Por ejemplo, si `\(Y\)` es una variable que resulta de tirar un dado "justo", ¿cuál es la varianza de `\(Y\)`?
 
 &lt;br&gt;
 --
@@ -186,7 +185,7 @@ Por ejemplo, si que `\(Y\)` es una variable que resulta de tirar un dado "justo"
 ---
 ## Varianza, algunas propiedades útiles  
 
-1) La varianzade una constante es cero.
+1) La varianza de una constante es cero.
 
 `$$\mathbb{Var}(c)=0$$`
 --
@@ -212,7 +211,7 @@ Por ejemplo, si que `\(Y\)` es una variable que resulta de tirar un dado "justo"
 ---
 ## Varianza, ejemplo  
 
-Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio (G) es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
+Por ejemplo, supongamos que `\(X_{i}\)` es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. El premio (G) es $ `\(1000\)` de base, más el resultado de cada dado `\(i\)` multiplicado por 10.
 --
  ¿Cuánto es la desviación estándar del premio?
 
@@ -282,7 +281,7 @@ glimpse(coins200)
 ```
 
 ```
-##  int [1:10000] 93 90 109 109 100 90 96 99 107 101 ...
+##  int [1:10000] 100 105 101 112 95 113 99 97 93 76 ...
 ```
 
 ```r
@@ -292,10 +291,10 @@ print(moments)
 
 ```
 ## $mean
-## [1] 99.9272
+## [1] 100.0537
 ## 
 ## $var
-## [1] 49.21102
+## [1] 50.57767
 ```
 
 ---
@@ -364,9 +363,9 @@ class: inverse, center, middle
 
 ##Estimación 
 
-.bold[Modelos de probabilidad]: ¿Cuál es la probabilidad del observar los *datos* dado los *parámetros* que conocemos?
+.bold[Modelos de probabilidad]: ¿Cuál es la probabilidad de observar los *datos* dado los *parámetros* que conocemos?
 
-E.j. ¿Cuán probable es que obtengamos 9 "Caras" (1) si lanzamos una moneda 'justa' ( `\(p=0.5\)` ) 10 veces? 
+Ej. ¿Cuán probable es que obtengamos 9 "Caras" (1) si lanzamos una moneda "justa" ( `\(p=0.5\)` ) 10 veces? 
 
 
 ```r
@@ -383,7 +382,7 @@ dbinom(x=9,size=10,prob=0.5)
 .bold[Modelos estadísticos]:  ¿Cuáles son los valores más .bold[plausibles][1].footnote[[1] Notar que no dice "más probables"!] de los *parámetros* dado los *datos* que observamos? 
 
 
-E.j. Supongamos que alguien lanza 100 veces la misma moneda y registra los resultados en una base de datos. Los datos se ven así:  
+Ej. Supongamos que alguien lanza 100 veces la misma moneda y registra los resultados en una base de datos. Los datos se ven así:  
 
 .pull-left[
 ![](class_4_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
@@ -393,15 +392,15 @@ E.j. Supongamos que alguien lanza 100 veces la misma moneda y registra los resul
 
 .pull-right[
 
-- Lo vemos en la izquierda son .bold[datos]
+- Lo que vemos en la izquierda son .bold[datos]
 
 - Datos: realización de `\(n\)` variables aleatorias 
 
 - Normalmente *no conocemos* la distribución de las variables
 
-- Datos nos da una pista sobre cuál podría ser esa distribución.
+- Datos nos dan una pista sobre cuál podría ser esa distribución
 
-- .bold[Estadística]: aprender de los datos para .bold[*estimar*] los parámetros los generan. 
+- .bold[Estadística]: aprender de los datos para .bold[*estimar*] los parámetros que los generan
 
 ]
 
@@ -454,7 +453,7 @@ Intuitivamente: habiendo obtenido 82 caras, `\(p=0.82\)` es el valor más plausi
 
 --
 
-- Para facilitar el cálculo tomamos logaritmo natural el ambos lados (.bold[log-likelihood])
+- Para facilitar el cálculo tomamos logaritmo natural en ambos lados (.bold[log-likelihood])
 
   - `\(\ell\ell(p) = \ln \mathcal{L}(p \mid \text{ Datos})  = k \ln(p) + (n - k) \ln(1-p)\)` 
 
@@ -465,15 +464,15 @@ Intuitivamente: habiendo obtenido 82 caras, `\(p=0.82\)` es el valor más plausi
 
 --
 
-- Encontrar el máximo de la función `\(\ell\ell(p)\)`: valor de `\(p\)` en el cual la curva no cambia, es decir. cuando `\(\ell\ell^{\text{ '}}(p)=0\)` 
+- Encontrar el máximo de la función `\(\ell\ell(p)\)`: valor de `\(p\)` en el cual la curva no cambia, es decir cuando `\(\ell\ell^{\text{ '}}(p)=0\)` 
 
   - `\(\frac{k}{p} -  \frac{n-k}{1-p} = 0\)`
   
 --
 
-Después de resolver por `\(p\)` obtenemos:
+- Después de resolver por `\(p\)` obtenemos:
   
-  - `\(p = \frac{k}{n} = \frac{\sum x_{i}}{n}\)`
+   `$$p = \frac{k}{n} = \frac{\sum x_{i}}{n}$$`
 
 
 ---
@@ -491,7 +490,7 @@ Después de resolver por `\(p\)` obtenemos:
 
 --
 
-- Intuitivo y elegante.
+- Intuitivo y elegante
 
 
 ---
@@ -554,7 +553,7 @@ m[which.max(m[,2]),]
 
 
 `$$\hat{\boldsymbol{\beta}}_{MLE} = \underset{\beta}{\arg\max\ } \mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X})$$`
-`\(\hat{\boldsymbol{\beta}}\)` es el MLE de `\(\boldsymbol{\beta}\)` si es valor(es) que maximiza la "likelihood function" condicional en los datos observados.
+`\(\hat{\boldsymbol{\beta}}\)` es el MLE de `\(\boldsymbol{\beta}\)` si es el(los) valor(es) que maximiza(n) la "likelihood function", condicional en los datos observados.
 
 &lt;br&gt;
 --
@@ -601,9 +600,9 @@ class: inverse, center, middle
 &lt;br&gt;
 --
 
-- ¿Como podemos cuantificar incertidumbre en torno a nuestras estimaciones?
+- ¿Cómo podemos cuantificar la incertidumbre en torno a nuestras estimaciones?
 
-  - En ejemplo anterior `\(\hat{p} = 0.82\)`, pero los datos fueron simulados con `\(p=0.8\)` (parametro verdadero)
+  - En ejemplo anterior `\(\hat{p} = 0.82\)`, pero los datos fueron simulados con `\(p=0.8\)` (pámetro verdadero)
 
 
 &lt;br&gt;
@@ -758,10 +757,6 @@ class: inverse, center, middle
 Mauricio Bucca &lt;br&gt;
 https://mebucca.github.io/ &lt;br&gt;
 github.com/mebucca
-
-
-
-
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

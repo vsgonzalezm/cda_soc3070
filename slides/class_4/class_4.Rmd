@@ -91,14 +91,14 @@ $$\mathbb{E}(g(X))=  g(\mathbb{E}(X))$$
 
 --
 
-5. Si $X$ e $Y$ son variables aleatorias independientes, entonces
+5) Si $X$ e $Y$ son variables aleatorias independientes, entonces
 
 $$\mathbb{E}(XY) = \mathbb{E}(X)\mathbb{E}(Y)$$
 ---
 
 ## Valor Esperado, ejemplo
 
-Por ejemplo, supongamos que $X_{i}$ es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio (G) es $ $1000$ de base, más el resultado de cada dado $i$ multiplicado por 10.
+Por ejemplo, supongamos que $X_{i}$ es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. El premio (G) es $ $1000$ de base, más el resultado de cada dado $i$ multiplicado por 10.
 --
 
  ¿Cuánto es el premio esperado?
@@ -155,7 +155,7 @@ Si X es una variable Binomial, su valor esperado viene dado por:
 
 La varianza de una variable aleatoria es el análogo teórico de la varianza de los datos.
 --
- Mide cuánta dispersión existe entonce al centro (la media). Formalmente, en el caso variables aleatorias discretas:
+ Mide cuánta dispersión existe en torno al centro (la media). Formalmente, en el caso de variables aleatorias discretas:
 
 <br>
 
@@ -171,7 +171,7 @@ Análogamente, para variables continuas:
 
 ---
 ## Varianza
-Por ejemplo, si que $Y$ es una variable que resulta de tirar un dado "justo".  ¿Cuál es la varianza de $Y$?
+Por ejemplo, si $Y$ es una variable que resulta de tirar un dado "justo", ¿cuál es la varianza de $Y$?
 
 <br>
 --
@@ -186,7 +186,7 @@ Por ejemplo, si que $Y$ es una variable que resulta de tirar un dado "justo".  �
 ---
 ## Varianza, algunas propiedades útiles  
 
-1) La varianzade una constante es cero.
+1) La varianza de una constante es cero.
 
 $$\mathbb{Var}(c)=0$$
 --
@@ -212,7 +212,7 @@ $$\mathbb{Var}(X + Y) =  \mathbb{Var}(X) + \mathbb{Var}(Y) + \mathbb{Cov}(X,Y)$$
 ---
 ## Varianza, ejemplo  
 
-Por ejemplo, supongamos que $X_{i}$ es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. Es premio (G) es $ $1000$ de base, más el resultado de cada dado $i$ multiplicado por 10.
+Por ejemplo, supongamos que $X_{i}$ es la variable que resulta de tirar un dado "justo". Participamos de un concurso que consiste en tirar el mismo dado 100 veces. El premio (G) es $ $1000$ de base, más el resultado de cada dado $i$ multiplicado por 10.
 --
  ¿Cuánto es la desviación estándar del premio?
 
@@ -418,9 +418,9 @@ class: inverse, center, middle
 
 ##Estimación 
 
-.bold[Modelos de probabilidad]: ¿Cuál es la probabilidad del observar los *datos* dado los *parámetros* que conocemos?
+.bold[Modelos de probabilidad]: ¿Cuál es la probabilidad de observar los *datos* dado los *parámetros* que conocemos?
 
-E.j. ¿Cuán probable es que obtengamos 9 "Caras" (1) si lanzamos una moneda 'justa' ( $p=0.5$ ) 10 veces? 
+Ej. ¿Cuán probable es que obtengamos 9 "Caras" (1) si lanzamos una moneda "justa" ( $p=0.5$ ) 10 veces? 
 
 ```{r}
 dbinom(x=9,size=10,prob=0.5)
@@ -432,7 +432,7 @@ dbinom(x=9,size=10,prob=0.5)
 .bold[Modelos estadísticos]:  ¿Cuáles son los valores más .bold[plausibles][1].footnote[[1] Notar que no dice "más probables"!] de los *parámetros* dado los *datos* que observamos? 
 
 
-E.j. Supongamos que alguien lanza 100 veces la misma moneda y registra los resultados en una base de datos. Los datos se ven así:  
+Ej. Supongamos que alguien lanza 100 veces la misma moneda y registra los resultados en una base de datos. Los datos se ven así:  
 
 .pull-left[
 ```{r, echo=FALSE, fig.height=5, fig.width=6, message=FALSE}
@@ -455,15 +455,15 @@ data_coins %>% ggplot(aes(x=factor(X), fill="")) +
 
 .pull-right[
 
-- Lo vemos en la izquierda son .bold[datos]
+- Lo que vemos en la izquierda son .bold[datos]
 
 - Datos: realización de $n$ variables aleatorias 
 
 - Normalmente *no conocemos* la distribución de las variables
 
-- Datos nos da una pista sobre cuál podría ser esa distribución.
+- Datos nos dan una pista sobre cuál podría ser esa distribución
 
-- .bold[Estadística]: aprender de los datos para .bold[*estimar*] los parámetros los generan. 
+- .bold[Estadística]: aprender de los datos para .bold[*estimar*] los parámetros que los generan
 
 ]
 
@@ -527,7 +527,7 @@ Intuitivamente: habiendo obtenido 82 caras, $p=0.82$ es el valor más plausible 
 
 --
 
-- Para facilitar el cálculo tomamos logaritmo natural el ambos lados (.bold[log-likelihood])
+- Para facilitar el cálculo tomamos logaritmo natural en ambos lados (.bold[log-likelihood])
 
   - $\ell\ell(p) = \ln \mathcal{L}(p \mid \text{ Datos})  = k \ln(p) + (n - k) \ln(1-p)$ 
 
@@ -538,15 +538,15 @@ Intuitivamente: habiendo obtenido 82 caras, $p=0.82$ es el valor más plausible 
 
 --
 
-- Encontrar el máximo de la función $\ell\ell(p)$: valor de $p$ en el cual la curva no cambia, es decir. cuando $\ell\ell^{\text{ '}}(p)=0$ 
+- Encontrar el máximo de la función $\ell\ell(p)$: valor de $p$ en el cual la curva no cambia, es decir cuando $\ell\ell^{\text{ '}}(p)=0$ 
 
   - $\frac{k}{p} -  \frac{n-k}{1-p} = 0$
   
 --
 
-Después de resolver por $p$ obtenemos:
+- Después de resolver por $p$ obtenemos:
   
-  - $p = \frac{k}{n} = \frac{\sum x_{i}}{n}$
+   $$p = \frac{k}{n} = \frac{\sum x_{i}}{n}$$
 
 
 ---
@@ -564,7 +564,7 @@ Después de resolver por $p$ obtenemos:
 
 --
 
-- Intuitivo y elegante.
+- Intuitivo y elegante
 
 
 ---
@@ -622,7 +622,7 @@ legend.text = element_text(size = 18), legend.position="bottom")
 
 
 $$\hat{\boldsymbol{\beta}}_{MLE} = \underset{\beta}{\arg\max\ } \mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X})$$
-$\hat{\boldsymbol{\beta}}$ es el MLE de $\boldsymbol{\beta}$ si es valor(es) que maximiza la "likelihood function" condicional en los datos observados.
+$\hat{\boldsymbol{\beta}}$ es el MLE de $\boldsymbol{\beta}$ si es el(los) valor(es) que maximiza(n) la "likelihood function", condicional en los datos observados.
 
 <br>
 --
@@ -669,9 +669,9 @@ class: inverse, center, middle
 <br>
 --
 
-- ¿Como podemos cuantificar incertidumbre en torno a nuestras estimaciones?
+- ¿Cómo podemos cuantificar la incertidumbre en torno a nuestras estimaciones?
 
-  - En ejemplo anterior $\hat{p} = 0.82$, pero los datos fueron simulados con $p=0.8$ (parametro verdadero)
+  - En ejemplo anterior $\hat{p} = 0.82$, pero los datos fueron simulados con $p=0.8$ (pámetro verdadero)
 
 
 <br>
