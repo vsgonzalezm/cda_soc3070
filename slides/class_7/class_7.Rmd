@@ -1,0 +1,154 @@
+---
+title: "Análisis de Datos Categóricos (SOL3070)"
+subtitle: "Clase #6"
+author: "<br> Mauricio Bucca<br> Profesor Asistente, Sociología UC"
+date: "[github.com/mebucca](https://github.com/mebucca)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default","default-fonts","gentle-r.css"]
+    df_print: default
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+editor_options: 
+  chunk_output_type: console
+---
+
+class: inverse, center, middle
+
+#Modelos de Regresión para variable dependiente categórica
+## Modelo Lineal de Probabilidad (LMP)
+
+---
+##  Estructura de un modelo de regresión lineal
+
+
+Un modelo de regresión lineal estándar tiene la siguiente estructura:
+
+<br>
+
+$$y_{i} = \beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki} + \epsilon_{i}$$
+donde:
+
+- $y$ es la variable dependiente
+
+- $x_{1} \dots x_{k}$ son predictores o variables independientes 
+
+- $\beta_{1} \dots \beta_{k}$ son los respectivos "efectos" de los predictores
+
+- $\epsilon$ es un termino de error aleatorio ("white noise")
+
+
+---
+##  Estructura de un modelo de regresión lineal
+
+Podemos re-escribir el modelo de la siguiente forma:
+
+<br>
+
+\begin{align}
+y_{i} &= \beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki} + \epsilon_{i} \\ \\
+      &= \beta_{0} + \sum_{k=1}^{K} \beta_{k}x_{ki} + \epsilon_{i} \\ \\
+      &= \hat{y}_{i} + \epsilon_{i}
+\end{align}
+
+donde:
+
+- $y_{i}$ es el valor de cada individuo en la variable dependiente
+
+- $\hat{y}_{i}$ es el valor predicho de $y$ para cada individuo
+
+- $\epsilon_{i}$ es una desviación de cada individuo respecto de su valor predicho, $\epsilon_{i} = y_{i} - \hat{y}_{i}$
+
+---
+##  Estructura de un modelo de regresión lineal
+
+
+.bold[Configuración]
+
+<br>
+--
+
+
+- Tenemos $n$ observaciones (individuos) independientes: $i = 1, \dots, n$
+
+
+--
+
+- Para cada individuo observamos un valor en la variable dependiente $y_{i}$, tal que  $y_{i} \in \{-\infty,\infty+ \}$
+
+
+--
+
+- Estos resultados son realizaciones de variables aleatorias $\mathcal{N(\mu_{i}, \sigma_{i})}$ con media y varianza desconocida: misma distrubución pero parámetros (potencialmente) distintos
+
+  - Nota que es imposible identificar estos parámetros individualmente ( $n$ observaciones y $2n$ parámetros)
+
+---
+##  Estructura de un modelo de regresión lineal
+
+El modelo de regresión lineal estándar "resuelve" este problema de la siguiente mandera
+
+$$y_{i} \sim \mathcal{N(\mu_{i}, \sigma_{i})} \quad \quad \text{ donde}$$
+--
+
+-  $\mu_{i} = \beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki}$
+--
+$\quad =\mathbb{E}(y_{i} \mid x_{1}, \dots, x_{k})$
+
+
+--
+
+- $\sigma_{i} =  \sigma$
+--
+$\quad =\mathbb{Var}(y_{i} \mid x_{1}, \dots, x_{k})$
+
+--
+
+- $x_{1}, \dots, x_{k}$ son valores fijos, no variables aleatorias
+
+
+--
+
+- Todo lo anterior implica que, si $(e_{i} = y_{i} - \mu_{i})$, entonces
+--
+$\quad e_{i} \sim \mathcal{N(\mu_{i}, \sigma)} - \mu_{i} \sim  \mathcal{N(0, \sigma)}$
+
+
+--
+En resumen,
+
+.content-box-blue[
+$$y_{i} \sim \mathcal{N(\mu_{i}, \sigma)} \quad  \text{ o, equivalentemente: } \quad  y_{i} = \mu_{i} + \mathcal{N(0, \sigma)}$$
+]
+
+--
+
+Notar que  LM describe los datos con $k + 2$ parametros: $\beta_{0}, \beta_{1}, \dots, \beta_{k}, \sigma$
+
+---
+##  Estructura de un modelo de regresión lineal
+
+Asemble
+
+
+
+---
+class: inverse, center, middle
+
+.huge[
+**Hasta la próxima clase. Gracias!**
+]
+
+<br>
+Mauricio Bucca <br>
+https://mebucca.github.io/ <br>
+github.com/mebucca
+
+
+
+
