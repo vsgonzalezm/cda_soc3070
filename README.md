@@ -16,7 +16,9 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
   - Probabilidad condicional: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_2/class_2#1) [`[Código]`](slides/class_2/class_2.Rmd) 
 - Variables Aleatorias y Distribuciones Discretas: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_3/class_3#1) [`[Código]`](slides/class_3/class_3.Rmd) 
 - Valor Esperado y Varianza, Estimación via Maximum Likelihood (MLE): [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_4/class_4#1) [`[Código]`](slides/class_4/class_4.Rmd) 
-- Tablas de Contingencia
+- Tablas de Contingencia 
+  - Estructura probabilística: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_5/class_5#1) [`[Código]`](slides/class_5/class_5.Rmd) 
+  - Medidas de independencia y asociación: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_6/class_6#1) [`[Código]`](slides/class_6/class_6.Rmd) 
 - Modelo Lineal de Probabilidad 
 - Modelos Lineales Generalizados 
 - Modelos de Regresión Logística
