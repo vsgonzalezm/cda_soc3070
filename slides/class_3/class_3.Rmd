@@ -397,7 +397,7 @@ $$Y = \sum^{n}_{i=1} X_{i}$$
 --
 Por tanto,
 
-$$\mathbb{P}(Y=y) = f_{Y}(y) = \frac{n!}{y! (n-y)!} \times p^{k} (1-p)^{n-y}$$
+$$\mathbb{P}(Y=y) = f_{Y}(y) = \frac{n!}{y! (n-y)!} \times p^{y} (1-p)^{n-y}$$
 --
 En otras palabras, $Y$ distribuye binomial con .bold[parámetros] $n$ y $p$: $Y \sim \text{Binomial}(n,p)$
 
