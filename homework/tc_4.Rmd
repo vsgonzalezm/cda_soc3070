@@ -49,6 +49,9 @@ $$\mathbb{P}(\text{Son = UpNM} \mid \text{Father = UpNM}, \text{ Country})$$
 
 3) Usando la misma fórmula para intervalos de confianza de una proporción Binomial, calcula un intervalo de confianza al 99% para las proporciones estimadas en 2). Comenta brevemente las implicaciones sustantivas de los resultados obtenidos.
 
+
+**Sugerencia:** Dado que vas a repetir la mismas operaciones varias veces, te sugiero la posibilidad de usar loops y/o funciones en `R`.
+
 ## Respuestas:
 
 
