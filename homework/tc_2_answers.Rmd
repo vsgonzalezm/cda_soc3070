@@ -1,0 +1,70 @@
+---
+title: "SOC3070 Análisis de Datos Categóricos"
+author: "Tarea corta 2, respuestas"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r, echo=FALSE}
+# Escribir install.packages("tinytex") en la consola para instalar "tinytex"
+# Carga "tinytex" para compilar PDF
+library("tinytex")
+```
+Ponderación: 3% de la nota final del curso Entrega: Desde el momento de entrega, los estudiantes tienen 1 semana exacta de plazo para completar esta tarea.
+
+En esta pregunta aplicarán propiedades de probabilidades condicionales para calcular alguna cantidades de interés para el test de hipótesis. Supon que te encuentras en la siguiente situación:
+
+- Tienes una hipótesis de interés (o Hipótesis alternativa, $H_{1}$), y una  hipótesis nula ($H_{0}$)
+
+- No tienes conocimiento previo sobre la plausibilidad de tu hipótesis de interés, de modo que le asignas un 50% de probabilidad de ser cierta: $\mathbb{P}(H_{1}  \text{ verdadera})=0.5$. Esto implica que también la hipótesis nula tiene la misma probabilidad de ser cierta: $\mathbb{P}(H_{0} \text{ verdadera})= 0.5$
+
+- Como es estándar, usas un test estadístico que tienen un "Statistical Power" de 80%, definido como:
+
+$\text{power} = \mathbb{P}(\text{rechazar } H_{0} \mid H_{1}  \text{ verdadera}) = 0.8$
+
+(virtud de aceptar un resultado verdadero)
+
+- Como es estándar, trabajas con un nivel de significación estadística del 5% ($\alpha=0.05$), definido como:
+
+$\alpha = \mathbb{P}(\text{rechazar } H_{0} \mid H_{1}  \text{ falsa}) = 0.05$
+
+(error de aceptar un resultado falso)
+
+### Pregunta
+
+Supón que tu análisis sugiere que puedes rechazar $H_{0}$. Ahora, debes calcular las siguientes cantidades de interés:
+
+1) La probabilidad de obtener un __"positivo verdadero"__, definida como:
+
+\begin{align*}
+\mathbb{P}(H_{1} \text{ verdadera} \mid \text{rechazar } H_{0}) &= \frac{\mathbb{P}(\text{rechazar } H_{0}  \mid H_{1} \text{ verdadera})\mathbb{P}(H_{1} \text{ verdadera})}{\mathbb{P}(\text{rechazar } H_{0})} \\ \\
+&= \frac{\mathbb{P}(\text{rechazar } H_{0}  \mid H_{1} \text{ verdadera})\mathbb{P}(H_{1} \text{ verdadera})}{\mathbb{P}(\text{rechaza } H_{0} \mid H_{1}  \text{ verdadera})\mathbb{P}(H_{1}  \text{ verdadera}) +   
+    \mathbb{P}(\text{rechaza } H_{0} \mid H_{1}  \text{ falsa})\mathbb{P}(H_{1}  \text{ falsa})} \\ \\
+&= \frac{\text{power} \times 0.5}{\text{power} \times 0.5 + \alpha \times 0.5} = \frac{\text{power}}{\text{power} + \alpha} \\ \\
+&= \frac{0.8}{0.8 + 0.05} = 0.94
+\end{align*}
+
+
+2) La probabilidad de obtener un __"falso positivo"__, definida como:
+
+\begin{align*}
+\mathbb{P}(H_{1} \text{ falsa} \mid \text{rechazar } H_{0}) &= \frac{ \mathbb{P}(\text{rechazar } H_{0} \mid H_{1} \text{ falsa})\mathbb{P}(H_{1} \text{ falsa})}{\mathbb{P}(\text{rechazar } H_{0})} \\ \\
+&= \frac{ \mathbb{P}(\text{rechazar } H_{0} \mid H_{1} \text{ falsa})\mathbb{P}(H_{1} \text{ falsa})}
+{\mathbb{P}(\text{rechaza } H_{0} \mid H_{1}  \text{ verdadera})\mathbb{P}(H_{1}  \text{ verdadera}) +   
+    \mathbb{P}(\text{rechaza } H_{0} \mid H_{1}  \text{ falsa})\mathbb{P}(H_{1}  \text{ falsa})}  \\ \\
+&= \frac{\alpha \times 0.5}{\text{power} \times 0.5 + \alpha \times 0.5} = \frac{\alpha}{\text{power} + \alpha} \\ \\    
+&= \frac{0.05}{0.8 + 0.05} = 0.06
+\end{align*}
+
+
+#### Pista 
+Usando la ley de "probabilidad total" sabemos que:
+\begin{align*}
+\mathbb{P}(\text{rechazar } H_{0}) &= \mathbb{P}(\text{rechazar } H_{0},  H_{1}  \text{ verdadera}) + \mathbb{P}(\text{rechazar } H_{0},  H_{1}  \text{ falsa}) \\ 
+&= \mathbb{P}(\text{rechaza } H_{0} \mid H_{1}  \text{ verdadera})\mathbb{P}(H_{1}  \text{ verdadera}) +   
+    \mathbb{P}(\text{rechaza } H_{0} \mid H_{1}  \text{ falsa})\mathbb{P}(H_{1}  \text{ falsa})
+\end{align*}
+
+
