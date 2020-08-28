@@ -281,7 +281,7 @@ Ahora estimemos los parámetros de nuestro modelo via OLS
 
 
 ```r
-our_data &lt;- data_frame(y=y, x=x) 
+our_data &lt;- tibble(y=y, x=x)
 our_lm_ols &lt;- lm(y ~ x, data=our_data) # "fit" el modelo usando función lm()
 print(summary(our_lm_ols)) # analicemos nuestros resultados
 ```
@@ -610,7 +610,7 @@ Estimamos los parámetros  via OLS
 
 
 ```r
-our_data2 &lt;- data_frame(y=y, x=x, d=d) 
+our_data2 &lt;- tibble(y=y, x=x, d=d) 
 our_lm_ols2 &lt;- lm(y ~ I(log(x))*factor(d), data=our_data2) # "fit" el modelo usando función lm()
 print(summary(our_lm_ols2)) # analicemos nuestros resultados
 ```
@@ -711,23 +711,24 @@ Para ejemplificar el uso del LPM cuantinaremos trabajando con los datos de infid
 
 ```
 ## # A tibble: 15 x 10
-##    sex      age    ym child religious education  rate nbaffairs everaffair    everaffair_d
-##    &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;     &lt;int&gt;     &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt;
-##  1 male      57    15 yes           4        20     4         0 Never                    0
-##  2 female    57    15 yes           4        16     4         0 Never                    0
-##  3 female    57    15 yes           2        18     2         0 Never                    0
-##  4 male      57    15 yes           4         9     2         0 Never                    0
-##  5 male      57    15 yes           4        20     5         0 Never                    0
-##  6 male      57    15 yes           2        20     4         0 Never                    0
-##  7 male      57    15 yes           4         9     4         0 Never                    0
-##  8 male      57    15 yes           4        17     5         0 Never                    0
-##  9 male      57    15 yes           5        18     2         0 Never                    0
-## 10 female    57    15 yes           3        18     2         0 Never                    0
-## 11 male      57    15 no            4         9     1         0 Never                    0
-## 12 female    57    15 no            4        20     5         0 Never                    0
-## 13 female    57    15 yes           1        18     4         2 At least once            1
-## 14 male      57    15 yes           1        17     4         2 At least once            1
-## 15 male      57    15 yes           5        20     5         7 At least once            1
+##    sex     age    ym child religious education  rate nbaffairs everaffair
+##    &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;     &lt;int&gt;     &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;     
+##  1 male     57    15 yes           4        20     4         0 Never     
+##  2 fema…    57    15 yes           4        16     4         0 Never     
+##  3 fema…    57    15 yes           2        18     2         0 Never     
+##  4 male     57    15 yes           4         9     2         0 Never     
+##  5 male     57    15 yes           4        20     5         0 Never     
+##  6 male     57    15 yes           2        20     4         0 Never     
+##  7 male     57    15 yes           4         9     4         0 Never     
+##  8 male     57    15 yes           4        17     5         0 Never     
+##  9 male     57    15 yes           5        18     2         0 Never     
+## 10 fema…    57    15 yes           3        18     2         0 Never     
+## 11 male     57    15 no            4         9     1         0 Never     
+## 12 fema…    57    15 no            4        20     5         0 Never     
+## 13 fema…    57    15 yes           1        18     4         2 At least …
+## 14 male     57    15 yes           1        17     4         2 At least …
+## 15 male     57    15 yes           5        20     5         7 At least …
+## # … with 1 more variable: everaffair_d &lt;dbl&gt;
 ```
 
 ---
@@ -737,7 +738,6 @@ Ajustaremos el siguiente modelo: `\(\text{everaffair}_{i} = \beta_{0} + \beta_{1
 
 
 ```r
-# fit an empty model to estimate the probability of having ever had an affair
 lpm_affairs_rate &lt;- lm(everaffair_d ~ rate, data=affairsdata); summary(lpm_affairs_rate)
 ```
 
@@ -840,7 +840,10 @@ Derivado de lo anterior,
   
   - Cuando esto ocurre, los coeficientes estimados por el LMP son .bold[sesgados] e .bold[inconsistentes]
     
-    - Más aún, en muestras grande el problema es peor: converge hacia valores erroneos
+    - Más aún, en muestras grande el problema es peor: converge hacia valores erróneos
+    
+    - Problema especialmente serio cuando model produce proporción alta de predicciones fuera de rango
+    
 
 &lt;br&gt;
 
@@ -989,21 +992,35 @@ summary(lpm_affairs_raterel)$coefficients
 ---
 ## Limitaciones del LMP en la práctica 
 
-
-.pull-left[
 .bold[Predicciones fuera de rango, sesgo e inconsistencia]
 
+.pull-left[
 ![](class_7_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
 ]
 
 --
 
 .pull-right[
+![](class_7_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+]
+
+---
+## Limitaciones del LMP en la práctica 
+
 .bold[Errores heteroscedásticos]
 
-![](class_7_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+.pull-left[
+![](class_7_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
+]
+
+--
+
+.pull-right[
+
+![](class_7_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
 
 ]
+
 
 ---
 ## Ventajas del LMP
@@ -1054,10 +1071,177 @@ lpm_affairs_raterel &lt;-
 
 # Inferencia usando matrix de varianza-covarianza robusta (White method)
 coeftest(lpm_affairs_raterel, vcov = vcovHC(lpm_affairs_raterel, type="HC1")) 
+
 ## type="HC3" es default R pero type="HC1" produce mismo resultados de Stata
 ```
 
 
+---
+## Al rescate de LPM
+
+.bold[Problema: Observaciones con varianza heterogenea (heterocedásticidad)] 
+
+`\(\quad \quad \Box\)` .bold[Solución: Errores Estándar "Robustos"]
+
+
+```
+## 
+## t test of coefficients:
+## 
+##                               Estimate Std. Error t value  Pr(&gt;|t|)    
+## (Intercept)                   1.932234   0.548892  3.5202 0.0004646 ***
+## rate                         -0.595645   0.347765 -1.7128 0.0872818 .  
+## factor(religious)2           -1.783799   0.623893 -2.8591 0.0043991 ** 
+## factor(religious)3           -1.189242   0.649859 -1.8300 0.0677576 .  
+## factor(religious)4           -1.015017   0.649529 -1.5627 0.1186639    
+## factor(religious)5           -1.139344   0.755811 -1.5074 0.1322354    
+## I(rate^2)                     0.052707   0.050265  1.0486 0.2948060    
+## rate:factor(religious)2       0.761263   0.392281  1.9406 0.0527854 .  
+## rate:factor(religious)3       0.580889   0.407477  1.4256 0.1545234    
+## rate:factor(religious)4       0.247462   0.397200  0.6230 0.5335156    
+## rate:factor(religious)5       0.282028   0.456356  0.6180 0.5368156    
+## factor(religious)2:I(rate^2) -0.086022   0.056444 -1.5240 0.1280416    
+## factor(religious)3:I(rate^2) -0.074679   0.058482 -1.2770 0.2021206    
+## factor(religious)4:I(rate^2) -0.014756   0.056383 -0.2617 0.7936437    
+## factor(religious)5:I(rate^2) -0.015032   0.064420 -0.2333 0.8155792    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+## Al rescate de LPM
+
+.bold[Problema: Predicciones fuera de rango, sesgo e inconsistencia] 
+
+`\(\quad \quad \Box\)` .bold[Solución: No hay]
+
+--
+
+`\(\quad \quad \Box\)` .bold[Paleativo: "trimming"]
+
+
+.pull-left[
+![oaxaca1](oaxaca1.png)
+]
+
+.pull-left[
+![oaxaca2](oaxaca3.png)
+]
+
+---
+## Al rescate de LPM
+
+.bold[Problema: Predicciones fuera de rango, sesgo e inconsistencia] 
+
+`\(\quad \quad \Box\)` .bold[Paleativo: "trimming"]
+
+
+
+
+```r
+# Estimación del modelo
+lpm_affairs_raterel &lt;- 
+  lm(everaffair_d ~ rate*factor(religious) + I(rate^2)*factor(religious), 
+     data=affairsdata)
+
+# Muestra recortada
+trimmed_sample &lt;- affairsdata %&gt;% mutate(fitted= lpm_affairs_raterel$fitted.values) %&gt;%
+                  filter(between(fitted,0,1))
+
+# Re-estimación del modelo en muestra trimmed
+lpm_affairs_raterel_trimmed  &lt;- 
+  lm(everaffair_d ~ rate*factor(religious) + I(rate^2)*factor(religious), 
+     data=trimmed_sample)
+
+summary(lpm_affairs_raterel_trimmed)
+```
+---
+## Al rescate de LPM
+
+.bold[Problema: Predicciones fuera de rango, sesgo e inconsistencia] 
+
+`\(\quad \quad \Box\)` .bold[Paleativo: "trimming"]
+
+
+
+```
+## 
+## Call:
+## lm(formula = everaffair_d ~ rate * factor(religious) + I(rate^2) * 
+##     factor(religious), data = trimmed_sample)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.7063 -0.2779 -0.1317 -0.1199  0.8801 
+## 
+## Coefficients:
+##                              Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)                   3.06937    0.95990   3.198  0.00146 **
+## rate                         -1.18867    0.52390  -2.269  0.02364 * 
+## factor(religious)2           -2.92094    0.99895  -2.924  0.00359 **
+## factor(religious)3           -2.32638    1.00985  -2.304  0.02159 * 
+## factor(religious)4           -2.15216    1.00408  -2.143  0.03249 * 
+## factor(religious)5           -2.27648    1.06038  -2.147  0.03222 * 
+## I(rate^2)                     0.12660    0.06874   1.842  0.06601 . 
+## rate:factor(religious)2       1.35429    0.55144   2.456  0.01434 * 
+## rate:factor(religious)3       1.17392    0.55819   2.103  0.03589 * 
+## rate:factor(religious)4       0.84049    0.55198   1.523  0.12838   
+## rate:factor(religious)5       0.87506    0.58954   1.484  0.13827   
+## factor(religious)2:I(rate^2) -0.15992    0.07308  -2.188  0.02904 * 
+## factor(religious)3:I(rate^2) -0.14858    0.07409  -2.005  0.04539 * 
+## factor(religious)4:I(rate^2) -0.08865    0.07291  -1.216  0.22453   
+## factor(religious)5:I(rate^2) -0.08893    0.07862  -1.131  0.25848   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.4096 on 585 degrees of freedom
+## Multiple R-squared:  0.1239,	Adjusted R-squared:  0.1029 
+## F-statistic: 5.908 on 14 and 585 DF,  p-value: 6.241e-11
+```
+
+
+---
+## Al rescate de LPM
+
+.bold[Problema: Predicciones fuera de rango, sesgo e inconsistencia] 
+
+`\(\quad \quad \Box\)` .bold[Paleativo: "trimming"]
+
+
+.pull-left[
+![](class_7_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+]
+
+
+.pull-right[
+
+![](class_7_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
+]
+
+---
+## En resumen
+
+--
+
+- LMP tiene muchas ventajas y muchos adeptos (economistas) debido a su parsimonia
+
+- LMP tiene también muchos problemas
+
+
+&lt;br&gt;
+--
+
+¿Son esas ventajas suficientes para contrapesar las desventajas?
+--
+ Depende del contexto, pero:
+ 
+
+&lt;br&gt;
+
+![cuidado](https://media1.tenor.com/images/8d77dfaf373ed23296797e20c237b5d0/tenor.gif?itemid=13809357)
+
+
+  
 ---
 class: inverse, center, middle
 

@@ -171,6 +171,7 @@ library("tidyverse")
 library("Ecdat")
 library("cowplot")
 library("ggridges")
+library("modelr")
 theme_set(theme_cowplot())
 ```
 
@@ -276,8 +277,8 @@ En el caso de un modelo univariado del siguiente tipo: $y_{i} =\beta_{0} + \beta
 
 Ahora estimemos los parámetros de nuestro modelo via OLS 
 
-```{r}
-our_data <- data_frame(y=y, x=x) 
+```{r, message=FALSE}
+our_data <- tibble(y=y, x=x)
 our_lm_ols <- lm(y ~ x, data=our_data) # "fit" el modelo usando función lm()
 print(summary(our_lm_ols)) # analicemos nuestros resultados
 ```
@@ -298,7 +299,7 @@ print(summary(our_lm_mle)) # analicemos nuestros resultados
 .pull-left[
 ```{r, echo=FALSE}
 new_x = c(50,60)
-new_y = predict(our_lm_ols, newdata = data_frame(x=new_x))
+new_y = predict(our_lm_ols, newdata = tibble(x=new_x))
 
 positions_v <- data.frame(x1 = new_x, x2 = new_x, y1 = c(0,0), y2 = new_y)    
 positions_h <- data.frame(x1 = c(0,0), x2 = new_x, y1 =  new_y, y2 =  new_y)    
@@ -371,7 +372,7 @@ y_x60 <- rnorm(n, mean=y_hat[2], sd=sigma_hat)
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
-bind_rows(data_frame(y=y_x50, x=rep(50,n)), data_frame(y=y_x60, x=rep(60,n))) %>%
+bind_rows(tibble(y=y_x50, x=rep(50,n)), tibble(y=y_x60, x=rep(60,n))) %>%
  ggplot(aes(x=y, y=1, colour=factor(x), fill=factor(x))) + 
  geom_density_ridges(alpha=0.2) + 
  scale_color_viridis_d() + 
@@ -484,7 +485,7 @@ Estimamos los parámetros  via OLS
 
 
 ```{r}
-our_data2 <- data_frame(y=y, x=x, d=d) 
+our_data2 <- tibble(y=y, x=x, d=d) 
 our_lm_ols2 <- lm(y ~ I(log(x))*factor(d), data=our_data2) # "fit" el modelo usando función lm()
 print(summary(our_lm_ols2)) # analicemos nuestros resultados
 ```
@@ -604,7 +605,6 @@ affairsdata %>% arrange(age) %>% select(-occupation) %>% tail(15)
 Ajustaremos el siguiente modelo: $\text{everaffair}_{i} = \beta_{0} + \beta_{1}*\text{rate}_{i}$, que modela la probabilidad de tener un affair como función de la evaluación de los entrevistados de su matrimonio, desde 1 (muy infeliz) a 5 (muy feliz).
 
 ```{r}
-# fit an empty model to estimate the probability of having ever had an affair
 lpm_affairs_rate <- lm(everaffair_d ~ rate, data=affairsdata); summary(lpm_affairs_rate)
 ```
 
@@ -711,7 +711,10 @@ Derivado de lo anterior,
   
   - Cuando esto ocurre, los coeficientes estimados por el LMP son .bold[sesgados] e .bold[inconsistentes]
     
-    - Más aún, en muestras grande el problema es peor: converge hacia valores erroneos
+    - Más aún, en muestras grande el problema es peor: converge hacia valores erróneos
+    
+    - Problema especialmente serio cuando model produce proporción alta de predicciones fuera de rango
+    
 
 <br>
 
@@ -842,12 +845,28 @@ $\text{everaffair}_{i} = \beta_{0} + \beta_{1}*\text{rate}_{i} + \beta_{2}*\text
 ---
 ## Limitaciones del LMP en la práctica 
 
-
-.pull-left[
 .bold[Predicciones fuera de rango, sesgo e inconsistencia]
 
+.pull-left[
+```{r, echo=FALSE, fig.height=6, fig.width=7, message=FALSE}
+affairsdata <- affairsdata %>% mutate(fitted = lpm_affairs_raterel$fitted.values, res=lpm_affairs_raterel$residuals)
+
+affairsdata %>% ggplot(aes(x=fitted)) + geom_histogram(aes(colour="", fill="")) +
+  geom_vline(xintercept = 0, linetype="dotted", color = "blue", alpha=0.5, size=1.5) +
+  geom_vline(xintercept = 1, linetype="dotted", color = "blue", alpha=0.5, size=1.5) +
+  scale_color_viridis_d() +  scale_fill_viridis_d() +
+  guides(fill=FALSE, color=FALSE) +
+  theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+  axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+  legend.text = element_text(size = 18), legend.position="none") +
+  labs(x=expression(hat(p)), y="Frecuencia")
+```
+]
+
+--
+
+.pull-right[
 ```{r, echo=FALSE, fig.height=6, fig.width=7}
-# plot the result
 grid <- affairsdata  %>%data_grid(rate=seq_range(1:5,by=0.1),religious,.model=lpm_affairs_raterel)
 predictions <- cbind(grid,p_hat = predict(lpm_affairs_raterel, newdata = grid))
 
@@ -866,14 +885,36 @@ affairsdata %>% ggplot(aes(x=rate, y=everaffair_d, group=factor(religious) , col
 ```
 ]
 
+---
+## Limitaciones del LMP en la práctica 
+
+.bold[Errores heteroscedásticos]
+
+.pull-left[
+```{r, echo=FALSE, fig.height=6, fig.width=7}
+
+affairsdata <- affairsdata %>% mutate(var= fitted*(1-fitted))
+
+affairsdata  %>% ggplot(aes(x=fitted, y=var, group=factor(religious) , colour=factor(religious) )) +  
+  geom_jitter(alpha=0.2, width = 0.05,  height = 0.01, size=2) +
+  geom_line(size=2, alpha = 1) +
+  geom_hline(yintercept = 0.25, linetype="dotted", color = "blue", alpha=0.5, size=1.5) +
+  geom_hline(yintercept = 0, linetype="dotted", color = "blue", alpha=0.5, size=1.5) +
+  scale_color_viridis_d() +  scale_fill_viridis_d() +
+  guides(fill=FALSE, color=FALSE) +
+  theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+  axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+  legend.text = element_text(size = 18), legend.position="none") +
+  labs(x=expression(hat(p)), y=expression(hat(p) (1-hat(p)) ))
+
+```
+]
+
 --
 
 .pull-right[
-.bold[Errores heteroscedásticos]
 
 ```{r, echo=FALSE, fig.height=6, fig.width=7}
-affairsdata <- affairsdata %>% mutate(fitted = lpm_affairs_raterel$fitted.values, res=lpm_affairs_raterel$residuals)
-
 affairsdata %>% ggplot(aes(x=fitted, y=res, group=factor(religious) , colour=factor(religious) )) +  
   geom_jitter(alpha=0.2, width = 0.05, height = 0.05, size=2.5) +
   scale_color_viridis_d() +  scale_fill_viridis_d() +
@@ -885,6 +926,7 @@ affairsdata %>% ggplot(aes(x=fitted, y=res, group=factor(religious) , colour=fac
 ```
 
 ]
+
 
 ---
 ## Ventajas del LMP
@@ -922,7 +964,7 @@ Por lo mismo, hay .bold[mucho] interés en "rescatar" el LPM
 $\quad \quad \Box$ .bold[Solución: Errores Estándar "Robustos"]
 
 
-```{r, eval=FALSE}
+```{r robse, eval=FALSE}
 # Paquetes necesarios
 library(lmtest)
 library(sandwich)
@@ -934,10 +976,163 @@ lpm_affairs_raterel <-
 
 # Inferencia usando matrix de varianza-covarianza robusta (White method)
 coeftest(lpm_affairs_raterel, vcov = vcovHC(lpm_affairs_raterel, type="HC1")) 
+
 ## type="HC3" es default R pero type="HC1" produce mismo resultados de Stata
 ```
 
 
+---
+## Al rescate de LPM
+
+.bold[Problema: Observaciones con varianza heterogenea (heterocedásticidad)] 
+
+$\quad \quad \Box$ .bold[Solución: Errores Estándar "Robustos"]
+
+```{r robse-out, ref.label="robse", echo=FALSE, message=FALSE}
+# Paquetes necesarios
+library(lmtest)
+library(sandwich)
+
+# Estimación del modelo
+lpm_affairs_raterel <- 
+  lm(everaffair_d ~ rate*factor(religious) + I(rate^2)*factor(religious), 
+     data=affairsdata)
+
+# Inferencia usando matrix de varianza-covarianza robusta (White method)
+coeftest(lpm_affairs_raterel, vcov = vcovHC(lpm_affairs_raterel, type="HC1")) 
+
+## type="HC3" es default R pero type="HC1" produce mismo resultados de Stata
+```
+
+---
+## Al rescate de LPM
+
+.bold[Problema: Predicciones fuera de rango, sesgo e inconsistencia] 
+
+$\quad \quad \Box$ .bold[Solución: No hay]
+
+--
+
+$\quad \quad \Box$ .bold[Paleativo: "trimming"]
+
+
+.pull-left[
+![oaxaca1](oaxaca1.png)
+]
+
+.pull-left[
+![oaxaca2](oaxaca3.png)
+]
+
+---
+## Al rescate de LPM
+
+.bold[Problema: Predicciones fuera de rango, sesgo e inconsistencia] 
+
+$\quad \quad \Box$ .bold[Paleativo: "trimming"]
+
+
+
+```{r trimming, eval=FALSE}
+# Estimación del modelo
+lpm_affairs_raterel <- 
+  lm(everaffair_d ~ rate*factor(religious) + I(rate^2)*factor(religious), 
+     data=affairsdata)
+
+# Muestra recortada
+trimmed_sample <- affairsdata %>% mutate(fitted= lpm_affairs_raterel$fitted.values) %>%
+                  filter(between(fitted,0,1))
+
+# Re-estimación del modelo en muestra trimmed
+lpm_affairs_raterel_trimmed  <- 
+  lm(everaffair_d ~ rate*factor(religious) + I(rate^2)*factor(religious), 
+     data=trimmed_sample)
+
+summary(lpm_affairs_raterel_trimmed)
+```
+---
+## Al rescate de LPM
+
+.bold[Problema: Predicciones fuera de rango, sesgo e inconsistencia] 
+
+$\quad \quad \Box$ .bold[Paleativo: "trimming"]
+
+
+```{r trimming-out,  ref.label="trimming", echo=FALSE}
+```
+
+
+---
+## Al rescate de LPM
+
+.bold[Problema: Predicciones fuera de rango, sesgo e inconsistencia] 
+
+$\quad \quad \Box$ .bold[Paleativo: "trimming"]
+
+
+.pull-left[
+```{r, echo=FALSE, fig.height=6, fig.width=7, message=FALSE}
+affairsdata <- affairsdata %>% mutate(fitted = predict(lpm_affairs_raterel_trimmed,affairsdata))
+
+affairsdata %>% ggplot(aes(x=fitted)) + geom_histogram(aes(colour="", fill="")) +
+  geom_vline(xintercept = 0, linetype="dotted", color = "blue", alpha=0.5, size=1.5) +
+  geom_vline(xintercept = 1, linetype="dotted", color = "blue", alpha=0.5, size=1.5) +
+  scale_color_viridis_d() +  scale_fill_viridis_d() +
+  guides(fill=FALSE, color=FALSE) +
+  theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+  axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+  legend.text = element_text(size = 18), legend.position="none") +
+  labs(x=expression(hat(p)), y="Frecuencia")
+```
+]
+
+
+.pull-right[
+
+```{r, echo=FALSE, fig.height=6, fig.width=7}
+# plot the result
+grid <- affairsdata  %>% data_grid(rate=seq_range(1:5,by=0.1),religious,.model=lpm_affairs_raterel_trimmed)
+predictions <- cbind(grid,p_hat = predict(lpm_affairs_raterel_trimmed, newdata = grid))
+
+trimmed_sample %>% ggplot(aes(x=rate, y=everaffair_d, group=factor(religious) , colour=factor(religious) )) +  
+  geom_jitter(alpha=0.2, width = 0.25, height = 0.05, size=2.5) +
+  geom_line(data=predictions, aes(x=rate, y=p_hat, group=factor(religious), colour=factor(religious)), size=2, alpha = 1) +
+  geom_hline(yintercept = 0, linetype="dotted", color = "blue", alpha=0.5, size=1.5) +
+  geom_hline(yintercept = 1, linetype="dotted", color = "blue", alpha=0.5, size=1.5) +
+  xlim(0,7) + 
+  scale_color_viridis_d() +  scale_fill_viridis_d() +
+  guides(fill=FALSE, color=FALSE) +
+  theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+  axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+  legend.text = element_text(size = 18), legend.position="none") +
+  labs(x="rate marriage", y="P(Affair)")
+```
+]
+
+---
+## En resumen
+
+--
+
+- LMP tiene muchas ventajas y muchos adeptos (economistas) debido a su parsimonia
+
+- LMP tiene también muchos problemas
+
+
+<br>
+--
+
+¿Son esas ventajas suficientes para contrapesar las desventajas?
+--
+ Depende del contexto, pero:
+ 
+
+<br>
+
+![cuidado](https://media1.tenor.com/images/8d77dfaf373ed23296797e20c237b5d0/tenor.gif?itemid=13809357)
+
+
+  
 ---
 class: inverse, center, middle
 

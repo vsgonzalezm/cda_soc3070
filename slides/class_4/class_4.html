@@ -4,6 +4,7 @@
     <title>Análisis de Datos Categóricos (SOL3070)</title>
     <meta charset="utf-8" />
     <meta name="author" content="  Mauricio Bucca  Profesor Asistente, Sociología UC" />
+    <script src="libs/header-attrs-2.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link rel="stylesheet" href="gentle-r.css" type="text/css" />
@@ -281,7 +282,7 @@ glimpse(coins200)
 ```
 
 ```
-##  int [1:10000] 90 104 103 97 103 102 96 90 98 105 ...
+##  int [1:10000] 102 111 88 93 101 93 98 94 97 103 ...
 ```
 
 ```r
@@ -291,10 +292,10 @@ print(moments)
 
 ```
 ## $mean
-## [1] 100.0124
+## [1] 99.871
 ## 
 ## $var
-## [1] 49.19397
+## [1] 49.74573
 ```
 
 ---
@@ -449,7 +450,7 @@ Intuitivamente: habiendo obtenido 82 caras, `\(p=0.82\)` es el valor más plausi
 3) Encontrar matemáticamente el valor de `\(p\)` que maximiza `\(\mathcal{L}(p \mid \text{ Datos})\)`.
 
 
-- `\(\mathcal{L}(p \mid \text{ Datos}) = \mathbb{P}(x_{1})\mathbb{P}(x_{2}) \dots \mathbb{P}(x_{n}) = p^{x}(1-p)^{n-k} \quad \text{   donde  } k= \sum x_{i}\)`
+- `\(\mathcal{L}(p \mid \text{ Datos}) = \mathbb{P}(x_{1})\mathbb{P}(x_{2}) \dots \mathbb{P}(x_{n}) = p^{k}(1-p)^{n-k} \quad \text{   donde  } k= \sum x_{i}\)`
 
 --
 
@@ -757,6 +758,10 @@ class: inverse, center, middle
 Mauricio Bucca &lt;br&gt;
 https://mebucca.github.io/ &lt;br&gt;
 github.com/mebucca
+
+
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
