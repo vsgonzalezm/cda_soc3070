@@ -19,7 +19,7 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
 - Tablas de Contingencia 
   - Estructura probabilística: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_5/class_5#1) [`[Código]`](slides/class_5/class_5.Rmd) 
   - Medidas de independencia y asociación: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_6/class_6#1) [`[Código]`](slides/class_6/class_6.Rmd) 
-- Modelo Lineal de Probabilidad 
+- Modelo Lineal de Probabilidad: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_7/class_7#1) [`[Código]`](slides/class_7/class_7.Rmd)  
 - Modelos Lineales Generalizados 
 - Modelos de Regresión Logística
 - Modelos de Regresión Logística Ordenada
@@ -38,7 +38,7 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
 #### Tareas cortas
 
 - Tarea 1: [`[TC1]`](homework/tc_1.pdf) [`[TC1.Rmd]`](homework/tc_1.Rmd) [`[Soluciones]`](homework/tc_1_answers.pdf)[`[Soluciones.Rmd]`](homework/tc_1_answers.Rmd)
-- Tarea 2: [`[TC2]`](homework/tc_2.pdf) [`[TC2.Rmd]`](homework/tc_2.Rmd)
+- Tarea 2: [`[TC2]`](homework/tc_2.pdf) [`[TC2.Rmd]`](homework/tc_2.Rmd) [`[Soluciones]`](homework/tc_2_answers.pdf)[`[Soluciones.Rmd]`](homework/tc_2_answers.Rmd)
 - Tarea 3: [`[TC3]`](homework/tc_3.pdf) [`[TC3.Rmd]`](homework/tc_3.Rmd)
 
 
