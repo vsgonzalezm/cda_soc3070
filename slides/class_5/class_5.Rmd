@@ -224,7 +224,7 @@ $$p_{ij} = \mathbb{P}(X = i, Y = j)$$
 - la colección de probabilidades $p_{ij}$ forma la *distribución conjunta* de $X$ y $Y$ .
 
 
-Cuando trabajamos con muestras, estas probabilidad se puede estimar a partir de las frecuencias en la tabla:
+Cuando trabajamos con muestras, estas probabilidad se puede estimar (MLE) a partir de las frecuencias en la tabla:
 
 $$\hat{p}_{ij} = \frac{n_{ij}}{n}$$
 
@@ -465,7 +465,7 @@ Pensemos en una tabla I-por-2:
 
 --
 
-- Las frecuencias en cada celda son generadas por una variable Multinomial $X$ con $I \cdot 2$ posibles valores $ij$.
+- Las frecuencias en cada celda son generadas por una variable Multinomial $X$ con $I \cdot 2$ posibles valores $ij$, cada uno con probabilidad de ocurrencia $p_{ij}$
 
 --
 
