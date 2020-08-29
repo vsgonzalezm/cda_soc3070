@@ -11,6 +11,7 @@ output:
 # Escribir install.packages("tinytex") en la consola para instalar "tinytex"
 # Carga "tinytex" para compilar PDF
 library("tinytex")
+# Escribir install.packages("tidyverse") en la consola para instalar "tidyverse"
 library("tidyverse")
 ```
 Ponderación: 3% de la nota final del curso. Entrega: Desde el momento de entrega, los estudiantes tienen 1 semana exacta de plazo para completar esta tarea.
