@@ -523,7 +523,7 @@ Intuitivamente: habiendo obtenido 82 caras, $p=0.82$ es el valor más plausible 
 3) Encontrar matemáticamente el valor de $p$ que maximiza $\mathcal{L}(p \mid \text{ Datos})$.
 
 
-- $\mathcal{L}(p \mid \text{ Datos}) = \mathbb{P}(x_{1})\mathbb{P}(x_{2}) \dots \mathbb{P}(x_{n}) = p^{k}(1-p)^{n-k} \quad \text{   donde  } k= \sum x_{i}$
+- $\mathcal{L}(p \mid \text{ Datos}) = \mathbb{P}(x_{1})\mathbb{P}(x_{2}) \dots \mathbb{P}(x_{n}) =\prod_{i=1}^{n} f(x_{i}) =  p^{k}(1-p)^{n-k} \quad \text{   donde  } k= \sum x_{i}$
 
 --
 

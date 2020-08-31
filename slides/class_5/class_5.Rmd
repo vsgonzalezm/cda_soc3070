@@ -28,7 +28,7 @@ class: inverse, center, middle
 
 - Usaremos datos del artículo _A theory of extramarital affairs_ (Fair 1978), publicado en JPE. 
 
-- Muestra de 601 individuos en USA. Información sobre relaciones extra -matrimoniales que cada individuo. También covariables como género, edad, años de matrimonio, paternidad, educación, etc.
+- Muestra de 601 individuos en USA. Información sobre relaciones extra-matrimoniales de cada individuo. También covariables como género, edad, años de matrimonio, paternidad, educación, etc.
 
 --
 ```{r,  include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
@@ -48,7 +48,7 @@ print(affairsdata)
 ---
 ## Datos relaciones extra-matrimoniales, ejemplo
 
-Si estuviéramos interesados en estudiar la asociación entre genero y haber tenido una aventura, el primer paso probablemente sería construir una tabla de este tipo:
+Si estuviéramos interesados en estudiar la asociación entre género y haber tenido un "affair", el primer paso probablemente sería construir una tabla de este tipo:
 
 --
 
@@ -63,13 +63,13 @@ Este tipo de tablas se denomina _tablas de contingencia_.
 
 ## Tablas de contingencia
 
-Una definición formal:una tabla de contingencia es una matriz que muestra la *distribución multivariada* de frecuencia de un numero arbitrario de variables categóricas. 
+Una definición formal: una tabla de contingencia es una matriz que muestra la *distribución multivariada* de frecuencias de un número arbitrario de variables categóricas. 
 
 Caso simple:
 
 - $X$ y $Y$ son dos variables categóricas.
-- $X$ tiene $I$ categorias $\{i, \dots, I \}$ 
-- $Y$ tiene $J$ categorias $\{j, \dots, J \}$.
+- $X$ tiene $I$ categorías $\{i, \dots, I \}$ 
+- $Y$ tiene $J$ categorías $\{j, \dots, J \}$.
 
 --
 
@@ -79,14 +79,14 @@ Una tabla rectangular que clasifica todas las combinaciones posibles de $X$ y $Y
 ## Tablas de contingencia
 
 
- - Una tabla que clasifica $n$ variables se llama se denomina una tabla $n$-ways
+ - Una tabla que clasifica $n$ variables se denomina una tabla $n$-way
  
  - Una tabla con $I$ filas y $J$ columnas se denomina una $I \cdot J$ (léase I-por-J)
 
 <br> 
 --
 
-Por ejemplo, la tabla en nuestro ejemplo es una tabla 2-ways. 2-por-2
+Por ejemplo, la tabla en nuestro ejemplo es una tabla 2-way, 2-por-2
 ```{r, include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
 ctable <- affairsdata %>% with(table(sex,everaffair))
 print(ctable)
@@ -95,7 +95,7 @@ print(ctable)
 <br>
 --
 
-- En una tabla de contingencia $n_{ik}$ (frecuencia conjunta) denota la frecuencia observada en la celda $i,j$, es decir, el numero de casos presentes en la combinación $X=i \text{ y } Y=j$
+- Una tabla de contingencia $n_{ik}$ (frecuencia conjunta) denota la frecuencia observada en la celda $i,j$, es decir, el número de casos presentes en la combinación $X=i \text{ y } Y=j$
 
 - Usando la notación matricial $i$ indexa las filas y $j$ las columnas.
 
@@ -204,7 +204,7 @@ En resumen,
 
 
 <br>
-Estructura general del una tabla 2-ways, $I \cdot J$
+Estructura general de una tabla 2-way, $I \cdot J$
 
 ---
 ## Estructura de probabilidad en tablas de contingencia 
@@ -214,17 +214,17 @@ Supongamos que elegimos al azar un individuo de nuestra población. ¿Cuáles so
 --
 ### Distribución conjunta
 
-Para cada frecuencia conjunta $n_{ij}$ en la table existe una probabilidad conjunta asociada $p_{ij}$, tal que
+Para cada frecuencia conjunta $n_{ij}$ en la tabla existe una probabilidad conjunta asociada $p_{ij}$, tal que
 
 $$p_{ij} = \mathbb{P}(X = i, Y = j)$$
 
 
-- denota la probabilidad de que una observación muestreada al azar pertenezca en la celda $(i,j)$.
+- denota la probabilidad de que una observación muestreada al azar pertenezca a la celda $(i,j)$.
 
-- la colección de probabilidades $p_{ij}$ forma la *distribución conjunta* de $X$ y $Y$ .
+- la colección de probabilidades $p_{ij}$ forma la *distribución conjunta* de $X$ y $Y$.
 
 
-Cuando trabajamos con muestras, estas probabilidad se puede estimar (MLE) a partir de las frecuencias en la tabla:
+Cuando trabajamos con muestras, esta probabilidad se puede estimar (MLE) a partir de las frecuencias en la tabla:
 
 $$\hat{p}_{ij} = \frac{n_{ij}}{n}$$
 
@@ -245,7 +245,7 @@ Como con cualquier distribución de probabilidad, sabemos que los $p_{ij}$ suman
 
 --
 
-Veamos en caso de nuestro estimador:
+Veamos en el caso de nuestro estimador:
 
 Si $\hat{p}_{ij} = \frac{n_{ij}}{n}$, entonces 
 
@@ -253,7 +253,7 @@ $$\sum_{i} \sum_{j} \frac{n_{ij}}{n} = \frac{n}{n} = 1$$
 ---
 ## Distribuciones marginales
 
-Al igual que con las frecuencias, podemos obtener la distribución marginal de las variables $X$ y $Y$ a partir su distribución conjunta. 
+Al igual que con las frecuencias, podemos obtener la distribución marginal de las variables $X$ y $Y$ a partir de su distribución conjunta. 
 
 <br>
 --
@@ -297,7 +297,7 @@ margin_j <- apply(joint_dis,2,sum); margin_j
 
 <br>
 --
-Como toda distribución de probabilidad, .bold[suma a 1]
+Como toda distribución de probabilidad, .bold[suma a 1].
 
 
 ---
@@ -317,7 +317,7 @@ En resumen,
 
 
 <br>
-Estructura general de probabilidades en una  tabla 2-ways, $I \cdot J$
+Estructura general de probabilidades en una  tabla 2-way, $I \cdot J$
 
 
 ---
@@ -335,11 +335,11 @@ class: middle
 
 --
 
-- La distribución condicional $f_{Y,x}(Y \mid X=x)$ es una función que expresa la probabilidad que $Y$ tome cada uno de sus posibles valore $y$'s si $X$ toma valor $x$.
+- La distribución condicional $f_{Y,x}(Y \mid X=x)$ es una función que expresa la probabilidad que $Y$ tome cada uno de sus posibles valores $y$'s si $X$ toma valor $x$.
 
 --
 
-- La distribución condicional $f_{Y,X}(Y \mid X)$ es una función que expresa la probabilidad que $Y$ tome cada uno de sus posibles valores $y$'s para $X$ fijo en cada uno de sus valores posible $x$'s.
+- La distribución condicional $f_{Y,X}(Y \mid X)$ es una función que expresa la probabilidad que $Y$ tome cada uno de sus posibles valores $y$'s para $X$ fijo en cada uno de sus valores posibles $x$'s.
 
 <br>
 --
@@ -356,7 +356,7 @@ Por tanto,
 ## Distribuciones condicionales 
 
 .pull-left[
-En nuestro ejemplo podemos construir la distribución condicional  de la variable `everaffair` dado `sex` usando la fórmula genral para probabilidades condicionales:
+En nuestro ejemplo podemos construir la distribución condicional  de la variable `everaffair` dado `sex` usando la fórmula general para probabilidades condicionales:
 ]
 
 .pull-right[
@@ -432,7 +432,7 @@ print(ctable)
 
 <br>
 
-En términos más generales, la _distribución condicional_ de la variable de la variable `everaffair`, dado `sex` se estima del siguiente modo:
+En términos más generales, la _distribución condicional_ de la variable `everaffair`, dado `sex` se estima del siguiente modo:
 
 ```{r}
 ctable <- affairsdata %>% with(table(sex,everaffair)) # contingency table
@@ -444,7 +444,7 @@ joint_gender_affair/margin_gender # conditional affair given gender
 ```
 
 ---
-## Frecuencias, ...
+## Frecuencias...
 --
 
 .pull-left[
@@ -460,16 +460,16 @@ joint_gender_affair/margin_gender # conditional affair given gender
 Pensemos en una tabla I-por-2: 
 
 
-- Las frecuencias en cada fila son generadas por $I$ variables Binomiales $X_{i}$?
+- ¿Las frecuencias en cada fila son generadas por $I$ variables Binomiales $X_{i}$?
 
 
 --
 
-- Las frecuencias en cada celda son generadas por una variable Multinomial $X$ con $I \cdot 2$ posibles valores $ij$, cada uno con probabilidad de ocurrencia $p_{ij}$
+- ¿Las frecuencias en cada celda son generadas por una variable Multinomial $X$ con $I \cdot 2$ posibles valores $ij$, cada uno con probabilidad de ocurrencia $p_{ij}$?
 
 --
 
-- Las frecuencias en cada celda son generadas por $I \cdot 2$ variables Poisson con parámetros $\lambda_{ij}$ respectivamente? 
+- ¿Las frecuencias en cada celda son generadas por $I \cdot 2$ variables Poisson con parámetros $\lambda_{ij}$ respectivamente? 
 
 
 ---
@@ -487,7 +487,7 @@ Supongamos que el 60% de la población son mujeres, y el 50% ha tenido un "affai
 
 .full-width[.content-box-red[
 .bold[Pregunta]:
-Si la probabilidad de tener un "affair" fuera independiente del género, cual sería la probabilidad de que, al seleccionar una persona al azar, encontremos una mujer que ha tenido un "affair"? 
+Si la probabilidad de tener un "affair" fuera independiente del género, ¿cuál sería la probabilidad de que, al seleccionar una persona al azar, encontremos una mujer que ha tenido un "affair"? 
 ]
 ]
 
@@ -520,7 +520,7 @@ $$\tilde{n}_{ij} = n \cdot p_{i+} \cdot  p_{+j}$$
 <br>
 --
 
-.bold[Importante]: noten que sólo necesitamos saber la distribución marginal de las variables para calcular las probabilidades y frecuencias esperadas bajo la independencia. 
+.bold[Importante]: noten que sólo necesitamos saber la distribución marginal de las variables para calcular las probabilidades y frecuencias esperadas bajo independencia. 
 
 ---
 ## Independencia estadística
