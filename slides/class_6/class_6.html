@@ -4,7 +4,6 @@
     <title>Análisis de Datos Categóricos (SOL3070)</title>
     <meta charset="utf-8" />
     <meta name="author" content="  Mauricio Bucca  Profesor Asistente, Sociología UC" />
-    <script src="libs/header-attrs-2.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link rel="stylesheet" href="gentle-r.css" type="text/css" />
@@ -90,358 +89,10 @@ En lo que sigue vamos a usar este ejemplo para estudiar:
 ---
 class: inverse, center, middle
 
-## Tests de Independencia 
-
----
-### Test `\(\chi^{2}\)` de indepencia estadística 
-
-Primer paso, testear que exista _algo_ de asociación: ¿son estas tablas _suficientemente distintas_? 
-
-
-
-.pull-left[
-.bold[Frecuencias observadas]
-
-```
-##         everaffair
-## sex      At least once Never
-##   female            72   243
-##   male              78   208
-```
-]
-
---
-
-.pull-right[
-.bold[Frecuencias esperadas bajo independencia]
-
-```
-##        At least once   Never
-## female      78.61897 236.381
-## male        71.38103 214.619
-```
-]
-
-Donde cada frecuencia esperada bajo independencia está dada por: `\(\tilde{n}_{ij} = n \cdot \hat{p}_{i+} \cdot  \hat{p}_{+j}\)`
-
---
-
-- El test (Pearson) `\(\chi^{2}\)` mide el grado asociación en la tabla de la siguiente manera:
-
-.content-box-blue[
-`$$\text{test } \chi^{2}=\sum_{\text{all k: } i,j} \frac{(n_{ij} - \tilde{n}_{ij})^{2}}{\tilde{n}_{ij}}$$`
-]
-
-Un valor alto en el test de `\(\chi^{2}\)` sugiere que las variables no son independientes.
---
-Pero, ¿cuánto es "alto"?
-
----
-### Test `\(\chi^{2}\)` de indepencia estadística 
-
-.bold[Nota:]
-- Si `\(Z_{1}, \dots , Z_{k}\)` son variables independientes y cada `\(Z \sim \mathcal{N}(0,1)\)`, 
-- Entonces la variable `\(Y = \sum_{k} Z^{2} \sim \chi^{2}_{k}\)`. `\(Y\)` distribuye `\(\chi^{2}\)` con `\(k\)` grados de libertad.
-
---
-
-.bold[Heuristica:]
-
-- Si `\(X ~ \text{Binomial(n,p)}\)` entonces, asintóticamente `\(\frac{X - np}{\sqrt{np(1-p)}}  \sim \mathcal{N}(0,1)\)`
-- Por tanto, `\(\sum_{k} \frac{ (X - np)^{2} }{np(1-p)}  \sim \chi^{2}_{k}\)`  
-
---
-
-.content-box-blue[
-Pearson probó que tambien `\(\text{test}\chi^{2} \sim \chi_{df}^{2}\)` :
-`$$\sum_{\text{all } i,j} \frac{(n_{ij} - \tilde{n}_{ij})^{2}}{\tilde{n}_{ij}} = \sum_{\text{all } i,j} \frac{(n_{ij} - n\tilde{p}_{ij})^{2}}{n\tilde{p}_{ij}} \sim \chi^{2}_{df} \quad \quad \text{donde } \quad  df= (I-1)(J-1)$$`
-
-]
----
-### Test `\(\chi^{2}\)` de indepencia estadística 
-
-.pull-left[
-.bold[Frecuencias observadas]
-
-```
-##         everaffair
-## sex      At least once Never
-##   female            72   243
-##   male              78   208
-```
-]
-
-.pull-right[
-.bold[Frecuencias esperadas bajo independencia]
-
-```
-##        At least once   Never
-## female      78.61897 236.381
-## male        71.38103 214.619
-```
-]
-
-&lt;br&gt;
---
-
-.bold[(O-E)^2/E]
-
-
-```r
-(((ctable - ctable_independence)^(2))/ctable_independence) %&gt;% print()
-```
-
-```
-##         everaffair
-## sex      At least once     Never
-##   female     0.5572541 0.1853395
-##   male       0.6137589 0.2041327
-```
-
-
---
-
-.bold[Test Chi-2 : ∑ (O-E)^2/E]
-
-
-```
-## [1] 1.560485
-```
-
----
-### Test `\(\chi^{2}\)` de indepencia estadística 
-
-
-.pull-left[
-![](class_6_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
-.bold[Para ser claros:] Si la hipótesis de independencia ( `\(H_{0}\)` ) es cierta, nuestro `\(\text{test } \chi^{2}\)` distribuye `\(\chi^{2}\)` con  `\(df= (I-1)(J-1)=1\)`
-]
-
---
-
-.pull-right[
-.bold[p-value]
-
-`$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test } \chi^{2} \mid H_{0})$$`
-
-```r
-1- pchisq(our_chi2,df=1)
-```
-
-```
-## [1] 0.2115942
-```
-
-]
-
-
----
-### Test `\(\chi^{2}\)` de indepencia estadística 
-
-.pull-left[
-![](class_6_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
-.bold[Para ser claros:] Si la hipótesis de independencia ( `\(H_{0}\)` ) es cierta, nuestro `\(\text{test } \chi^{2}\)` distribuye `\(\chi^{2}\)` con  `\(df= (I-1)(J-1)=1\)`
-]
-
-
-.pull-right[
-.bold[p-value]
-
-`$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test } \chi^{2} \mid H_{0})$$`
-
-```r
-1- pchisq(our_chi2,df=1)
-```
-
-```
-## [1] 0.2115942
-```
-
-
-
-```r
-# Versión automática
-chisq.test(ctable,correct = FALSE)
-```
-
-```
-## 
-## 	Pearson's Chi-squared test
-## 
-## data:  ctable
-## X-squared = 1.5605, df = 1, p-value = 0.2116
-```
-
-]
-
----
-### Test Likelihood-Ratio `\(G^{2}\)`
-
-- .bold[Recordar]:  El MLE `\(\hat{\beta}\)` de; parámetro `\(\beta\)` es el valor que maximiza la probabilidad de ocurrencia los datos. Decimos que tal es el valor más "plausible" del parámetro 
-  - Formalmente: `\(\hat{\boldsymbol{\beta}}_{MLE} = \underset{\beta}{\arg\max\ } \mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X})\)`
-  
-- El estimador es una función de los datos: `\(\hat{\beta}_{MLE} = f(x_{1}, x_{2}, \dots, x_{n})\)`
-
-&lt;br&gt;
---
-
-.bold[Test Likelihood-Ratio] `\(G^{2}\)`
-
-
-`$$G^{2} = -2 \log \Bigg(  \frac{\hat{\beta}_{MLE} \text{ bajo } H_{0}}{\hat{\beta}_{MLE} \text{ sin restricción}}\Bigg)$$`
-
---
-
-- Si `\(H_{0}\)` es falsa el ratio generalmente es una número negativo muy cercano a cero. Por tanto, `\(G^2\)` será un número grande y positivo.
-
-- `\(G^{2} \sim \chi^{2}_{df=k} \quad \quad \text{donde k = # parametros sin restricciones - # parameteros bajo } H_{0}\)`
-
-
----
-### Test Likelihood-Ratio `\(G^{2}\)`
-
-
-.bold[Test Likelihood-Ratio] `\(G^{2}\)`, en el caso de evaluar independencia en una tabla de contingencia 2-ways:
-
-
-`$$G^{2} = -2 \log \Bigg(  \frac{\hat{\beta}_{MLE} \text{ bajo } H_{0}}{\hat{\beta}_{MLE} \text{ sin restricción}}\Bigg) = -2 \log \frac{f(\tilde{n}_{ij},  \dots, \tilde{n}_{IJ})}{f(n_{ij},  \dots, n_{IJ})}$$`
-
-
-&lt;br&gt;
---
-En tabla de contingencia 2-ways donde las frecuencias vienen de una distribución Multinomial, :
-
-
-.content-box-blue[
-Pearson demostró que `\(G^{2} \sim \chi_{df}^{2}\)`:
-
-`$$2 \sum_{\text{all } i,j} n_{ij} \log \Big( \frac{n_{ij}}{\tilde{n}_{ij}} \Big) \quad \quad \text{donde } \quad  df= (I
--1)(J-1)$$`
-]
-
---
-
-- `\(G^{2}=0\)` cuando `\(n_{ij}=\tilde{n}_{ij} \quad \text{ para todo } i,j\)`
-
-- `\(G^{2}\)` "grande" sugiere que variables no son independientes
-
----
-### Test Likelihood-Ratio `\(G^{2}\)`
-
-.pull-left[
-
-```
-## [1] 1.559105
-```
-
-![](class_6_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
-Si la hipótesis de independencia ( `\(H_{0}\)` ) es cierta, nuestro `\(\text{test } G^{2}\)` distribuye `\(\chi^{2}\)` con `\(df= (I-1)(J-1)=1\)`
-]
-
---
-
-.pull-right[
-.bold[p-value]
-
-`$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test } G^{2} \mid H_{0})$$`
-
-```r
-1- pchisq(our_g2,df=1)
-```
-
-```
-## [1] 0.2117963
-```
-
-]
-
----
-### Test Likelihood-Ratio `\(G^{2}\)`
-
-.pull-left[
-
-```
-## [1] 1.559105
-```
-
-![](class_6_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
-Si la hipótesis de independencia ( `\(H_{0}\)` ) es cierta, nuestro `\(\text{test } G^{2}\)` distribuye `\(\chi^{2}\)` con `\(df= (I-1)(J-1)=1\)`
-]
-
-
-.pull-right[
-.bold[p-value]
-
-`$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test } G^{2} \mid H_{0})$$`
-
-```r
-1- pchisq(our_g2,df=1)
-```
-
-```
-## [1] 0.2117963
-```
-
-
-```r
-# Versión automática
-library("DescTools")
-GTest(ctable, correct="none")
-```
-
-```
-## 
-## 	Log likelihood ratio (G-test) test of independence without correction
-## 
-## data:  ctable
-## G = 1.5591, X-squared df = 1, p-value = 0.2118
-```
-
-]
-
----
-class: inverse, center, middle
-
 ## Medidas de Asociación
 
 ---
-##  Asociación en tablas de contingencia 
-
-Retomando nuestro ejemplo,
-
-.pull-left[
-`\(f(\text{everaffair} \mid \text{sex})\)`
-
-```r
-prop.table(ctable,1)
-```
-
-```
-##         everaffair
-## sex      At least once     Never
-##   female     0.2285714 0.7714286
-##   male       0.2727273 0.7272727
-```
-
-
-`\(f(\text{everaffair})\)`
-
-```r
-prop.table(apply(ctable,2,sum))
-```
-
-```
-## At least once         Never 
-##      0.249584      0.750416
-```
-
-]
-
-
-
----
-
-### Diferencia de proporciones
+## Diferencia de proporciones
 
 - Supongamos que tenemos una tabla de contingencia 2-ways que cruza las variables binarias `\(X\)` (independiente) y `\(Y\)` (dependiente).  Éxito se codifica con valor 1 y el fracaso con el valor 0.
 
@@ -466,7 +117,7 @@ Volviendo a nuestro ejemplo, `\(\hat{p}_{H}\)`, llamemos y a la proporción de h
 \end{align}`
 
 ---
-### Diferencia de proporciones
+## Diferencia de proporciones
 
 Dos consideraciones importantes:
 
@@ -493,7 +144,7 @@ prop.table(ctable,2)
 Si tratamos género como variable dependiente y definimos "mujeres" como la categoría de éxito, la diferencia en las proporciones es `\(\delta = 0.48 - 0.54 = -0.06\)`. 
 
 ---
-### Diferencia de proporciones
+## Diferencia de proporciones
 
 2) La diferencia de proporciones es una estadística intuitiva y fácil de interpretar, pero por sí sola puede ser engañosa cuando las proporciones son ambas cercanas a cero. Consideremos los dos casos hipotéticos siguientes:
 
@@ -538,7 +189,7 @@ En nuestro ejemplo, el riesgo relativo estimado es:
 La proporción de infidelidad entre los hombres es aproximadamente un 20% mayor que entre las mujeres. 
 
 ---
-### Riesgo Relativo (RR)
+## Riesgo Relativo (RR)
 
 Tres consideraciones importantes:
 
@@ -593,7 +244,7 @@ ratio proporción fidelidad M/H
 
 
 ---
-### Riesgo Relativo (RR)
+## Riesgo Relativo (RR)
 
 3)  Si una de las proporciones involucradas en el cálculo es demasiado pequeña, el `\(RR\)` puede tomar valores arbitrariamente grandes o arbitrariamente pequeños. 
 
@@ -615,7 +266,7 @@ radicalmente el resultado:
   - Problema muy común cuando se trabaja con eventos con muy baja prevalencia (ej, suicidio, covid, etc.)
 
 ---
-### Odds Ratio
+## Odds Ratio
 
 &lt;br&gt;
 
@@ -630,7 +281,7 @@ radicalmente el resultado:
   - Toda tabla `\(n\)`-ways, `\(I \cdot J\)`, puede ser re-escrita como  `\((I-1) \cdot (J-1) \cdot (n-1)\)` tablas de 2-por-2.
 
 ---
-#### Odds
+### Odds
 
 La Odds Ratio es el ratio de dos "odds", donde las "odds" una variable binaria `\(Y\)` se definen como: 
 
@@ -650,7 +301,7 @@ Por ejemplo, si `\(Y\)` tiene una probabilidad de éxito `\(p=0.75\)`, las odds 
 
 
 ---
-#### Odds
+### Odds
 
 las Odds son funciones de probabilidades y, por lo tanto, las probabilidades también pueden expresarse en función de las odds. Formalmente:
 
@@ -685,7 +336,7 @@ p &amp;= \frac{3}{1 + 3} \\ \\
 ]
 
 ---
-### Odds Ratio
+## Odds Ratio
 
 Las .bold[odds] resumen la distribución de una sola variable binaria. Para medir la asociación entre dos de estas variables en una tabla podemos calcular la .bold[odds *ratio*]. 
 
@@ -708,7 +359,7 @@ La .bold[odds *ratio*], por tanto, es:
 
 
 ---
-### Odds Ratio
+## Odds Ratio
 
 Volviendo a nuestro ejemplo,
 
@@ -731,7 +382,7 @@ Si `\(\hat{p}_{H}\)` es la proporción de hombres que han tenido una aventura y 
 \end{align}`
 
 ---
-### Odds Ratio
+## Odds Ratio
 
 Dado que estas proporciones se estiman a partir de los recuentos de la tabla, `\(\theta\)` también puede expresarse de la siguiente manera, denominada .bold[cross-product ratio].
 
@@ -767,7 +418,7 @@ Theta = (ctable[2,1]*ctable[1,2])/(ctable[2,2]*ctable[1,1]); Theta
 ```
 
 ---
-### Odds Ratio
+## Odds Ratio
 
 
 ```r
@@ -1023,7 +674,7 @@ log(0.05)
 ]
 
 .pull-right[
-![](class_6_files/figure-html/unnamed-chunk-37-1.png)&lt;!-- --&gt;
+![](class_6_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -1056,7 +707,7 @@ class: inverse, center, middle
 
 
 ---
-### Inferencia para medidas de Asociación
+## Inferencia para medidas de Asociación
 
 O, sobre como podemos saber si nuestros resultados no son, o no, producidos por el mero azar.
 
@@ -1106,12 +757,13 @@ entonces:
 --
 
 .content-box-blue[
-`$$\hat{p}_{1} - \hat{p}_{2} \sim \mathcal{N}\Big(\mu_{\delta} = p_{1} - p_{1}, \sigma_{\delta} = \sqrt{p_{1}(1-p_{1})/n_{1} + p_{2}(1-p_{2})/n_{2}}\Big)$$`
+`$$\hat{p}_{1} - \hat{p}_{2} \sim \mathcal{N}\Big(\mu_{\delta} = p_{1} - p_{2}, \sigma_{\delta} = \sqrt{p_{1}(1-p_{1})/n_{1} + p_{2}(1-p_{2})/n_{2}}\Big)$$`
 ]
 
 ---
 ### Inferencia para Diferencia de proporciones
 
+.bold[Intervalo de confianza]
 Podemos usar este resultado para construir un intervalo de confianza para `\(\hat{\delta} = \hat{p_{1}} - \hat{p_{2}}\)`, al (1 - `\(\alpha\)`)% de confianza. Para un nivel de significación estadística de `\(\alpha=0.05\)`,
 
 `\begin{align}
@@ -1157,9 +809,9 @@ p2_hat = ctable[1,1]/n2
 
 
 ```r
-delta = p1_hat - p2_hat
+delta_hat = p1_hat - p2_hat
 se = sqrt((p1_hat*(1 - p1_hat))/n1 +  (p2_hat*(1 - p2_hat))/n2)
-ci95_delta= c(ll=(delta - 1.96*se), ul=(delta + 1.96*se)); print(ci95_delta)
+ci95_delta= c(ll=(delta_hat - 1.96*se), ul=(delta_hat + 1.96*se)); print(ci95_delta)
 ```
 
 --
@@ -1187,6 +839,68 @@ Versión automática con `prop.test()` en `R`:
 &lt;/style&gt;
 
 ---
+### Inferencia para Diferencia de proporciones
+
+.bold[Test de hipótesis]
+
+1) ¿Cuál es la distribución de `\(\hat{p}_{1} - \hat{p}_{2}\)` bajo la nula (si la hipótesis nula es verdadera)?
+  - `\(H_{0}: \tilde{\delta} = \hat{p}_{1} - \hat{p}_{2}=0\)` 
+
+--
+
+.content-box-blue[
+`$$\tilde{\delta} =  \hat{p}_{1} - \hat{p}_{2} \sim \mathcal{N}\Big(\mu_{\delta} = 0, \sigma_{\delta} = \sqrt{p(1-p)(1/n_{1}+1/n_{2})}\Big)$$`
+]
+
+
+- Típicamente `\(p\)` se reemplaza por el promedio ponderado de `\(\hat{p_{1}}\)` y `\(\hat{p_{2}}\)`  
+
+&lt;br&gt;
+--
+
+2) Calcular .bold[p-value] (2 colas)
+
+
+.content-box-blue[
+`$$\mathbb{P}( |\delta| &gt; \hat{\delta} \mid H_{0} \text{ es verdadera})$$`
+]
+
+---
+
+### Inferencia para Diferencia de proporciones
+
+.bold[Test de hipótesis]
+
+
+.pull-left[
+.bold[p-value] (1 cola):
+
+`$$\mathbb{P}( \tilde{\delta} \geq \hat{\delta}=0.044 \mid H_{0})$$`
+
+```r
+p_null = p1_hat*(n1/(n1+n2)) + p2_hat*(n2/(n1+n2))
+se_null = sqrt(p_null*(1 - p_null)*(1/n1 + 1/n2))
+```
+
+
+```r
+1 - pnorm(delta_hat,mean=0,sd=se_null)
+```
+
+```
+## [1] 0.1057971
+```
+]
+
+--
+
+.pull-right[
+![](class_6_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
+.bold[Para ser claros:] Si `\(H_{0}\)` es cierta, nuestro `\(\hat{\delta}\)` distribuye `\(\mathcal{N}(0,\alpha=p(1-p)(1/n_{1} + 1/n_{2})\)`
+]
+
+
+---
 ### Inferencia para la Odds Ratio
 
 - Cual es la .bold[sampling distribucion] de `\(\hat{\theta}\)`? 
@@ -1203,17 +917,18 @@ La sampling distribution de `\(\hat{\theta}\)` debe ser ...
 
 
 .pull-left[
-`$$\frac{\frac{\mathcal{N}(\mu_{1},\sigma_{1})}{1 - \mathcal{N}(\mu_{1},\sigma_{1})}}{\frac{\mathcal{N}(\mu_{2},\sigma_{2})}{1 - \mathcal{N}(\mu_{2},\sigma_{2})}}$$`  
+`$$\hat{\theta} \sim \frac{\frac{\mathcal{N}(\mu_{1},\sigma_{1})}{1 - \mathcal{N}(\mu_{1},\sigma_{1})}}{\frac{\mathcal{N}(\mu_{2},\sigma_{2})}{1 - \mathcal{N}(\mu_{2},\sigma_{2})}}$$`  
 ]
 
 --
-
 .pull-right[
 ![meme](meme.png)
+
+Complicado ...
 ]
 
 
-Complicado ...
+
   
   
 ---
@@ -1365,11 +1080,11 @@ samp_dist_theta %&gt;% glimpse();  samp_dist_logtheta %&gt;% glimpse()
 La distribución de nuestras estimaciones de `\(\hat{\theta}\)` y `\(\log \hat{\theta}\)` se ven así:
 
 .pull-left[
-![](class_6_files/figure-html/unnamed-chunk-46-1.png)&lt;!-- --&gt;
+![](class_6_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
 ]
 
 .pull-right[
-![](class_6_files/figure-html/unnamed-chunk-47-1.png)&lt;!-- --&gt;
+![](class_6_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -1455,7 +1170,71 @@ OddsRatio(ct_sample, conf.level = 0.95, method = "mle")
 .bold[Conclusión]: asociación entre variables es estadísticamente significativa 
 
 ---
+#### Intervalo de confianza para Odds ratio
 
+`$$95\% \text{ CI}_{\hat{\theta}} = e^{\log \hat{\theta} \pm 1.96 \cdot \sqrt{ \frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}}}}$$`
+
+Aplicado a nuestro ejemplo
+
+.pull-left[
+
+```r
+print(ctable)
+```
+
+```
+##         everaffair
+## sex      At least once Never
+##   female            72   243
+##   male              78   208
+```
+]
+
+.pull-right[
+
+```r
+n11 = ctable[1,1]
+n12 = ctable[1,2]
+n21 = ctable[2,1]
+n22 = ctable[2,2]
+```
+]
+
+
+
+```r
+log_theta_hat = log((n21*n12)/(n11*n22))
+se = sqrt(1/n11+ 1/n12 + 1/n21 + 1/n22)
+ci95_theta_hat= c(ll=exp(log_theta_hat - 1.96*se), ul=exp(log_theta_hat + 1.96*se)); print(ci95_theta_hat)
+```
+
+--
+
+.pull-left[
+Nuestro 95% CI:
+
+```
+##        ll        ul 
+## 0.8742282 1.8322523
+```
+]
+
+.pull-right[
+Versión automática con `prop.test()` en `R`:
+
+```
+## odds ratio     lwr.ci     upr.ci 
+##  1.2651182  0.8593406  1.8645659
+```
+]
+
+&lt;style type="text/css"&gt;
+.pull-right ~ * { clear: unset; }
+.pull-right + * { clear: both; }
+&lt;/style&gt;
+
+
+---
 ### Inferencia para Riesgo Relativo
 
 - El Riesgo Relativo es el ratio entre dos proporciones _independientes_,  `\(\hat{RR} = \hat{p}_{1}/\hat{p}_{2}\)`
@@ -1485,6 +1264,330 @@ OddsRatio(ct_sample, conf.level = 0.95, method = "mle")
 
 - Podemos usar este resultado para construir un intervalo de confianza para el `\(\log RR\)` al (1 - `\(\alpha\)`) de confianza.
 
+---
+### Inferencia para Riesgo Relativo
+
+[Intergenerational Social Mobility Among the Children of Immigrants in Western Europe](https://mebucca.github.io/research/sm2geu)
+
+.pull-left[
+![paper1](SM2gEU1.png)
+]
+
+.pull-right[
+![paper2](SM2gEU2.png)
+]
+
+---
+class: inverse, center, middle
+
+## Tests de Independencia 
+
+---
+### Test `\(\chi^{2}\)` de indepencia estadística 
+
+Primer paso, testear que exista _algo_ de asociación: ¿son estas tablas _suficientemente distintas_? 
+
+
+
+.pull-left[
+.bold[Frecuencias observadas]
+
+```
+##         everaffair
+## sex      At least once Never
+##   female            72   243
+##   male              78   208
+```
+]
+
+--
+
+.pull-right[
+.bold[Frecuencias esperadas bajo independencia]
+
+```
+##        At least once   Never
+## female      78.61897 236.381
+## male        71.38103 214.619
+```
+]
+
+Donde cada frecuencia esperada bajo independencia está dada por: `\(\tilde{n}_{ij} = n \cdot \hat{p}_{i+} \cdot  \hat{p}_{+j}\)`
+
+--
+
+- El test (Pearson) `\(\chi^{2}\)` mide el grado asociación en la tabla de la siguiente manera:
+
+.content-box-blue[
+`$$\text{test } \chi^{2}=\sum_{\text{all k: } i,j} \frac{(n_{ij} - \tilde{n}_{ij})^{2}}{\tilde{n}_{ij}}$$`
+]
+
+Un valor alto en el test de `\(\chi^{2}\)` sugiere que las variables no son independientes.
+--
+Pero, ¿cuánto es "alto"?
+
+---
+### Test `\(\chi^{2}\)` de indepencia estadística 
+
+.bold[Nota:]
+- Si `\(Z_{1}, \dots , Z_{k}\)` son variables independientes y cada `\(Z \sim \mathcal{N}(0,1)\)`, 
+- Entonces la variable `\(Y = \sum_{k} Z^{2} \sim \chi^{2}_{k}\)`. `\(Y\)` distribuye `\(\chi^{2}\)` con `\(k\)` grados de libertad.
+
+--
+
+.bold[Heuristica:]
+
+- Si `\(X ~ \text{Binomial(n,p)}\)` entonces, asintóticamente `\(\frac{X - np}{\sqrt{np(1-p)}}  \sim \mathcal{N}(0,1)\)`
+- Por tanto, `\(\sum_{k} \frac{ (X - np)^{2} }{np(1-p)}  \sim \chi^{2}_{k}\)`  
+
+--
+
+.content-box-blue[
+Pearson demostró que bajo `\(H_{0}, \quad\)` `\(\text{test}\chi^{2} \sim \chi_{df}^{2}\)` :
+`$$\sum_{\text{all } i,j} \frac{(n_{ij} - \tilde{n}_{ij})^{2}}{\tilde{n}_{ij}} = \sum_{\text{all } i,j} \frac{(n_{ij} - n\tilde{p}_{ij})^{2}}{n\tilde{p}_{ij}} \sim \chi^{2}_{df} \quad \quad \text{donde } \quad  df= (I-1)(J-1)$$`
+
+]
+---
+### Test `\(\chi^{2}\)` de indepencia estadística 
+
+.pull-left[
+.bold[Frecuencias observadas]
+
+```
+##         everaffair
+## sex      At least once Never
+##   female            72   243
+##   male              78   208
+```
+]
+
+.pull-right[
+.bold[Frecuencias esperadas bajo independencia]
+
+```
+##        At least once   Never
+## female      78.61897 236.381
+## male        71.38103 214.619
+```
+]
+
+&lt;br&gt;
+--
+
+.bold[(O-E)^2/E]
+
+
+```r
+(((ctable - ctable_independence)^(2))/ctable_independence) %&gt;% print()
+```
+
+```
+##         everaffair
+## sex      At least once     Never
+##   female     0.5572541 0.1853395
+##   male       0.6137589 0.2041327
+```
+
+
+--
+
+.bold[Test Chi-2 : ∑ (O-E)^2/E]
+
+
+```
+## [1] 1.560485
+```
+
+---
+### Test `\(\chi^{2}\)` de indepencia estadística 
+
+
+.pull-left[
+![](class_6_files/figure-html/unnamed-chunk-48-1.png)&lt;!-- --&gt;
+.bold[Para ser claros:] Si la hipótesis de independencia ( `\(H_{0}\)` ) es cierta, nuestro `\(\text{test } \chi^{2}\)` distribuye `\(\chi^{2}\)` con  `\(df= (I-1)(J-1)=1\)`
+]
+
+--
+
+.pull-right[
+.bold[p-value]
+
+`$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test } \chi^{2} \mid H_{0})$$`
+
+```r
+1- pchisq(our_chi2,df=1)
+```
+
+```
+## [1] 0.2115942
+```
+
+]
+
+
+---
+### Test `\(\chi^{2}\)` de indepencia estadística 
+
+.pull-left[
+![](class_6_files/figure-html/unnamed-chunk-50-1.png)&lt;!-- --&gt;
+.bold[Para ser claros:] Si la hipótesis de independencia ( `\(H_{0}\)` ) es cierta, nuestro `\(\text{test } \chi^{2}\)` distribuye `\(\chi^{2}\)` con  `\(df= (I-1)(J-1)=1\)`
+]
+
+
+.pull-right[
+.bold[p-value]
+
+`$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test } \chi^{2} \mid H_{0})$$`
+
+```r
+1- pchisq(our_chi2,df=1)
+```
+
+```
+## [1] 0.2115942
+```
+
+
+
+```r
+# Versión automática
+chisq.test(ctable,correct = FALSE)
+```
+
+```
+## 
+## 	Pearson's Chi-squared test
+## 
+## data:  ctable
+## X-squared = 1.5605, df = 1, p-value = 0.2116
+```
+
+]
+
+---
+### Test Likelihood-Ratio `\(G^{2}\)`
+
+- .bold[Recordar]:  El MLE `\(\hat{\beta}\)` de; parámetro `\(\beta\)` es el valor que maximiza la probabilidad de ocurrencia los datos. Decimos que tal es el valor más "plausible" del parámetro 
+  - Formalmente: `\(\hat{\boldsymbol{\beta}}_{MLE} = \underset{\beta}{\arg\max\ } \mathcal{L}(\boldsymbol{\beta} \mid \boldsymbol{X})\)`
+  
+- El estimador es una función de los datos: `\(\hat{\beta}_{MLE} = f(x_{1}, x_{2}, \dots, x_{n})\)`
+
+&lt;br&gt;
+--
+
+.bold[Test Likelihood-Ratio] `\(G^{2}\)`
+
+
+`$$G^{2} = -2 \log \Bigg(  \frac{\hat{\beta}_{MLE} \text{ bajo } H_{0}}{\hat{\beta}_{MLE} \text{ sin restricción}}\Bigg)$$`
+
+--
+
+- Si `\(H_{0}\)` es falsa el ratio generalmente es una número negativo muy cercano a cero. Por tanto, `\(G^2\)` será un número grande y positivo.
+
+- `\(G^{2} \sim \chi^{2}_{df=k} \quad \quad \text{donde k = # parametros sin restricciones - # parameteros bajo } H_{0}\)`
+
+
+---
+### Test Likelihood-Ratio `\(G^{2}\)`
+
+
+.bold[Test Likelihood-Ratio] `\(G^{2}\)`, en el caso de evaluar independencia en una tabla de contingencia 2-ways:
+
+
+`$$G^{2} = -2 \log \Bigg(  \frac{\hat{\beta}_{MLE} \text{ bajo } H_{0}}{\hat{\beta}_{MLE} \text{ sin restricción}}\Bigg) = -2 \log \frac{f(\tilde{n}_{ij},  \dots, \tilde{n}_{IJ})}{f(n_{ij},  \dots, n_{IJ})}$$`
+
+
+&lt;br&gt;
+--
+En tabla de contingencia 2-ways donde las frecuencias vienen de una distribución Multinomial, :
+
+
+.content-box-blue[
+Pearson demostró que bajo `\(H_{0}, \quad\)` `\(G^{2} \sim \chi_{df}^{2}\)`:
+
+`$$2 \sum_{\text{all } i,j} n_{ij} \log \Big( \frac{n_{ij}}{\tilde{n}_{ij}} \Big) \quad \quad \text{donde } \quad  df= (I
+-1)(J-1)$$`
+]
+
+--
+
+- `\(G^{2}=0\)` cuando `\(n_{ij}=\tilde{n}_{ij} \quad \text{ para todo } i,j\)`
+
+- `\(G^{2}\)` "grande" sugiere que variables no son independientes
+
+---
+### Test Likelihood-Ratio `\(G^{2}\)`
+
+.pull-left[
+
+```
+## [1] 1.559105
+```
+
+![](class_6_files/figure-html/unnamed-chunk-53-1.png)&lt;!-- --&gt;
+Si la hipótesis de independencia ( `\(H_{0}\)` ) es cierta, nuestro `\(\text{test } G^{2}\)` distribuye `\(\chi^{2}\)` con `\(df= (I-1)(J-1)=1\)`
+]
+
+--
+
+.pull-right[
+.bold[p-value]
+
+`$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test } G^{2} \mid H_{0})$$`
+
+```r
+1- pchisq(our_g2,df=1)
+```
+
+```
+## [1] 0.2117963
+```
+
+]
+
+---
+### Test Likelihood-Ratio `\(G^{2}\)`
+
+.pull-left[
+
+```
+## [1] 1.559105
+```
+
+![](class_6_files/figure-html/unnamed-chunk-55-1.png)&lt;!-- --&gt;
+Si la hipótesis de independencia ( `\(H_{0}\)` ) es cierta, nuestro `\(\text{test } G^{2}\)` distribuye `\(\chi^{2}\)` con `\(df= (I-1)(J-1)=1\)`
+]
+
+
+.pull-right[
+.bold[p-value]
+
+`$$\mathbb{P}(\chi_{df=1}^{2} \geq \text{test } G^{2} \mid H_{0})$$`
+
+```r
+1- pchisq(our_g2,df=1)
+```
+
+```
+## [1] 0.2117963
+```
+
+
+```r
+# Versión automática
+library("DescTools")
+GTest(ctable, correct="none")
+```
+
+```
+## 
+## 	Log likelihood ratio (G-test) test of independence without correction
+## 
+## data:  ctable
+## G = 1.5591, X-squared df = 1, p-value = 0.2118
+```
+
+]
 
 ---
 class: inverse, center, middle
@@ -1497,10 +1600,6 @@ class: inverse, center, middle
 Mauricio Bucca &lt;br&gt;
 https://mebucca.github.io/ &lt;br&gt;
 github.com/mebucca
-
-
-
-
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
