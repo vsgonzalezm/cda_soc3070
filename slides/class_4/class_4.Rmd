@@ -85,7 +85,7 @@ $$\mathbb{E}(c X)= c \mathbb{E}(X)$$
 $$\mathbb{E}(X + Y)=  \mathbb{E}(X) + \mathbb{E}(Y)$$
 --
 
-4) Si $X$ es una variable aleatoria y $g(.)$ es una función, entonces
+4) Si $X$ es una variable aleatoria y $g(.)$ es una función lineal, entonces
 
 $$\mathbb{E}(g(X))=  g(\mathbb{E}(X))$$
 

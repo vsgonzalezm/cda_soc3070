@@ -34,7 +34,7 @@ Como se puede observar, la tabla tiene tres dimensiones: ocupación del hijo (fi
 
 ## Ejercicios:
 
-1) Estima las distribuciones marginales de ocupación del hijo y ocupación del padre en cada país. Comenta brevemente las implicaciones sustantivas de los resultados obtenidos.
+1) Estima las distribuciones marginales (de probabilidad) de ocupación del hijo y ocupación del padre en cada país. Comenta brevemente las implicaciones sustantivas de los resultados obtenidos.
 
 
 2) Asume que los recuentos de **cada columna** en la tabla provienen de una distribución multinomial, donde la probabilidad asociada a cada categoría puede ser estimada via MLE como sigue $\hat{p}_{ij} = n_{ij}/n_{i+}$. Por ejemplo, en UK la probabilidad de que una persona cuyo padre era agricultor/obrero agrícola (Farm) también sea agricultor u obrero agrícola (Farm) se estima como: $191/743$ o, equivalentemente, $0.023/0.089$.
