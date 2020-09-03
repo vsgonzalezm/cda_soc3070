@@ -128,7 +128,7 @@ coin1
 ```
 
 ```
-# [1] 1
+# [1] 0
 ```
 
 --
@@ -157,7 +157,7 @@ ej1
 ```
 
 ```
-#  [1] 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0
+#  [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ```
 
 --
@@ -173,9 +173,8 @@ ej2
 ```
 
 ```
-#   [1] 1 1 0 1 0 0 0 0 0 0 0 0 1 0 1 0 0 0 0 1 0 0 0 0 0 0 0 1 0 1 0 1 0 0 1 0 0
-#  [38] 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 1 0 1 1 0 1 0 0 0 0
-#  [75] 0 0 0 1 1 0 0 0 0 1 0 0 1 1 1 0 0 1 1 1 0 0 0 0 0 1
+#   [1] 0 0 1 0 0 0 1 1 0 1 1 1 1 1 1 1 0 1 1 0 0 0 1 0 0 1 0 1 0 0 1 1 0 0 0 1 1 0 1 1 0 1 1 0 1 0 0 0 0 1 0 1
+#  [53] 0 1 0 1 1 0 0 0 0 0 0 1 0 1 0 0 1 0 1 1 1 0 0 1 0 0 0 1 0 1 0 0 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1
 ```
 
 ---
@@ -277,7 +276,7 @@ ej4
 
 Con el propósito de saber qué parte de los músicos clásicos más renombrados de EEUU deben el éxito en sus carreras al talento musical 'innato', y no a su capital económico, social y cultural, un sociólogo entrevista a 100 músicos de las orquestas filarmónicas más importantes del país para registrar quiénes tienen 'oido absoluto' asumiendo iid.  Posteriormente grafica los resultado de los y las entrevistados en su muestra. Como el investigador no cuenta con el parámetro poblacional, les pide ayuda para estimar qué valor *p* es más plausible que genere sus datos. 
 
-![](Ayudantía_2_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+![](Ayudantía_2_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
 
 ---
 # C.- Likelihood y Log-Likelihood Functions
@@ -326,7 +325,7 @@ labs(y="L(p)", x="p", title="Likelihood Function de p")
 print(plot)
 ```
 
-![](Ayudantía_2_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+![](Ayudantía_2_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 ---
 # C.- Likelihood y Log-Likelihood Functions
 
@@ -446,18 +445,18 @@ tibble(data1)
 
 ```
 # # A tibble: 8,609 x 10
-#    sexo   raza    educacion       hijes jazz  clasica opera ballet museos libros
-#    &lt;fct&gt;  &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt; &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt; 
-#  1 (2) F… (01) W… (37) 11th grade     0 (2) … (2) No  (2) … (2) No (2) No (2) No
-#  2 (2) F… (01) W… (39) High scho…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
-#  3 (2) F… (01) W… (39) High scho…     0 (2) … (2) No  (2) … (2) No (2) No (1) Y…
-#  4 (1) M… (01) W… (46) Doctorate…     1 (2) … (2) No  (2) … (2) No (2) No (2) No
-#  5 (2) F… (01) W… (39) High scho…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
-#  6 (2) F… (01) W… (39) High scho…     0 (2) … (2) No  (2) … (2) No (2) No (1) Y…
-#  7 (1) M… (01) W… (39) High scho…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
-#  8 (1) M… (01) W… (39) High scho…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
-#  9 (2) F… (01) W… (36) 10th grade     0 (2) … (2) No  (2) … (2) No (2) No (2) No
-# 10 (1) M… (01) W… (39) High scho…     0 (2) … (2) No  (2) … (2) No (2) No (1) Y…
+#    sexo      raza          educacion                           hijes jazz  clasica opera ballet museos libros
+#    &lt;fct&gt;     &lt;fct&gt;         &lt;fct&gt;                               &lt;dbl&gt; &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt; 
+#  1 (2) Fema… (01) White O… (37) 11th grade                         0 (2) … (2) No  (2) … (2) No (2) No (2) No
+#  2 (2) Fema… (01) White O… (39) High school grad-diploma or e…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
+#  3 (2) Fema… (01) White O… (39) High school grad-diploma or e…     0 (2) … (2) No  (2) … (2) No (2) No (1) Y…
+#  4 (1) Male  (01) White O… (46) Doctorate degree (ex: PhD, Ed…     1 (2) … (2) No  (2) … (2) No (2) No (2) No
+#  5 (2) Fema… (01) White O… (39) High school grad-diploma or e…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
+#  6 (2) Fema… (01) White O… (39) High school grad-diploma or e…     0 (2) … (2) No  (2) … (2) No (2) No (1) Y…
+#  7 (1) Male  (01) White O… (39) High school grad-diploma or e…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
+#  8 (1) Male  (01) White O… (39) High school grad-diploma or e…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
+#  9 (2) Fema… (01) White O… (36) 10th grade                         0 (2) … (2) No  (2) … (2) No (2) No (2) No
+# 10 (1) Male  (01) White O… (39) High school grad-diploma or e…     0 (2) … (2) No  (2) … (2) No (2) No (1) Y…
 # # … with 8,599 more rows
 ```
 
@@ -759,7 +758,7 @@ ggplot(data1, aes(x = hijes)) +
        caption = "Figura 1", x = "hijes", y = "conteo")
 ```
 
-![](Ayudantía_2_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+![](Ayudantía_2_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
 ---
 # E.- Gráficos en `R`
 
@@ -777,7 +776,7 @@ ggplot(data1, aes(x = hijes)) +
        caption = "Figura 2", x = "hijes", y = "densidad")
 ```
 
-![](Ayudantía_2_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
+![](Ayudantía_2_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
 ---
 # E.- Gráficos en `R`
 
@@ -795,7 +794,7 @@ ggplot(data1, aes(x = libros)) +
        caption = "Figura 3", x = "libros", y = "conteo")
 ```
 
-![](Ayudantía_2_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
+![](Ayudantía_2_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
 ---
 # Referencias Sugeridas:
 

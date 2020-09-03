@@ -23,6 +23,169 @@ class: inverse, center, middle
 #Modelos Lineales Generalizados (GLM)
 
 ---
+## Más allá del modelo de regresión lineal (LM) 
+
+LM es un marco muy útil y productivo, pero hay situaciones en las que no proporciona una descripción adecuada de los datos. En particular:
+
+- Cuando $Y$ no se distribuye normalmente
+
+- Cuando el rango de $Y$ está restringido (por ejemplo, binario, recuento)
+ 
+- Cuando la variación de $Y$ no es independiente de la media de $Y$.
+
+--
+
+GLM ofrece un marco mucho más general y flexible que incorpora y amplía el LM para abordar estas cuestiones.
+
+---
+## Estructura de los modelos lineales generalizados
+
+Un modelo lineal generalizado tiene cuatro componentes:
+
+.pull-left[
+
+- Un _componente aleatorio_
+
+- Un _componente sistemático_ 
+
+- Una _función de enlace_ (link).
+
+- Una _función de varianza_
+]
+
+.pull-right[
+![nelder](nelder.png)
+]
+
+---
+### Componente aleatorio
+
+El componente aleatorio de un GLM identifica la distribución de probabilidad de la variable dependiente
+
+  - Al igual que con LM, GLM estándar $Y$ es una colección de observaciones $\{y_{1}, \dots, y_{n}}$, donde observación es la manifestación de una variable aleatoria.
+  
+  -  Estas variables aleatorias  $\{y_{1}, \dots, y_{n}}$ son independientes  entre si y provienen de la misma _familia_distribución: .bold[iid]
+
+  - The distribution of the data give us a hint about the uderlying probability distribution. In turn, random samplying guarantees that the assumption if independence holds. 
+
+
+While the standard linear model assumes that the outcome variable (or a transformation of it) follows a normal distribution, GLM are designed to deal with a wider set of distributions, *both continuous and discrete*, as long as they belong to the more general class of the [_exponential family of distributions_](https://en.wikipedia.org/wiki/Exponential_family). . 
+
+![Some distributions of the exponential family and their relationship](expo_fam.png)
+
+---
+## Componente Sistemático
+
+El componente sistemático de un GLM especifica las variables explicativas, es decir, las $x$'s en la parte derecha de la fórmula del modelo
+
+$$\eta_{i} = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
+
+
+ - En terminología GLM $\eta$ se denomina _predictor lineal_.
+ 
+ - $\eta$ es lineal "en parámetros" pero puede ser no lineal "en variables" (por ejemplo, interacciones, términos cuadrados, etc.). 
+ 
+ - Las $x$'s son tratadas como como fijas,  no como variables aleatorias.
+ 
+---
+## Función de enlace (link)
+
+En el LM estándar, la media condicional del resultado $\mu_{i}$ está linealmente relacionada con los predictores del modelo.
+
+$$\underbrace{E(Y \mid {\bf X} = {\bf x})}_{\mu_{i}} = \underbrace{\beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}}_{\eta_{i}}$$
+
+- GLM permiten una relación más general y flexible entre estos dos términos. 
+
+- En un GLM el componente sistemático debe estar relacionado linealmente (en parámetros) con una función $g(.)$ de la media condicional del resultado $\mu_{i}$. Dicha función se denomina *función de enlace*. Formalmente,
+
+$$g(\mu_{i}) = \eta_{i}$$
+- El inverso de esta expresión es la llamada *función media*, que expresa la media condicional del resultado $\mu_{i}$ como una función potencialmente no lineal de los predictores:
+
+$$\mu_{i} = g^{-1}(\eta_{i})$$
+- Mediante el uso de una función de enlace, el GLM logra un objetivo importante, es decir, mantener $\mu_{i}$ dentro de su rango natural (por ejemplo, el IMC debe ser no-negativo, las probabilidades dentro de 0-1, etc), mientras se modela $g(\mu_{i}) \in (-\infty,\infty+)$ 
+
+---
+## Función de enlace (link)
+
+Más allá de este ejemplo, hay una variedad de posibles funciones de enlace:
+
+
+![Some commonly used link functions](link_fn.png)
+
+---
+## Definiendo un GLM
+
+La estructura básica de un GLM se especifica mediante la elección de la distribución de la variable dependiente (componente sistemático) y la elección de la función de enlace. 
+
+
+\begin{align}
+  GLM:
+	\begin{cases}
+	&y_{i} \sim f(\mu_{i},\sigma_{i}) \\ \\
+	& g(\mu_{i}) = \eta_{i}
+	\end{cases}
+\end{align}
+
+--
+
+Cualquier combinación de estos dos componentes definirá un GLM diferente, lo que dará como resultado un gran número de posibles GLM, cada uno con propiedades particulares. Algunas de estas combinaciones son especialmente relevantes:
+
+
+| Distribution         | Canonical Link: $\eta = g(\mu)$ | Link name             | Model name           |
+| -----------------    | ------------------              | --------------------- | -------------------- |
+| Normal (Gaussian)    | $\eta = \mu$                    | identity              | Standard regression  |
+| Poisson              | $\eta = \log(\mu)$              | logarithm             | Poisson regression   |
+| Bernoulli / Binomial | $\eta = \log(\mu/(1-\mu))$      | logit                 | Logistic regression  |
+| Gamma                | $\eta = 1/\mu)$                 | reciprocal            | Gamma regression     |
+
+
+---
+## LM es un caso particular de GLM
+
+El tipo más simple de GLM es el que tiene un componente aleatorio normal y una función de enlace de identidad, en cuyo caso obtenemos el modelo estándar de regresión lineal. Formalmente:
+
+
+- $y_{1}, \dots y_{n}$ son $n$ variables independientes con distribución $\mathcal{N}(\mu_{i},\sigma)$
+
+- $\eta_{i}$ = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}
+
+- $g(x) = x$
+
+- $\mu_{i} = g(eta_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$
+
+
+--
+
+Por tanto,
+
+
+$$y_{i} \sim \mathcal{N}(\mu_{i} = \eta_{i}, \sigma_{i} = \sigma)$$
+
+---
+## 
+Ejemplo:
+
+- $y_{1}, \dots y_{n}$ son $n$ variables independientes con distribución $\mathcal{N}(\mu_{i},\sigma)$
+
+- $\eta_{i}$ = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}
+
+- $g(\cdot) = \ln(\cdot)$, por tanto
+
+- $\mu_{i} = \ln(eta_{i}) = \beta_{0} + \beta_{1} x_{i1}, + \dots + \beta_{k} x_{ik}$
+
+Obtenemos un _modelo log-lineal_, que es apropiado cuando las predicciones deben ser estrictamente positivas.
+
+
+$$\log(\mu_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
+
+y por tanto, $g^{-1}(.) = \exp(.)$, liderando la siguiente función media:
+
+$$\mu_{i} = e^{\beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}}$$
+Por tanto,
+
+
+$$y_{i} \sim \mathcal{N}(\mu_{i} = e^{\eta_{i}}, \sigma_{i} = \sigma)$$
+---
 class: inverse, center, middle
 
 .huge[
