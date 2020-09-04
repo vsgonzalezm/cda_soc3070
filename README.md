@@ -20,7 +20,7 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
   - Estructura probabilística: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_5/class_5#1) [`[Código]`](slides/class_5/class_5.Rmd) 
   - Medidas de independencia y asociación: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_6/class_6#1) [`[Código]`](slides/class_6/class_6.Rmd) 
 - Modelo Lineal de Probabilidad: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_7/class_7#1) [`[Código]`](slides/class_7/class_7.Rmd)  
-- Modelos Lineales Generalizados 
+- Modelos Lineales Generalizados [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_8/class_8#1) [`[Código]`](slides/class_8/class_8.Rmd)  
 - Modelos de Regresión Logística
 - Modelos de Regresión Logística Ordenada
 - Modelos de Regresión Logística Multinomial 
