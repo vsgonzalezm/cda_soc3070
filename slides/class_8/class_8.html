@@ -29,12 +29,21 @@ class: inverse, center, middle
 
 LM es un marco muy útil y productivo, pero hay situaciones en las que no proporciona una descripción adecuada de los datos. En particular:
 
+&lt;br&gt;
+
+--
+
 - Cuando `\(Y\)` no se distribuye normalmente
 
+--
+
 - Cuando el rango de `\(Y\)` está restringido (por ejemplo, binario, recuento)
- 
+
+--
+
 - Cuando la variación de `\(Y\)` no es independiente de la media de `\(Y\)`.
 
+&lt;br&gt;
 --
 
 GLM ofrece un marco mucho más general y flexible que incorpora y amplía el LM para abordar estas cuestiones.
@@ -66,19 +75,23 @@ Un modelo lineal generalizado tiene cuatro componentes:
 
 El componente aleatorio de un GLM identifica la distribución de probabilidad de la variable dependiente
 
-  - Al igual que con LM, los datos que queremos modelar ( `\(\vect{y}\)` ) son una colección de observaciones `\(y_{1}, \dots, y_{n}\)`, donde cada observación es la manifestación de una variable aleatoria.
-  
-  -  Estas variables aleatorias  `\(y_{1}, \dots, y_{n}\)` son independientes  entre si y provienen de la misma _familia_ de distribución: .bold[iid]
+&lt;br&gt;
 
-    - La distribución de los datos nos da una pista sobre la distribución de probabilidad subyacente
-    - Muestreo aleatorio garantiza que spuesto de independencia se cumpla
+- Al igual que con LM, los datos que queremos modelar ( `\(\vect{y}\)` ) son una colección de observaciones `\(y_{1}, \dots, y_{n}\)`, donde cada observación es la manifestación de una variable aleatoria.
+
+--
+
+-  Estas variables aleatorias  `\(y_{1}, \dots, y_{n}\)` son independientes  entre si y provienen de la misma _familia_ de distribución: .bold[iid]
+
+  - La distribución de los datos nos da una pista sobre la distribución de probabilidad subyacente
+  - Muestreo aleatorio garantiza que spuesto de independencia se cumpla
 
 
 ---
 ### Componente aleatorio
 
 
-Mientras que la LM asume que la variable dependiente sigue una distribución normal, GLM puede lidear con un conjunto más amplio de distribuciones, .bold[tanto continuas como discretas], siempre y cuando pertenezcan a la clase más general de la [_familia exponencial de distribuciones_](https://en.wikipedia.org/wiki/Exponential_family).  
+Mientras que la LM asume que la variable dependiente sigue una distribución normal, GLM abarca un conjunto más amplio de distribuciones, .bold[tanto continuas como discretas], siempre y cuando pertenezcan a la clase más general de la [_familia exponencial de distribuciones_](https://en.wikipedia.org/wiki/Exponential_family).  
 
 --
 
@@ -89,13 +102,18 @@ Mientras que la LM asume que la variable dependiente sigue una distribución nor
 
 El componente sistemático de un GLM especifica las variables explicativas, es decir, las `\(x\)`'s en el lado derecho de la ecuación
 
+&lt;br&gt;
+
 `$$\eta_{i} = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$`
+&lt;br&gt;
 --
 
  - En terminología GLM `\(\eta\)` se denomina _predictor lineal_.
  
  - `\(\eta\)` es lineal "en parámetros" pero puede ser no lineal "en variables" (por ejemplo, interacciones, términos cuadrados, etc.). 
- 
+
+--
+
  - Las `\(x\)`'s son tratadas como fijas, no como variables aleatorias.
  
 ---
@@ -105,11 +123,16 @@ En el LM estándar, la media condicional del resultado `\(\mu_{i}\)` está linea
 
 `$$\underbrace{\mathbb{E}(y_{i} \mid  x_{1}, \dots x_{k} )}_{\mu_{i}} = \underbrace{\beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}}_{\eta_{i}}$$`
 
+--
+
 - GLM permiten una relación más general y flexible entre estos dos términos. 
 
-- En un GLM el componente sistemático debe estar relacionado linealmente (en parámetros) con una función `\(g(\cdot)\)` de la media condicional de `\(y_{i}\)`. Dicha función se denomina *función de enlace*. Formalmente,
+--
+
+- En un GLM el componente sistemático `\(\eta_{i}\)` debe estar relacionado linealmente (en parámetros) con una función `\(g(\cdot)\)` de `\(\mu_{i}\)`. Dicha función se denomina *función de enlace*. Formalmente,
 
 `$$g(\mathbb{E}(y_{i} \mid  x_{1}, \dots x_{k})) =  g(\mu_{i}) = \eta_{i}$$`
+--
 
 Ejemplo, si `\(g(\cdot) = \ln(\cdot)\)`, entonces
 
@@ -118,7 +141,7 @@ Ejemplo, si `\(g(\cdot) = \ln(\cdot)\)`, entonces
 
 ---
 
-## Función de enlace (link)
+##Función de enlace (link)
 
 - El inverso de esta expresión es la llamada *función media*, que expresa la media condicional de `\(y_{i}\)` como una función potencialmente no lineal de los predictores:
 
@@ -127,7 +150,12 @@ Ejemplo, si `\(g(\cdot) = \ln(\cdot)\)`, entonces
 
 Ejemplo, si `\(g(\cdot) = \ln(\cdot)\)`, entonces
 
+`$$\ln \mathbb{E}(y_{i} \mid  x_{1}, \dots x_{k}) =  \ln \mu_{i} = \eta_{i} \quad \text{por tanto}$$`
+--
+
 `$$\mathbb{E}(y_{i} \mid  x_{1}, \dots x_{k}) = \mu_{i} = e^{\eta_{i}}$$`
+&lt;br&gt;
+--
 
 - La _función de enlace_ cumple un objetivo importante: mantener `\(\mu_{i}\)` dentro de su rango natural. 
 
@@ -141,6 +169,8 @@ Más allá de este ejemplo, hay una variedad de posibles funciones de enlace:
 
 
 ![Some commonly used link functions](link_fn.png)
+- `\(g(\cdot)\)` debe ser "smooth" y monotónica
+
 ---
 ## Función de varianza
 
@@ -153,15 +183,22 @@ donde
 
 - `\(\phi\)` es una constante llamada "parámetro de dispersión"
 
-- `\(V(\cdot)\)` es una función.
+- `\(V(\cdot)\)` es la  función de varianza, definida como:
+
+`$$V(\mu) = \frac{d\mu}{d \eta}$$`
+&lt;br&gt;
+--
+
+- La _función de varianza_ es única cada distribución de la familia exponencial.
+
 
 
 ---
 ## Definiendo un GLM
 
-La estructura básica de un GLM se especifica mediante la elección de la distribución de la variable dependiente (componente sistemático) y la elección de la función de enlace. 
+La estructura básica de un GLM se especifica mediante la elección de dos componentes: (1) la distribución de la variable dependiente (componente sistemático) y (2) la función de enlace. 
 
-
+&lt;br&gt;
 `\begin{align}
   GLM:
 	\begin{cases}
@@ -170,9 +207,10 @@ La estructura básica de un GLM se especifica mediante la elección de la distri
 	\end{cases}
 \end{align}`
 
+&lt;br&gt;
 --
 
-Cualquier combinación de estos dos componentes definirá un GLM diferente, lo que dará como resultado un gran número de posibles GLM, cada uno con propiedades particulares. Algunas de estas combinaciones son especialmente relevantes:
+Cualquier combinación de estos componentes definirá un GLM diferente. Algunas de estas combinaciones son especialmente relevantes:
 
 
 | Distribution         | Canonical Link: `\(\eta = g(\mu)\)` | Link name             | Model name           |
@@ -189,46 +227,91 @@ Cualquier combinación de estos dos componentes definirá un GLM diferente, lo q
 El tipo más simple de GLM es el que tiene un componente aleatorio normal y una función de enlace de identidad, en cuyo caso obtenemos el modelo estándar de regresión lineal. Formalmente:
 
 
-- `\(y_{1}, \dots y_{n}\)` son `\(n\)` variables independientes con distribución `\(\mathcal{N}(\mu_{i},\sigma)\)`
+--
 
-- `\(\eta_{i}\)` = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}
+- Componente aleatorio: `\(y_{1}, \dots y_{n}\)` son `\(n\)` variables independientes con distribución `\(\mathcal{N}(\mu_{i},\sigma_{i})\)`
 
-- `\(g(x) = x\)`
+--
 
-- `\(\mu_{i} = g(eta_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}\)`
+- Función de enlace "identidad": `\(g(x) = x\)`
 
+--
+
+- Componente sistemático: `\(\mu_{i} = \eta_{i} = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}\)`
+
+--
+
+- Función media: `\(\mu_{i} = g^{-1}(\eta_{i}) = \eta_{i}\)`
+
+--
+
+- Varianza `\(\mathbb{Var}(y_{i}) = \phi V(\mu_{i}) = \sigma\)`, 
+--
+ con `\(\phi=\sigma\)` y `\(V(\mu_{i})= \frac{d\mu_{i}}{d\eta_{i}}=1\)`.
 
 --
 
 Por tanto,
 
 
-`$$y_{i} \sim \mathcal{N}(\mu_{i} = \eta_{i}, \sigma_{i} = \sigma)$$`
+`$$y_{i} \sim \mathcal{N}(\mu_{i} = \eta_{i}, \sigma_{i} = \sqrt{\phi})$$`
+
+- En nomenclatura GLM `\(\phi\)` (parámetro de dispersión) es un modo más general de expesar el componente constante de la varianza ( `\(\sigma^2\)` en LM)
 
 ---
-## 
+## GLM log-linear: ejemplo de modelo "híbrido" 
+
+
 Ejemplo:
 
-- `\(y_{1}, \dots y_{n}\)` son `\(n\)` variables independientes con distribución `\(\mathcal{N}(\mu_{i},\sigma)\)`
+--
 
-- `\(\eta_{i}\)` = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}
+- `\(y_{1}, \dots y_{n}\)` son `\(n\)` variables independientes con distribución `\(\mathcal{N}(\mu_{i},\sigma_{i})\)`
 
-- `\(g(\cdot) = \ln(\cdot)\)`, por tanto
+--
 
-- `\(\mu_{i} = \ln(eta_{i}) = \beta_{0} + \beta_{1} x_{i1}, + \dots + \beta_{k} x_{ik}\)`
+- La función de enlace es `\(g(\cdot) = \ln(\cdot)\)`
+
+--
+
+- `\(\ln(\mu_{i}) = \eta_{i} = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}\)`
+
+--
+
+- `\(\mu_{i} = e^{\eta_{i}}\)`
+
+--
+
+Se sigue de lo anterior que:
+
+
+- `\(\mathbb{Var}(y_{i}) = \phi \frac{d\mu_{i}}{d\eta_{i}} = \phi e^{\eta_{i}} = \phi \mu_{i}\)`
+
+--
 
 Obtenemos un _modelo log-lineal_, que es apropiado cuando las predicciones deben ser estrictamente positivas.
 
 
-`$$\log(\mu_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$`
+`$$y_{i} \sim \mathcal{N}(\mu_{i} = e^{\eta_{i}}, \sigma_{i} = \sqrt{\phi \mu_{i}})$$`
+---
+## Enlace vs transformaciones  
 
-y por tanto, `\(g^{-1}(.) = \exp(.)\)`, liderando la siguiente función media:
+Es muy común transformar la variable dependiente para cumplir con los supuesto del LM. 
 
-`$$\mu_{i} = e^{\beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}}$$`
-Por tanto,
+Ejemplo: variable dependiente transforma a logs 
+
+- `\(y_{1}, \dots y_{n}\)` son `\(n\)` variables que no distribuyen normal
+
+- `\(\ln(y_{1}), \dots \ln(y_{n})\)` son `\(n\)` variables que distribuyen normal
 
 
-`$$y_{i} \sim \mathcal{N}(\mu_{i} = e^{\eta_{i}}, \sigma_{i} = \sigma)$$`
+Un LM estándar 
+
+
+`$$\ln(y_{i}) = \overbrace{\beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki}}^{\mathbb{E}(\ln y_{i} \mid x_{1}, \dots, x_{k} )  } + \underbrace{e_{i}}_{\mathcal{N}(0,\sigma)}$$`
+
+
+
 ---
 class: inverse, center, middle
 
