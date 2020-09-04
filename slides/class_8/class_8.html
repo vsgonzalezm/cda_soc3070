@@ -150,8 +150,9 @@ Ejemplo, si `\(g(\cdot) = \ln(\cdot)\)`, entonces
 
 Ejemplo, si `\(g(\cdot) = \ln(\cdot)\)`, entonces
 
-`$$\ln \mathbb{E}(y_{i} \mid  x_{1}, \dots x_{k}) =  \ln \mu_{i} = \eta_{i} \quad \text{por tanto}$$`
+`$$\ln \mathbb{E}(y_{i} \mid  x_{1}, \dots x_{k}) =  \ln \mu_{i} = \eta_{i}$$`
 --
+En consecuencia, `\(g^{-1}(\cdot) = e^{(\cdot)}\)` y,
 
 `$$\mathbb{E}(y_{i} \mid  x_{1}, \dots x_{k}) = \mu_{i} = e^{\eta_{i}}$$`
 &lt;br&gt;
@@ -285,7 +286,7 @@ Ejemplo:
 Se sigue de lo anterior que:
 
 
-- `\(\mathbb{Var}(y_{i}) = \phi \frac{d\mu_{i}}{d\eta_{i}} = \phi e^{\eta_{i}} = \phi \mu_{i}\)`
+- `\(\mathbb{Var}(y_{i}) = \phi V(\mu) = \phi \frac{d\mu_{i}}{d\eta_{i}} = \phi e^{\eta_{i}} = \phi \mu_{i}\)`
 
 --
 
@@ -296,20 +297,145 @@ Obtenemos un _modelo log-lineal_, que es apropiado cuando las predicciones deben
 ---
 ## Enlace vs transformaciones  
 
-Es muy común transformar la variable dependiente para cumplir con los supuesto del LM. 
+Usar una función de enlance .bold[es distinto] de transformar la variable dependiente!
 
 Ejemplo: variable dependiente transforma a logs 
 
-- `\(y_{1}, \dots y_{n}\)` son `\(n\)` variables que no distribuyen normal
+- `\(y_{1}, \dots y_{n}\)` son `\(n\)` variables que no distribuyen normal  pero `\(\ln(y_{1}), \dots \ln(y_{n})\)` si.
 
-- `\(\ln(y_{1}), \dots \ln(y_{n})\)` son `\(n\)` variables que distribuyen normal
+- Estimar LM con variable dependendiente transformada:
+
+&lt;br&gt;
+
+`$$\ln y_{i} = \overbrace{\beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki}}^{\mathbb{E}(\ln y_{i} \mid x_{1}, \dots, x_{k} )  } + \underbrace{e_{i}}_{\mathcal{N}(0,\sigma)}$$`
+
+--
+
+Notar diferencia:
+.pull-left[
+.bold[GLM con log link]
+`$$\ln \mathbb{E} (Y_{i}) = \beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki}$$`
+]
+.pull-right[
+.bold[LM con variable dependiente log(y) ]
+`$$\mathbb{E}( \ln y_{i}) = \beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki}$$`
+]
+
+---
+## GLM, una aplicación empírica: gender wage gap 
 
 
-Un LM estándar 
+
+.pull-left[
+![](class_8_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+]
+
+--
+
+.pull-right[
+![](class_8_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+]
+
+Datos de la Canadian Survey of Labour and Income Dynamics 1994, para la provincia de Ontario. Hay datos perdidos, especialmente sobre salarios. 
+
+---
+## GLM, una aplicación empírica: gender wage gap 
 
 
-`$$\ln(y_{i}) = \overbrace{\beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki}}^{\mathbb{E}(\ln y_{i} \mid x_{1}, \dots, x_{k} )  } + \underbrace{e_{i}}_{\mathcal{N}(0,\sigma)}$$`
+```r
+our_glm &lt;- glm(wages ~ factor(sex), family = gaussian(link="log"), data=ourdata)
+summary(our_glm)
+```
 
+```
+## 
+## Call:
+## glm(formula = wages ~ factor(sex), family = gaussian(link = "log"), 
+##     data = ourdata)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -14.222   -5.972   -1.380    4.163   36.030  
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      2.63114    0.01217  216.14   &lt;2e-16 ***
+## factor(sex)Male  0.21506    0.01565   13.74   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 59.37984)
+## 
+##     Null deviance: 257644  on 4146  degrees of freedom
+## Residual deviance: 246129  on 4145  degrees of freedom
+##   (3278 observations deleted due to missingness)
+## AIC: 28709
+## 
+## Number of Fisher Scoring iterations: 5
+```
+
+---
+## GLM, una aplicación empírica: gender wage gap 
+
+
+`$$\ln \mu_{i} = \ln \mathbb{E}\text{(wage}_{i} \mid \text{male}) = \beta_{0} + \beta_{1}\text{male}_{i}
+= 2.631 + 0.215\text{male}_{i}$$`
+
+
+&lt;br&gt;
+--
+Interpretación coeficientes
+
+`\(\beta_{1} = \ln \mathbb{E}(\text{wage}_{i} \mid \text{male}=1) - \ln \mathbb{E}(\text{wage}_{i} \mid \text{male}=1) = \ln \frac{\mathbb{E}(\text{wage}_{i} \mid \text{male}=1)}{\mathbb{E}(\text{wage}_{i} \mid \text{male}=0)}\)`
+--
+ `\(\quad \implies  \quad e^{\beta_{1}} =  \frac{\mathbb{E}(\text{wage}_{i} \mid \text{male}=1)}{\mathbb{E}(\text{wage}_{i} \mid \text{male}=0)}\)`
+
+&lt;br&gt;
+--
+Por tanto,
+
+- `\(\mathbb{E}(\text{wage}_{i} \mid \text{male}=1) = e^{\beta_{0} + \beta_{1}} = e^{\beta_{0}}e^{\beta_{1}} = e^{2.631}e^{0.215} = 17.22\)` 
+
+- `\(\mathbb{E}(\text{wage}_{i} \mid \text{male}=0) = e^{\beta_{0}} = e^{2.631} = 13.89\)` 
+
+&lt;br&gt;
+--
+
+.bold[Gender wage gap]: `\(\mathbb{E}(\text{wage}_{i} \mid \text{male}=1) - \mathbb{E}(\text{wage}_{i} \mid \text{male}=0) = e^{\beta_{0}} e^{\beta_{1}} - e^{\beta_{0}} = e^{\beta_{0}}(e^{\beta_{1}}-1)\)`
+
+---
+## GLM, una aplicación empírica: gender wage gap 
+
+.pull-left[
+Dispersión: `\(\phi=59.38\)`
+
+
+`\(\mathbb{Var}(y_{i}) = \phi V(\mu) = \phi \frac{d\mu_{i}}{d\eta_{i}} = \phi e^{\eta_{i}} = \phi \mu_{i}\)`
+
+
+`\(\mathbb{Var}(y_{i})  = \phi \mu_{i} = \phi e^{\beta_{0} +  \beta_{1}\text{male}_{i}}\)`
+
+
+`\(\mathbb{Var}(y_{i})  = \phi\mu_{i} = 59.38 \cdot  e^{2.631 + 0.215\text{male}_{i}}\)`
+
+]
+
+--
+
+.pull-right[
+![](class_8_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+]
+
+Por tanto, 
+
+.pull-left[
+`$$y_{i} ~ \mathcal{N}(\mu_{i},\sigma_{i}) \quad \text{ donde}$$`
+
+- `\(\mu_{i}=e^{\beta_{0} +  \beta_{1}\text{male}_{i}} = e^{2.631 + 0.215\text{male}_{i}}\)`
+
+- `\(\sigma_{i} = \sqrt{\phi\mu_{i}} = \sqrt{59.38 \cdot  e^{2.631 + 0.215\text{male}_{i}}}\)`
+
+]
 
 
 ---

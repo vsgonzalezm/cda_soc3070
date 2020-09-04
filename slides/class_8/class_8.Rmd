@@ -148,8 +148,9 @@ $$\mathbb{E}(y_{i} \mid  x_{1}, \dots x_{k}) = \mu_{i} = g^{-1}(\eta_{i})$$
 
 Ejemplo, si $g(\cdot) = \ln(\cdot)$, entonces
 
-$$\ln \mathbb{E}(y_{i} \mid  x_{1}, \dots x_{k}) =  \ln \mu_{i} = \eta_{i} \quad \text{por tanto}$$
+$$\ln \mathbb{E}(y_{i} \mid  x_{1}, \dots x_{k}) =  \ln \mu_{i} = \eta_{i}$$
 --
+En consecuencia, $g^{-1}(\cdot) = e^{(\cdot)}$ y,
 
 $$\mathbb{E}(y_{i} \mid  x_{1}, \dots x_{k}) = \mu_{i} = e^{\eta_{i}}$$
 <br>
@@ -283,7 +284,7 @@ Ejemplo:
 Se sigue de lo anterior que:
 
 
-- $\mathbb{Var}(y_{i}) = \phi \frac{d\mu_{i}}{d\eta_{i}} = \phi e^{\eta_{i}} = \phi \mu_{i}$
+- $\mathbb{Var}(y_{i}) = \phi V(\mu) = \phi \frac{d\mu_{i}}{d\eta_{i}} = \phi e^{\eta_{i}} = \phi \mu_{i}$
 
 --
 
@@ -294,20 +295,159 @@ $$y_{i} \sim \mathcal{N}(\mu_{i} = e^{\eta_{i}}, \sigma_{i} = \sqrt{\phi \mu_{i}
 ---
 ## Enlace vs transformaciones  
 
-Es muy común transformar la variable dependiente para cumplir con los supuesto del LM. 
+Usar una función de enlance .bold[es distinto] de transformar la variable dependiente!
 
 Ejemplo: variable dependiente transforma a logs 
 
-- $y_{1}, \dots y_{n}$ son $n$ variables que no distribuyen normal
+- $y_{1}, \dots y_{n}$ son $n$ variables que no distribuyen normal  pero $\ln(y_{1}), \dots \ln(y_{n})$ si.
 
-- $\ln(y_{1}), \dots \ln(y_{n})$ son $n$ variables que distribuyen normal
+- Estimar LM con variable dependendiente transformada:
+
+<br>
+
+$$\ln y_{i} = \overbrace{\beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki}}^{\mathbb{E}(\ln y_{i} \mid x_{1}, \dots, x_{k} )  } + \underbrace{e_{i}}_{\mathcal{N}(0,\sigma)}$$
+
+--
+
+Notar diferencia:
+.pull-left[
+.bold[GLM con log link]
+$$\ln \mathbb{E} (Y_{i}) = \beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki}$$
+]
+.pull-right[
+.bold[LM con variable dependiente log(y) ]
+$$\mathbb{E}( \ln y_{i}) = \beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki}$$
+]
+
+---
+## GLM, una aplicación empírica: gender wage gap 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library("reshape2")
+library(carData)
+data(SLID)
+ourdata <- SLID
+```
+
+.pull-left[
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
+ourdata %>% ggplot(aes(x=wages, fill="")) + 
+    geom_histogram() +
+    scale_fill_viridis_d() + 
+    guides(fill=FALSE, color=FALSE) + labs(x="wages") +
+    theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+    axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+    legend.text = element_text(size = 18), legend.position="bottom") 
+```
+]
+
+--
+
+.pull-right[
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
+ourdata %>% ggplot(aes(x=log(wages), fill="")) + 
+    geom_histogram() +
+    scale_fill_viridis_d() + 
+    guides(fill=FALSE, color=FALSE) + labs(x="ln(wages)") +
+    theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+    axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+    legend.text = element_text(size = 18), legend.position="bottom") 
+```
+]
+
+Datos de la Canadian Survey of Labour and Income Dynamics 1994, para la provincia de Ontario. Hay datos perdidos, especialmente sobre salarios. 
+
+---
+## GLM, una aplicación empírica: gender wage gap 
+
+```{r}
+our_glm <- glm(wages ~ factor(sex), family = gaussian(link="log"), data=ourdata)
+summary(our_glm)
+```
+
+---
+## GLM, una aplicación empírica: gender wage gap 
 
 
-Un LM estándar 
+$$\ln \mu_{i} = \ln \mathbb{E}\text{(wage}_{i} \mid \text{male}) = \beta_{0} + \beta_{1}\text{male}_{i}
+= 2.631 + 0.215\text{male}_{i}$$
 
 
-$$\ln(y_{i}) = \overbrace{\beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki}}^{\mathbb{E}(\ln y_{i} \mid x_{1}, \dots, x_{k} )  } + \underbrace{e_{i}}_{\mathcal{N}(0,\sigma)}$$
+<br>
+--
+Interpretación coeficientes
 
+$\beta_{1} = \ln \mathbb{E}(\text{wage}_{i} \mid \text{male}=1) - \ln \mathbb{E}(\text{wage}_{i} \mid \text{male}=1) = \ln \frac{\mathbb{E}(\text{wage}_{i} \mid \text{male}=1)}{\mathbb{E}(\text{wage}_{i} \mid \text{male}=0)}$
+--
+ $\quad \implies  \quad e^{\beta_{1}} =  \frac{\mathbb{E}(\text{wage}_{i} \mid \text{male}=1)}{\mathbb{E}(\text{wage}_{i} \mid \text{male}=0)}$
+
+<br>
+--
+Por tanto,
+
+- $\mathbb{E}(\text{wage}_{i} \mid \text{male}=1) = e^{\beta_{0} + \beta_{1}} = e^{\beta_{0}}e^{\beta_{1}} = e^{2.631}e^{0.215} = 17.22$ 
+
+- $\mathbb{E}(\text{wage}_{i} \mid \text{male}=0) = e^{\beta_{0}} = e^{2.631} = 13.89$ 
+
+<br>
+--
+
+.bold[Gender wage gap]: $\mathbb{E}(\text{wage}_{i} \mid \text{male}=1) - \mathbb{E}(\text{wage}_{i} \mid \text{male}=0) = e^{\beta_{0}} e^{\beta_{1}} - e^{\beta_{0}} = e^{\beta_{0}}(e^{\beta_{1}}-1)$
+
+---
+## GLM, una aplicación empírica: gender wage gap 
+
+.pull-left[
+Dispersión: $\phi=59.38$
+
+
+$\mathbb{Var}(y_{i}) = \phi V(\mu) = \phi \frac{d\mu_{i}}{d\eta_{i}} = \phi e^{\eta_{i}} = \phi \mu_{i}$
+
+
+$\mathbb{Var}(y_{i})  = \phi \mu_{i} = \phi e^{\beta_{0} +  \beta_{1}\text{male}_{i}}$
+
+
+$\mathbb{Var}(y_{i})  = \phi\mu_{i} = 59.38 \cdot  e^{2.631 + 0.215\text{male}_{i}}$
+
+]
+
+--
+
+.pull-right[
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4, fig.width=8}
+library("tidyverse")
+library("ggfortify")
+eta <- function(x) {exp(2.631 + 0.215*x)}
+sdy  <- function(x) {sqrt(59.38 * eta(x))}
+
+preds <- data_frame(x = c(0,1)) %>% mutate(mu = eta(x), sd=sdy(x)) %>% as.matrix()
+
+
+plot <- ggplot(data.frame(x = seq(-100,150,by=0.1)), aes(x = x)) +
+      stat_function(fun = dnorm, args = list(preds[1,2], preds[1,3]),
+                      aes(colour = "female"), size = 1.5) +
+      stat_function(fun = dnorm, args = list(preds[2,2], preds[2,3]),
+                      aes(colour = "male"), size = 1.5) +
+      scale_x_continuous(name = "Wages") + 
+      scale_color_viridis_d() +
+      theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+      axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+      legend.text = element_text(size = 18), legend.position="right") + labs(y="")
+
+print(plot)
+```
+]
+
+Por tanto, 
+
+.pull-left[
+$$y_{i} ~ \mathcal{N}(\mu_{i},\sigma_{i}) \quad \text{ donde}$$
+
+- $\mu_{i}=e^{\beta_{0} +  \beta_{1}\text{male}_{i}} = e^{2.631 + 0.215\text{male}_{i}}$
+
+- $\sigma_{i} = \sqrt{\phi\mu_{i}} = \sqrt{59.38 \cdot  e^{2.631 + 0.215\text{male}_{i}}}$
+
+]
 
 
 ---
