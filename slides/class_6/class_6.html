@@ -839,6 +839,39 @@ Versión automática con `prop.test()` en `R`:
 &lt;/style&gt;
 
 ---
+### Inferencia para Diferencia de proporciones (Nota)
+
+![overlapping](overlapping.png)
+* No del todo cierto, pero tiene un punto importante
+
+---
+### Inferencia para Diferencia de proporciones (Nota)
+
+.tiny[*asumamos mismo tamaño muestral `\(n\)` por simpleza]
+
+
+.pull-left[
+.bold[Intervalos de confianza sobrepuesto]
+
+![diff](diff.png)
+
+
+`\((\mu_{1} - c \cdot \sigma_{1}/\sqrt{n}) - (\mu_{2} - c \cdot \sigma_{2}/\sqrt{n}) &gt; 0 \quad ?\)` 
+
+es decir, 
+
+`\((\mu_{1}  - \mu_{2}) -  c \cdot (\sigma_{1}/\sqrt{n} + \sigma_{2}/\sqrt{n}) &gt; 0 \quad ?\)`
+]
+
+.pull-right[
+.bold[Intervalos de confianza de differencia]
+
+`\((\mu_{1}  - \mu_{2}) -  c \cdot \sqrt{(\sigma^{2}_{1}/n + \sigma^{2}_{2}/n)} &gt; 0 \quad ?\)`
+
+]
+
+
+---
 ### Inferencia para Diferencia de proporciones
 
 .bold[Test de hipótesis]

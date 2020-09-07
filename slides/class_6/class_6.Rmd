@@ -784,6 +784,39 @@ print(test_props$conf.int[c(1,2)])
 ```
 
 ---
+### Inferencia para Diferencia de proporciones (Nota)
+
+![overlapping](overlapping.png)
+* No del todo cierto, pero tiene un punto importante
+
+---
+### Inferencia para Diferencia de proporciones (Nota)
+
+.tiny[*asumamos mismo tamaño muestral $n$ por simpleza]
+
+
+.pull-left[
+.bold[Intervalos de confianza sobrepuesto]
+
+![diff](diff.png)
+
+
+$(\mu_{1} - c \cdot \sigma_{1}/\sqrt{n}) - (\mu_{2} - c \cdot \sigma_{2}/\sqrt{n}) > 0 \quad ?$ 
+
+es decir, 
+
+$(\mu_{1}  - \mu_{2}) -  c \cdot (\sigma_{1}/\sqrt{n} + \sigma_{2}/\sqrt{n}) > 0 \quad ?$
+]
+
+.pull-right[
+.bold[Intervalos de confianza de differencia]
+
+$(\mu_{1}  - \mu_{2}) -  c \cdot \sqrt{(\sigma^{2}_{1}/n + \sigma^{2}_{2}/n)} > 0 \quad ?$
+
+]
+
+
+---
 ### Inferencia para Diferencia de proporciones
 
 .bold[Test de hipótesis]
@@ -821,7 +854,7 @@ $$\mathbb{P}( |\delta| > \hat{\delta} \mid H_{0} \text{ es verdadera})$$
 .bold[p-value] (1 cola):
 
 $$\mathbb{P}( \tilde{\delta} \geq \hat{\delta}=0.044 \mid H_{0})$$
-```{r, eval=FALSE}
+```{r}
 p_null = p1_hat*(n1/(n1+n2)) + p2_hat*(n2/(n1+n2))
 se_null = sqrt(p_null*(1 - p_null)*(1/n1 + 1/n2))
 ```
