@@ -560,7 +560,8 @@ print(joint_gender_affair_indep)
 
 ```{r, echo=FALSE, message=FALSE}
 library("reshape2")
-casen_data <- read.csv("/Users/Mauricio/Library/Mobile Documents/com~apple~CloudDocs/Research/Assortative Mating and Inequality Chile/Data/casen_un.csv")
+#casen_data <- read.csv("/Users/Mauricio/Library/Mobile Documents/com~apple~CloudDocs/Research/Assortative Mating and Inequality Chile/Data/casen_un.csv")
+casen_data <- read.csv("casen_data.csv")
 
 casen_data <- casen_data %>% filter(Year==1990 | Year==2015) %>% select(Year,Educ_H,Educ_W)
 ```

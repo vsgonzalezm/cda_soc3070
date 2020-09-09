@@ -84,7 +84,7 @@ Por ejemplo, supongamos que `\(Y\)` es una variable que resulta de tirar un dado
 `$$\mathbb{E}(X + Y)=  \mathbb{E}(X) + \mathbb{E}(Y)$$`
 --
 
-4) Si `\(X\)` es una variable aleatoria y `\(g(.)\)` es una función, entonces
+4) Si `\(X\)` es una variable aleatoria y `\(g(.)\)` es una función lineal, entonces
 
 `$$\mathbb{E}(g(X))=  g(\mathbb{E}(X))$$`
 
@@ -281,7 +281,7 @@ glimpse(coins200)
 ```
 
 ```
-##  int [1:10000] 106 90 107 95 84 96 102 107 104 111 ...
+##  int [1:10000] 83 112 91 107 121 101 105 105 111 105 ...
 ```
 
 ```r
@@ -291,10 +291,10 @@ print(moments)
 
 ```
 ## $mean
-## [1] 99.9991
+## [1] 100.017
 ## 
 ## $var
-## [1] 49.16322
+## [1] 48.8794
 ```
 
 ---
