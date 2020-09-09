@@ -45,7 +45,7 @@ print(ctable)
 
 ## Problema: 
 
-Usando estos datos podemos medir la tasa de **"movilidad absoluta"** en cada país calculando la proporción de casos que se encuentra fuera de la diagonal en cada una de las tablas. Esto nos da un estimación de la probabilidad de que uno hijo alcance una clase social distinta a la de sus padres. Usando esta medida obtenemos las tasas de movilidad absoluta descritas abajo, donde la diferencia entre USA y UK es estadísticamente significativa.
+Siguiendo a Goldthorpe, podemos medir la tasa de **"movilidad absoluta"** en cada país calculando la proporción de casos que se encuentra fuera de la diagonal en cada una de las tablas. Esto nos da una estimación de la probabilidad de que un hijo alcance una clase social distinta a la de sus padres. Usando esta medida obtenemos las tasas de movilidad absoluta descritas abajo, donde la diferencia entre USA y UK es estadísticamente significativa.
 
 ```{r}
 rate_abs_immobility <- ctable %>% prop.table(3) %>% apply(.,3,diag) %>% apply(.,2,sum) 
@@ -69,6 +69,6 @@ USA presenta mayores niveles de movilidad social absoluta que UK. Sin embargo, n
 
 1) Elije una medida de asociación que, siguiendo la definición de Goldthorpe, capture adecuadamente los niveles de **"movilidad relativa"** en cada país. Justifica tu decisión.
 
-2) Calcula un intervalo de confianza al 95% de confianza para el estadístico correspondiente (o el log de éste) a cada país.
+2) Calcula un intervalo de confianza al 95% para el estadístico correspondiente a cada país (o el log de éste) .
 
-3) Calcula un intervalo de confianza al 95% para la diferencia entre ambos estadísticos (o la diferencia del log de éstos). Comenta brevemente las implicaciones sustantivas de este resultado.
+3) Calcula un intervalo de confianza al 95% para la diferencia entre ambos estadísticos (o la diferencia del log de éstos). Comenta brevemente las implicancias sustantivas de este resultado.
