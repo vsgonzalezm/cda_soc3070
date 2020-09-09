@@ -1,0 +1,74 @@
+---
+title: "SOC3070 Análisis de Datos Categóricos"
+author: "Tarea corta 5"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r, echo=FALSE, message=FALSE}
+# Escribir install.packages("tinytex") en la consola para instalar "tinytex"
+# Carga "tinytex" para compilar PDF
+library("tinytex")
+library("tidyverse")
+library("vcdExtra")
+
+data("Yamaguchi87")
+data <- Yamaguchi87
+ctable <- xtabs(Freq ~ Son + Father+Country, data=Yamaguchi87)
+ctable <- ctable[c(1,4),c(1,4),c(1,2)]
+```
+Ponderación: 5% de la nota final del curso. Entrega: Desde el momento de entrega, los estudiantes tienen 1 semana exacta de plazo para completar esta tarea.
+
+## Introducción: 
+
+En su artículo _"Understanding  –  and  Misunderstanding –  Social  Mobility  in  Britain:  The  Entry of the Economists, the   Confusion of Politicians and the Limits of Educational Policy"_ [John H. Goldthorpe](https://en.wikipedia.org/wiki/John_Goldthorpe) describe la distinción entre movilidad social absoluta y relativa, y resume los principales hallazgos al respecto en UK:
+
+> > "Sociologists  attach [crucial importance]  to  the  distinction between absolute and relative mobility rates. Absolute rates refer to the actual proportions of individuals of given class origins who are mobile to different class destinations, while relative rates compare the  chances of individuals of differing  class origins arriving at different class destinations  and  thus  indicate  the  extent  of  social  fluidity.  [Relative mobility is a zero-sum phenomenon. If one person moves up in relative terms, another by definition must have moved down]. In  these  two  respects, the major research findings [can be summarized] as follows. 
+
+> > (i) [...] Rates  of  upward  mobility steadily  increased  in  the  course  of  the twentieth  century,  primarily  as  a  consequence  of  class  structural  change  -  i.e.  of  the expansion  of  professional  and  managerial  positions creating "more   room  at  the  top". However, immobility at the "top" also increased.
+
+> > (ii)  Relative  rates  of  intergenerational  class  mobility [...] showed  a basic  constancy  over  most  of  the  twentieth  century,  or  at  all  events  no  sustained  directional change. [...] In  other  words,  the  strength  of  the  association  between  the  class  positions  of  children  and their parents, considered net of class structural effects, appeared remarkably robust. 
+
+> > Although increasing  upward  mobility  might  create  a  contrary impression,  Britain  had  not  in  fact become a significantly more fluid or ‘open’ society.
+
+## Datos: 
+
+En esta tarea usarán un subconjunto de los datos provistos por [Kazuo Yamaguchi](https://sociology.uchicago.edu/directory/kazuo-yamaguchi) en su artículo "Models for comparing mobility tables: toward parsimony and substance" (ASR 1987) para estudiar movilidad social intergeneracional. Este subconjunto de datos corresponde a una tabla de contingencia que clasifica a padres e hijos según su clase social en USA y UK, donde  tanto padres como hijos pueden pertenecer a la clase UpNM (profesionales, gerentes y funcionarios ) o la clase LoM (trabajadores no agrícolas semicualificados y no cualificado).
+
+Como se observa, la tabla tiene tres dimensiones: ocupación del hijo (filas), ocupación del padre (columnas) y país ("layer"). Para acceder a la sub-tabla 2-way correspondiente a cada país usa los índices de la tabla. Por ejemplo, `ctable[,,1]` corresponde a la tabla para USA (layer=1). `ctable[1,,1]` corresponde a la primera fila de la tabla para USA, y `ctable[,2,2]` corresponde a la columna 2 de la tabla para UK (layer=2)
+
+```{r}
+print(ctable)
+```
+
+## Problema: 
+
+Usando estos datos podemos medir la tasa de **"movilidad absoluta"** en cada país calculando la proporción de casos que se encuentra fuera de la diagonal en cada una de las tablas. Esto nos da un estimación de la probabilidad de que uno hijo alcance una clase social distinta a la de sus padres. Usando esta medida obtenemos las tasas de movilidad absoluta descritas abajo, donde la diferencia entre USA y UK es estadísticamente significativa.
+
+```{r}
+rate_abs_immobility <- ctable %>% prop.table(3) %>% apply(.,3,diag) %>% apply(.,2,sum) 
+rate_abs_mobility <- 1 -  rate_abs_immobility
+
+p_usa <- rate_abs_mobility[1]
+p_uk  <- rate_abs_mobility[2]
+var_usa <- (p_usa*(1-p_usa))/sum(ctable[,,1])
+var_uk <- (p_uk*(1-p_uk))/sum(ctable[,,2])
+
+ci_diff <- round((p_usa - p_uk) + c(-1.96,1.96)*sqrt(var_usa + var_uk), 2)
+print("Tasas de movilidad absoluta en USA y UK")
+print(rate_abs_mobility)
+print(paste0("95% CI diferencia movilidad absoluta USA-UK: [", ci_diff[1],",",ci_diff[2],"]"))
+```
+
+USA presenta mayores niveles de movilidad social absoluta que UK. Sin embargo, nos interesa entender si tales diferencias reflejan, al menos parcialmente, mayores niveles de **"movilidad relativa"** en USA comparado con UK. 
+
+
+## Preguntas:
+
+1) Elije una medida de asociación que, siguiendo la definición de Goldthorpe, capture adecuadamente los niveles de **"movilidad relativa"** en cada país. Justifica tu decisión.
+
+2) Calcula un intervalo de confianza al 95% de confianza para el estadístico correspondiente (o el log de éste) a cada país.
+
+3) Calcula un intervalo de confianza al 95% para la diferencia entre ambos estadísticos (o la diferencia del log de éstos). Comenta brevemente las implicaciones sustantivas de este resultado.
