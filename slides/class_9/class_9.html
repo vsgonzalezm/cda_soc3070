@@ -237,23 +237,24 @@ Para ejemplificar el uso de regresión logística continuaremos trabajando con l
 
 ```
 ## # A tibble: 15 x 10
-##    sex      age    ym child religious education  rate nbaffairs everaffair    everaffair_d
-##    &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;     &lt;int&gt;     &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt;
-##  1 male      57    15 yes           4        20     4         0 Never                    0
-##  2 female    57    15 yes           4        16     4         0 Never                    0
-##  3 female    57    15 yes           2        18     2         0 Never                    0
-##  4 male      57    15 yes           4         9     2         0 Never                    0
-##  5 male      57    15 yes           4        20     5         0 Never                    0
-##  6 male      57    15 yes           2        20     4         0 Never                    0
-##  7 male      57    15 yes           4         9     4         0 Never                    0
-##  8 male      57    15 yes           4        17     5         0 Never                    0
-##  9 male      57    15 yes           5        18     2         0 Never                    0
-## 10 female    57    15 yes           3        18     2         0 Never                    0
-## 11 male      57    15 no            4         9     1         0 Never                    0
-## 12 female    57    15 no            4        20     5         0 Never                    0
-## 13 female    57    15 yes           1        18     4         2 At least once            1
-## 14 male      57    15 yes           1        17     4         2 At least once            1
-## 15 male      57    15 yes           5        20     5         7 At least once            1
+##    sex     age    ym child religious education  rate nbaffairs everaffair
+##    &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;     &lt;int&gt;     &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;     
+##  1 male     57    15 yes           4        20     4         0 Never     
+##  2 fema…    57    15 yes           4        16     4         0 Never     
+##  3 fema…    57    15 yes           2        18     2         0 Never     
+##  4 male     57    15 yes           4         9     2         0 Never     
+##  5 male     57    15 yes           4        20     5         0 Never     
+##  6 male     57    15 yes           2        20     4         0 Never     
+##  7 male     57    15 yes           4         9     4         0 Never     
+##  8 male     57    15 yes           4        17     5         0 Never     
+##  9 male     57    15 yes           5        18     2         0 Never     
+## 10 fema…    57    15 yes           3        18     2         0 Never     
+## 11 male     57    15 no            4         9     1         0 Never     
+## 12 fema…    57    15 no            4        20     5         0 Never     
+## 13 fema…    57    15 yes           1        18     4         2 At least …
+## 14 male     57    15 yes           1        17     4         2 At least …
+## 15 male     57    15 yes           5        20     5         7 At least …
+## # … with 1 more variable: everaffair_d &lt;dbl&gt;
 ```
 
 
@@ -464,7 +465,40 @@ m[which.max(m[,3]),]
 ---
 ## Estimación (MLE)
 
+.pull-left[
 ![](class_9_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+]
+
+--
+
+.pull-right[
+
+```
+## 
+## Call:
+## glm(formula = everaffair_d ~ rate, family = binomial(link = "logit"), 
+##     data = affairsdata)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.3147  -0.7233  -0.5751  -0.5751   1.9396  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  0.82539    0.32548   2.536   0.0112 *  
+## rate        -0.50822    0.08469  -6.001 1.96e-09 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 675.38  on 600  degrees of freedom
+## Residual deviance: 638.28  on 599  degrees of freedom
+## AIC: 642.28
+## 
+## Number of Fisher Scoring iterations: 4
+```
+]
 
 
 ---

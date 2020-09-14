@@ -476,17 +476,26 @@ m[which.max(m[,3]),]
 ---
 ## Estimación (MLE)
 
+.pull-left[
 ```{r,  include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
 # Plot all LL values
 parameter_space %>% as.data.frame() %>% ggplot(aes(x=beta0, y=beta1,  z = loglik)) + geom_contour(bins = 700) + geom_contour_filled(bins = 500, alpha=0.75) +
 geom_point(aes(x=m[which.max(m[,3]),1], m[which.max(m[,3]),2]), size=1.5) +
 guides(fill=FALSE, color=FALSE) + labs(x=quote(beta[0]), y=quote(beta[1])) +
 annotate(geom="text", x=0.56, y=-0.63, label='bold("(0.83,-0.51)")', color="black", parse=TRUE, size=6)  +
-guides(fill=FALSE, color=FALSE) +
 theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
 axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
 legend.text = element_text(size = 18), legend.position="none")
 ```
+]
+
+--
+
+.pull-right[
+```{r,  include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+summary(logit_affairs_rate)
+```
+]
 
 
 ---

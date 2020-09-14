@@ -793,7 +793,7 @@ print(test_props$conf.int[c(1,2)])
 ---
 ### Inferencia para Diferencia de proporciones (Nota)
 
-.tiny[*asumamos mismo tamaño muestral $n$ por simpleza]
+.tiny[*asumamos mismo tamaño muestral $n$ por simpleza]. Queremos saber si $\mu_{1}$ es significativamente .bold[mayor] que $\mu_{2}$.
 
 
 .pull-left[
@@ -802,7 +802,7 @@ print(test_props$conf.int[c(1,2)])
 ![diff](diff.png)
 
 
-$(\mu_{1} - c \cdot \sigma_{1}/\sqrt{n}) - (\mu_{2} - c \cdot \sigma_{2}/\sqrt{n}) > 0 \quad ?$ 
+$(\mu_{1} - c \cdot \sigma_{1}/\sqrt{n}) - (\mu_{2} + c \cdot \sigma_{2}/\sqrt{n}) > 0 \quad ?$ 
 
 es decir, 
 
