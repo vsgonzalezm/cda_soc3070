@@ -1,5 +1,5 @@
 ---
-title: "Análisis de Datos Categóricos (SOL3070)"
+title: "Análisis de Datos Categóricos (SOC3070)"
 subtitle: "Clase #8"
 author: "<br> Mauricio Bucca<br> Profesor Asistente, Sociología UC"
 date: "[github.com/mebucca](https://github.com/mebucca)"
@@ -323,6 +323,7 @@ $$\mathbb{E}( \ln y_{i}) = \beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki}$$
 ## GLM, una aplicación empírica: gender wage gap 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library("tidyverse")
 library("reshape2")
 library(carData)
 data(SLID)
