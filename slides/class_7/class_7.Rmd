@@ -52,7 +52,7 @@ donde:
 
 - $\beta_{1} \dots \beta_{k}$ son los respectivos "efectos" de los predictores sobre $y$
 
-- $e$ es un termino de error aleatorio ("white noise")
+- $e$ es un término de error aleatorio ("white noise")
 
 - $\hat{y} \perp e$
 
@@ -77,14 +77,14 @@ Podemos repensar el LM de la siguiente forma:
 
 --
 
-- Estos resultados son realizaciones de variables aleatorias $\mathcal{N(\mu_{i}, \sigma_{i})}$ con media y varianza desconocida: misma distrubución pero parámetros (potencialmente) distintos
+- Estos resultados son realizaciones de variables aleatorias $\mathcal{N(\mu_{i}, \sigma_{i})}$ con media y varianza desconocida: misma distribución pero parámetros (potencialmente) distintos
 
   - Notar que es imposible identificar estos parámetros individualmente ( $n$ observaciones y $2n$ parámetros)
 
 ---
 ##  Estructura de un modelo de regresión lineal
 
-El modelo de regresión lineal estándar "resuelve" este problema de la siguiente mandera
+El modelo de regresión lineal estándar "resuelve" este problema de la siguiente manera
 
 $$y_{i} \sim \mathcal{N(\mu_{i}, \sigma_{i})} \quad \quad \text{ donde}$$
 --
@@ -121,7 +121,7 @@ $$y_{i} \sim \mathcal{N(\mu_{i}, \sigma)} \quad  \text{ o, equivalentemente: } \
 
 --
 
-Notar que  LM describe los datos con $k + 2$ parametros: $\beta_{0}, \beta_{1}, \dots, \beta_{k}, \sigma$
+Notar que  LM describe los datos con $k + 2$ parámetros: $\beta_{0}, \beta_{1}, \dots, \beta_{k}, \sigma$
 
 ---
 ##  Estructura de un modelo de regresión lineal
@@ -142,7 +142,7 @@ $$\vect{y} \sim \mathcal{N}_{n}(\vect{X}\vect{\beta},\vect{\Sigma}) \quad \text{
 
 - $\vect{\mu} = \vect{X}\vect{\beta} = \beta_{0} + \beta_{1}\vect{x}_{1} + \dots + \beta_{k}\vect{x}_{k}$
 
-- $\vect{\Sigma^{2}}$ es la matriz de varianza-covarianza entre las observaciones.
+- $\vect{\Sigma^{2}}$ es la matriz de varianza-covarianza entre las observaciones
 ]
 
 <br>
@@ -327,7 +327,7 @@ Observamos que:
 
 -  $\mathbb{E}(y_{i} \mid x = 60) = 75.9$
 
-- Estas "medias condicionales" no son deterministica sino .bold[_probabilisticas_].
+- Estas "medias condicionales" no son determinísticas sino .bold[_probabilísticas_].
 
 
 - Específicamente, sabemos que:
@@ -397,7 +397,7 @@ $$\text{Si } \quad \quad y_{i} = \overbrace{\beta_{0} + \beta_{1}x_{1i} + \dots 
 
 $$\text{Si } \quad \quad y_{i} = \overbrace{\beta_{0} + \beta_{1}x_{1i} + \dots \beta_{k}x_{ki}}^{\mathbb{E}(y_{i} \mid x_{1}, \dots, x_{k})} + \underbrace{e_{i}}_{\mathcal{N}(0,\sigma)}$$
 
-Entonces decimos que el efecto de $x_{k}$ sobre $y$ es $\beta_{k}$. Que significa?
+Entonces decimos que el efecto de $x_{k}$ sobre $y$ es $\beta_{k}$. ¿Qué significa?
 
 .pull-left[
 $$\frac{\partial \mathbb{E}(y_{i} \mid x_{1}, \dots, x_{k})}{\partial x_{k}} = \beta_{k}$$
@@ -408,7 +408,7 @@ $$\frac{\partial \mathbb{E}(y_{i} \mid x_{1}, \dots, x_{k})}{\partial x_{k}} = \
 
 --
 
-¿Por que?
+¿Por qué?
 --
  Asumamos que sólo la variable $x_{1}$ cambia en una unidad, de $x_{1}=c$ a $x_{1}=c+1$. Entonces:
 
@@ -579,7 +579,7 @@ $$y_{i} \sim \mathcal{N(p_{i}, \sigma)} \quad  \text{ o, equivalentemente: } \qu
 ---
 ## LMP en la práctica 
 
-Para ejemplificar el uso del LPM cuantinaremos trabajando con los datos de infidelidad. 
+Para ejemplificar el uso del LPM continuaremos trabajando con los datos de infidelidad. 
 
 ```{r,  include=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
 # load data on extra-marital affairs from package "Ecdat"
@@ -711,9 +711,9 @@ Derivado de lo anterior,
   
   - Cuando esto ocurre, los coeficientes estimados por el LMP son .bold[sesgados] e .bold[inconsistentes]
     
-    - Más aún, en muestras grande el problema es peor: converge hacia valores erróneos
+    - Más aún, en muestras grandes el problema es peor: converge hacia valores erróneos
     
-    - Problema especialmente serio cuando model produce proporción alta de predicciones fuera de rango
+    - Problema especialmente serio cuando el modelo produce una proporción alta de predicciones fuera de rango
     
 
 <br>
@@ -769,7 +769,7 @@ Derivado de lo anterior,
 $$\text{LPM asume que: } \quad  y_{i} \sim \mathcal{N(p_{i}, \sigma)} \quad  \text{ o, equivalentemente: } \quad  y_{i} = p_{i} + \mathcal{N(0, \sigma)}$$
 ]
 
-.bold[2) Observaciones con varianza heterogenea (o, errores heterocedásticos)]
+.bold[2) Observaciones con varianza heterogénea (o, errores heterocedásticos)]
 
 \begin{align}
   \mathbb{Var}(y_{i}) &=  \sum_{\text{valores } y_{i}} (y_{i} - \mathbb{E}(y_{i}) )^{2} \cdot \mathbb{P}(y_{i}) \\ 
@@ -797,7 +797,7 @@ $$\text{LPM asume que: } \quad  y_{i} \sim \mathcal{N(p_{i}, \sigma)} \quad  \te
 ## Limitaciones del LMP  
 
 
-.bold[2) Observaciones con varianza heterogenea (o, errores heterocedásticos)]
+.bold[2) Observaciones con varianza heterogénea (o, errores heterocedásticos)]
 
 \begin{align}
   \mathbb{Var}(y_{i}) &=  p_{i}(1-p_{i}) \\
@@ -888,7 +888,7 @@ affairsdata %>% ggplot(aes(x=rate, y=everaffair_d, group=factor(religious) , col
 ---
 ## Limitaciones del LMP en la práctica 
 
-.bold[Errores heteroscedásticos]
+.bold[Errores heterocedásticos]
 
 .pull-left[
 ```{r, echo=FALSE, fig.height=6, fig.width=7}
@@ -959,7 +959,7 @@ Por lo mismo, hay .bold[mucho] interés en "rescatar" el LPM
 ---
 ## Al rescate de LPM
 
-.bold[Problema: Observaciones con varianza heterogenea (heterocedásticidad)] 
+.bold[Problema: Observaciones con varianza heterogénea (heterocedasticidad)] 
 
 $\quad \quad \Box$ .bold[Solución: Errores Estándar "Robustos"]
 
