@@ -156,9 +156,9 @@ y_{i} \\  \vdots \\ y_{n}
  \vdots \\ \beta_{0} + \beta_{1}x_{1n} + \dots \beta_{k}x_{kn}
 \end{bmatrix}_{(n,1)} , \vect{\Sigma^{2}} = \begin{bmatrix}
     \sigma^{2}    & 0      & \ldots         & 0      \\
-    0      & \sigma_{2}     & \ldots         & 0      \\
-    \vdots & \vdots & \sigma_{2}   & \vdots \\
-    0      & 0      & \ldots         & \sigma_{2} 
+    0      & \sigma^{2}     & \ldots         & 0      \\
+    \vdots & \vdots & \sigma^{2}   & \vdots \\
+    0      & 0      & \ldots         & \sigma^{2} 
 \end{bmatrix}_{(n,n)}\Bigg)$$
  
 ---

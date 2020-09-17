@@ -896,7 +896,7 @@ es decir,
 
 
 .content-box-blue[
-`$$\mathbb{P}( |\delta| &gt; \hat{\delta} \mid H_{0} \text{ es verdadera})$$`
+`$$\mathbb{P}( | \tilde{\delta} | &gt; \hat{\delta} \mid H_{0} \text{ es verdadera})$$`
 ]
 
 ---
@@ -1283,7 +1283,7 @@ Versión automática con `prop.test()` en `R`:
 
 --
 
-- Más simple (y más fácil interpretación) realizar inferencia sobre el `\(\log\hat{RR} = \log \hat{p}_{1} - \log \hat{p}_{2}\)`
+- Más simple (y más fácil interpretación) realizar inferencia sobre el `\(\log \hat{RR} = \log \hat{p}_{1} - \log \hat{p}_{2}\)`
 
 
 &lt;br&gt;
@@ -1291,7 +1291,7 @@ Versión automática con `prop.test()` en `R`:
 
 - Asintóticamente `\(\log \hat{RR} \sim \mathcal{N}(\mu,\sigma)\)`, con parametros _estimados_ por: 
 
-  -  `\(\quad \hat{\mu}: \hat{p}_{1}/\hat{p}_{2} \quad \text{ y }\quad \hat{\sigma} = \sqrt{1/n_{11} - 1/n_{1+} + 1/n_{21} - 1/n_{2+} }\)`
+  -  `\(\quad \hat{\mu}: \log \hat{p}_{1} - \log \hat{p}_{2} \quad \text{ y }\quad \hat{\sigma} = \sqrt{1/n_{11} - 1/n_{1+} + 1/n_{21} - 1/n_{2+} }\)`
 
 
 --
