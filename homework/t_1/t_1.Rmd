@@ -20,7 +20,7 @@ library("modelr")
 **Información**
 
 Ponderación: 20% de la nota final del curso.
-Entrega: Desde el momento de entrega, los estudiantes tienen 2 semanas exactas de plazo para completar esta tarea. Responder la pregunta _bonus_ NO es un requisito necesario para obtener puntaje completo. Responder incorrectamente la pregunta _bonus_ no afectará negativamente la nota obtenida, pero responderla correctamente mejorará la nota obtenida en un máximo de 0.7 puntos (o en la cantidad necesaria para obtener nota máxima si la nota original fuera superior a 6.3)
+Entrega: Desde el momento de entrega, los estudiantes tienen 3 semanas exactas de plazo para completar esta tarea. Responder la pregunta _bonus_ NO es un requisito necesario para obtener puntaje completo. Responder incorrectamente la pregunta _bonus_ no afectará negativamente la nota obtenida, pero responderla correctamente mejorará la nota obtenida en un máximo de 0.7 puntos (o en la cantidad necesaria para obtener nota máxima si la nota original fuera superior a 6.3)
 
 **Introducción**
 
