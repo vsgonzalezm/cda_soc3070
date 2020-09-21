@@ -1,0 +1,107 @@
+---
+title: "SOC3070 Análisis de Datos Categóricos"
+author: "Tarea corta 4"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r, echo=FALSE, message=FALSE}
+# Escribir install.packages("tinytex") en la consola para instalar "tinytex"
+# Carga "tinytex" para compilar PDF
+library("tinytex")
+library("tidyverse")
+library("vcdExtra")
+
+data("Yamaguchi87")
+data <- Yamaguchi87
+ctable <- xtabs(Freq ~ Son + Father+Country, data=Yamaguchi87)
+```
+Ponderación: 4% de la nota final del curso. Entrega: Desde el momento de entrega, los estudiantes tienen 1 semana exacta de plazo para completar esta tarea.
+
+## Problema: 
+
+En su artículo "Models for comparing mobility tables: toward parsimony and substance", publicado en 1987 en  _American Sociological Review_, [Kazuo Yamaguchi](https://sociology.uchicago.edu/directory/kazuo-yamaguchi) (1987) presentó una tabla de contingencia 3-way en la que se clasifican las categorías ocupacionales de hijos y padres en tres países: USA, UK y Japón. Estos datos se han convertido en un clásico en modelos log-multiplicative con layer effects para comparar tablas de movilidad social. En esta oportunidad, sin embargo, usarán estos datos para estimar proporciones y hacer inferencia estadística sobre dichas proporciones.
+
+```{r}
+print(ctable)
+```
+
+En la tabla, UpNM refiere a profesionales, gerentes y funcionarios; LoNM son propietarios, vendedores y oficinistas; UpM son trabajadores cualificados; LoM son trabajadores no agrícolas semicualificados y no cualificados; y Farm son agricultores y obreros agrícolas.
+
+Como se puede observar, la tabla tiene tres dimensiones: ocupación del hijo (filas), ocupación del padre (columnas) y país ("layer"). Para acceder a la sub-tabla 2-way correspondiente a cada país usa los índices de la tabla. Por ejemplo, `ctable[,,1]` corresponde a la tabla para USA (layer=1). `ctable[1,,1]` corresponde a la primera fila de la tabla para USA, y `ctable[,2,3]` corresponde a la columna 2 de la tabla para Japón (layer=3)
+
+## Ejercicios:
+
+1) Estima las distribuciones marginales de ocupación del hijo y ocupación del padre en cada país. Comenta brevemente las implicaciones sustantivas de los resultados obtenidos.
+
+
+2) Asume que los recuentos de **cada columna** en la tabla provienen de una distribución multinomial, donde la probabilidad asociada a cada categoría puede ser estimada via MLE como sigue $\hat{p}_{ij} = n_{ij}/n_{i+}$. Por ejemplo, en UK la probabilidad de que una persona cuyo padre era agricultor/obrero agrícola (Farm) también sea agricultor u obrero agrícola (Farm) se estima como: $191/743$ o, equivalentemente, $0.023/0.089$.
+
+
+Nos interesa estudiar los fenómenos _rags-to-riches_ y _riches-to-riches_ en los tres países. Para ello, debes estimar las siguientes 6 probabilidades:
+
+$$\mathbb{P}(\text{Son = UpNM} \mid \text{Father = LoM}, \text{ Country})$$
+
+
+$$\mathbb{P}(\text{Son = UpNM} \mid \text{Father = UpNM}, \text{ Country})$$
+
+3) Usando la misma fórmula para intervalos de confianza de una proporción Binomial, calcula un intervalo de confianza al 99% para las proporciones estimadas en 2). Comenta brevemente las implicaciones sustantivas de los resultados obtenidos.
+
+**Sugerencia:** Dado que vas a repetir la mismas operaciones varias veces, te sugiero la posibilidad de usar loops y/o funciones en `R`.
+
+## Respuestas:
+
+1)
+
+```{r, echo=TRUE}
+
+for (k in 1:3) {
+  country = dimnames(ctable)$Country[k]
+  print("=====================================================================")
+  print(paste0("Distribución marginal ocupación del hijo en ",country))
+  print(apply(prop.table(ctable[,,k]),1,sum))
+  print("")
+  print(paste0("Distribución marginal ocupación del padre en ",country))
+  print(apply(prop.table(ctable[,,k]),2,sum) )
+  print("")
+}
+
+```
+
+2) y 3)
+
+```{r, echo=TRUE}
+
+est_prop <- function(fila,columna,pais) {
+   ctable[fila,columna,pais]/sum(ctable[,columna,pais])
+}
+
+conf_int <- function(fila,columna,pais,alpha) { 
+  z_halfalpha = qnorm(c(alpha/2, 1 - alpha/2))
+  phat = est_prop(1,j,k)
+  n = sum(ctable[,columna,pais])
+  se = sqrt((phat*(1-phat)/n))
+  ci = phat + z_halfalpha*se
+}
+
+
+
+for (j in c(1,4)) {
+  for (k in 1:3) {
+      father_occ = dimnames(ctable)$Father[j]
+      country = dimnames(ctable)$Country[k]
+      p = est_prop(1,j,k)
+      ci = conf_int(1,j,k,alpha=0.01)
+      print("=====================================================================")
+      print(paste0("Estimate P(Son=UpNM | Father=",father_occ,", Country=",country,")"))
+      print(round(p,2))
+      print("")
+      print(paste0("99% CI Estimate P(Son=UpNM | Father=",father_occ,", Country=",country,")"))
+      print(round(ci,2))
+      print("")
+      }
+}
+
+```
