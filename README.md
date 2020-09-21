@@ -48,6 +48,9 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
 
 #### Trabajos
 
+- Trabajo 1: [`[T1]`](homework/t_1/t_1.pdf) [`[T1.Rmd]`](homework/t_1/t_1.Rmd)
+
+
 #### Trabajo Final
 
 ---
