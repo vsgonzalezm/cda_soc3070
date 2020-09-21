@@ -28,9 +28,7 @@ En esta tarea usarán el modelo lineal de probabilidad (LPM) y regresión logís
 
 En particular, deberán estimar los efectos de las dos manipulaciones experimentales del estudio sobre la probabilidad de percibir que los resultados de la competencia son "justos" (variable `fair`). Una de las manipulaciones experimentales es el status de ganador o perdedor de los participantes (variable `W`). La otra es el nivel de desigualdad de oportunidades en la competencia, el cual es determinado por el tratamiento al que cada individuo fue asignado (variable `T`). Para esta tarea usarán el subconjunto de datos correspondientes a los tratamientos RA ("random exchange", es decir, "level of redistribution" = 0), RE1 ("regressive exchange" con "level of redistribution" = 1) y RE2 ("regressive exchange" con "level of redistribution" = 2). 
 
-Para mayor contexto pueden revisar el artículo [[click aquí]](https://advances.sciencemag.org/content/advances/5/7/eaau1156.full.pdf) y el material suplementario [[click aquí]](https://advances.sciencemag.org/content/advances/suppl/2019/07/15/5.7.eaau1156.DC1/aau1156_SM.pdf). 
-
-Los datos se ven así y están disponibles en el repositorio del curso para ser descargados [[click aquí]](https://advances.sciencemag.org/content/advances/5/7/eaau1156.full.pdf). 
+Para mayor contexto pueden revisar el artículo y el material suplementario en los links indicados en el repositorio. Igualmente, los datos están disponibles en el repositorio del curso para ser descargados. 
 
 ````{r, message=FALSE, warnings=FALSE}
 data_paper <- read_csv("data_t_1.csv")
