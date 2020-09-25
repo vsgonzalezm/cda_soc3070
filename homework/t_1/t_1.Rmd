@@ -57,7 +57,7 @@ data_paper %>% glimpse()
 2. Usa regresión logística para estimar el modelo implícito en el panel derecho de la figura 1 (interacción entre variables `T` y `W`). Presenta un `summary()` de los resultados.
 
 
-2.1 Interpreta el intercepto, el coeficiente asociado a `TRE1` y el coeficiente asociado a `TRE2:W`.
+2.1 Interpreta el intercepto, el coeficiente asociado a `TRE1` y el coeficiente asociado a `TRE2:W` (tal como aparecen en el output de `R`/`Stata`).
 
 
 2.2 Transforma e interpreta los coeficientes en 2.1. en términos de odds u odds-ratios. Presenta el desarrollo formal de una de estas odds-ratios.
