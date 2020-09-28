@@ -381,6 +381,15 @@ summary(our_glm)
 `$$\ln \mu_{i} = \ln \mathbb{E}\text{(wage}_{i} \mid \text{male}) = \beta_{0} + \beta_{1}\text{male}_{i}
 = 2.631 + 0.215\text{male}_{i}$$`
 
+&lt;br&gt;
+--
+
+Por tanto,
+
+- `\(\mathbb{E}(\text{wage}_{i} \mid \text{male}=1) = e^{\beta_{0} + \beta_{1}} = e^{\beta_{0}}e^{\beta_{1}} = e^{2.631}e^{0.215} = 17.22\)` 
+
+- `\(\mathbb{E}(\text{wage}_{i} \mid \text{male}=0) = e^{\beta_{0}} = e^{2.631} = 13.89\)` 
+
 
 &lt;br&gt;
 --
@@ -392,14 +401,7 @@ Interpretación coeficientes
 
 &lt;br&gt;
 --
-Por tanto,
 
-- `\(\mathbb{E}(\text{wage}_{i} \mid \text{male}=1) = e^{\beta_{0} + \beta_{1}} = e^{\beta_{0}}e^{\beta_{1}} = e^{2.631}e^{0.215} = 17.22\)` 
-
-- `\(\mathbb{E}(\text{wage}_{i} \mid \text{male}=0) = e^{\beta_{0}} = e^{2.631} = 13.89\)` 
-
-&lt;br&gt;
---
 
 .bold[Gender wage gap]: `\(\mathbb{E}(\text{wage}_{i} \mid \text{male}=1) - \mathbb{E}(\text{wage}_{i} \mid \text{male}=0) = e^{\beta_{0}} e^{\beta_{1}} - e^{\beta_{0}} = e^{\beta_{0}}(e^{\beta_{1}}-1)\)`
 
