@@ -506,7 +506,7 @@ Entonces decimos que el efecto de `\(x_{k}\)` sobre `\(y\)` es `\(\beta_{k}\)`. 
  Asumamos que sólo la variable `\(x_{1}\)` cambia en una unidad, de `\(x_{1}=c\)` a `\(x_{1}=c+1\)`. Entonces:
 
 `\begin{align}
-  \frac{\Delta y_{i}  }{\Delta x_{1}} &amp;= \frac{ \mathbb{E}(y_{i} \mid x_{1}=c+1, \dots, x_{k})  - \mathbb{E}(y_{i} \mid x_{1}=c, \dots, x_{k})}{(c+1) - c} \\ \\
+  \frac{\Delta \mathbb{E}(y_{i})  }{\Delta x_{1}} &amp;= \frac{ \mathbb{E}(y_{i} \mid x_{1}=c+1, \dots, x_{k})  - \mathbb{E}(y_{i} \mid x_{1}=c, \dots, x_{k})}{(c+1) - c} \\ \\
   &amp;=(\beta_{0} + \beta_{1}(c+1) +  \dots + \beta_{l}x_{k}) - (\beta_{0} + \beta_{1}c  \dots + \beta_{l}x_{k}) = \beta_{1}(c+1) - \beta_{1}c \\ \\
   &amp;= \beta_{1}c + \beta_{1} - \beta_{1}c = \beta_{1}
 \end{align}`
@@ -532,7 +532,7 @@ print(our_lm_ols)
 ##      10.169        1.095
 ```
 ]
-.pull-left[
+.pull-right[
 Si `x=50`, entonces `y`=
 
 ```r
@@ -710,24 +710,23 @@ Para ejemplificar el uso del LPM continuaremos trabajando con los datos de infid
 
 ```
 ## # A tibble: 15 x 10
-##    sex     age    ym child religious education  rate nbaffairs everaffair
-##    &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;     &lt;int&gt;     &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;     
-##  1 male     57    15 yes           4        20     4         0 Never     
-##  2 fema…    57    15 yes           4        16     4         0 Never     
-##  3 fema…    57    15 yes           2        18     2         0 Never     
-##  4 male     57    15 yes           4         9     2         0 Never     
-##  5 male     57    15 yes           4        20     5         0 Never     
-##  6 male     57    15 yes           2        20     4         0 Never     
-##  7 male     57    15 yes           4         9     4         0 Never     
-##  8 male     57    15 yes           4        17     5         0 Never     
-##  9 male     57    15 yes           5        18     2         0 Never     
-## 10 fema…    57    15 yes           3        18     2         0 Never     
-## 11 male     57    15 no            4         9     1         0 Never     
-## 12 fema…    57    15 no            4        20     5         0 Never     
-## 13 fema…    57    15 yes           1        18     4         2 At least …
-## 14 male     57    15 yes           1        17     4         2 At least …
-## 15 male     57    15 yes           5        20     5         7 At least …
-## # … with 1 more variable: everaffair_d &lt;dbl&gt;
+##    sex      age    ym child religious education  rate nbaffairs everaffair    everaffair_d
+##    &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;     &lt;int&gt;     &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt;
+##  1 male      57    15 yes           4        20     4         0 Never                    0
+##  2 female    57    15 yes           4        16     4         0 Never                    0
+##  3 female    57    15 yes           2        18     2         0 Never                    0
+##  4 male      57    15 yes           4         9     2         0 Never                    0
+##  5 male      57    15 yes           4        20     5         0 Never                    0
+##  6 male      57    15 yes           2        20     4         0 Never                    0
+##  7 male      57    15 yes           4         9     4         0 Never                    0
+##  8 male      57    15 yes           4        17     5         0 Never                    0
+##  9 male      57    15 yes           5        18     2         0 Never                    0
+## 10 female    57    15 yes           3        18     2         0 Never                    0
+## 11 male      57    15 no            4         9     1         0 Never                    0
+## 12 female    57    15 no            4        20     5         0 Never                    0
+## 13 female    57    15 yes           1        18     4         2 At least once            1
+## 14 male      57    15 yes           1        17     4         2 At least once            1
+## 15 male      57    15 yes           5        20     5         7 At least once            1
 ```
 
 ---
