@@ -66,6 +66,7 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
   - Un template para escribir en `RMarkdown` ([`[PDF]`](files/template_rmarkdown.pdf) y [`[.Rmd]`](files/template_rmarkdown.Rmd) ). El uso de `RMarkdown` no es obligatorio, pero es altamente recomendado para escribir sus tareas y trabajos. Hoja de ayuda [`[aquí]`](https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-spanish.pdf).
   - [`[StalkOverflow]`](https://stackoverflow.com/) tiene las respuestas a casi todas las preguntas.
  
+ 
  ### Para usuarios de `Stata`
 
  - Es este [`[link]`](https://stats.idre.ucla.edu/other/examples/icda/) pueden encontrar la implementación en `Stata` de los ejemplos usandos en (casi) todos los capítulos del libro de Alan Agresti, [`[Introduction to Categorical Data Analysis]`](https://www.amazon.com/Introduction-Categorical-Data-Analysis/dp/0471226181). 
