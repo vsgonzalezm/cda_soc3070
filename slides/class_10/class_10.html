@@ -117,30 +117,30 @@ summary(logit_affairs_sex_ym)
 ```
 
 ```
-## 
-## Call:
-## glm(formula = everaffair_d ~ factor(sex) + ym, family = binomial(link = "logit"), 
-##     data = affairsdata)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.9294  -0.8232  -0.6625  -0.5775   1.9197  
-## 
-## Coefficients:
-##                 Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)     -1.71395    0.20633  -8.307  &lt; 2e-16 ***
-## factor(sex)male  0.22157    0.19064   1.162 0.245139    
-## ym               0.05843    0.01727   3.383 0.000718 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 675.38  on 600  degrees of freedom
-## Residual deviance: 662.15  on 598  degrees of freedom
-## AIC: 668.15
-## 
-## Number of Fisher Scoring iterations: 4
+
+Call:
+glm(formula = everaffair_d ~ factor(sex) + ym, family = binomial(link = "logit"), 
+    data = affairsdata)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.9294  -0.8232  -0.6625  -0.5775   1.9197  
+
+Coefficients:
+                Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)     -1.71395    0.20633  -8.307  &lt; 2e-16 ***
+factor(sex)male  0.22157    0.19064   1.162 0.245139    
+ym               0.05843    0.01727   3.383 0.000718 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 675.38  on 600  degrees of freedom
+Residual deviance: 662.15  on 598  degrees of freedom
+AIC: 668.15
+
+Number of Fisher Scoring iterations: 4
 ```
 ]
 
@@ -199,10 +199,10 @@ En nuestro ejemplo: `\(\log \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text
 .pull-left[
 
 ```
-##                    Estimate Std. Error
-## (Intercept)     -1.71395429 0.20633183
-## factor(sex)male  0.22157111 0.19064190
-## ym               0.05842959 0.01727402
+                   Estimate Std. Error
+(Intercept)     -1.71395429 0.20633183
+factor(sex)male  0.22157111 0.19064190
+ym               0.05842959 0.01727402
 ```
 ]
 .pull-right[
@@ -216,10 +216,10 @@ En nuestro ejemplo: `\(\log \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text
 .pull-left[
 
 ```
-##                    Estimate Std. Error
-## (Intercept)     -1.71395429 0.20633183
-## factor(sex)male  0.22157111 0.19064190
-## ym               0.05842959 0.01727402
+                   Estimate Std. Error
+(Intercept)     -1.71395429 0.20633183
+factor(sex)male  0.22157111 0.19064190
+ym               0.05842959 0.01727402
 ```
 ]
 .pull-right[
@@ -230,7 +230,7 @@ Si `male=1` y `ym=10`, entonces `logit(p)`=
 ```
 
 ```
-## [1] -0.9077
+[1] -0.9077
 ```
 
 Si `male=1` y `ym=11`, entonces `logit(p)`=
@@ -240,7 +240,7 @@ Si `male=1` y `ym=11`, entonces `logit(p)`=
 ```
 
 ```
-## [1] -0.84927
+[1] -0.84927
 ```
 
 ]
@@ -254,7 +254,7 @@ Por tanto, `\(\beta_{ym}\)`=
 ```
 
 ```
-## [1] 0.05843
+[1] 0.05843
 ```
 
 ---
@@ -404,10 +404,10 @@ summary(logit_affairs_sex_ym)$coefficients[,c(1,2)]
 ```
 
 ```
-##                    Estimate Std. Error
-## (Intercept)     -1.71395429 0.20633183
-## factor(sex)male  0.22157111 0.19064190
-## ym               0.05842959 0.01727402
+                   Estimate Std. Error
+(Intercept)     -1.71395429 0.20633183
+factor(sex)male  0.22157111 0.19064190
+ym               0.05842959 0.01727402
 ```
 
 ```r
@@ -416,8 +416,8 @@ exp(summary(logit_affairs_sex_ym)$coefficients[,c(1)])
 ```
 
 ```
-##     (Intercept) factor(sex)male              ym 
-##        0.180152        1.248036        1.060170
+    (Intercept) factor(sex)male              ym 
+       0.180152        1.248036        1.060170 
 ```
     
 ]
@@ -435,10 +435,10 @@ exp(summary(logit_affairs_sex_ym)$coefficients[,c(1)])
 .pull-left[
 
 ```
-##                        coef exp.coef.
-## (Intercept)     -1.71395429  0.180152
-## factor(sex)male  0.22157111  1.248036
-## ym               0.05842959  1.060170
+                       coef exp.coef.
+(Intercept)     -1.71395429  0.180152
+factor(sex)male  0.22157111  1.248036
+ym               0.05842959  1.060170
 ```
 ]
 .pull-right[
@@ -449,7 +449,7 @@ exp(-1.714 + 0.222*1 + 0.05843*10)
 ```
 
 ```
-## [1] 0.4034511
+[1] 0.4034511
 ```
 
 Si `male=1` y `ym=11`, entonces las odds de tener un affair =
@@ -459,7 +459,7 @@ exp(-1.714 + 0.222*1 + 0.05843*11)
 ```
 
 ```
-## [1] 0.4277271
+[1] 0.4277271
 ```
 
 ]
@@ -473,7 +473,7 @@ exp(-1.714 + 0.222*1 + 0.05843*11)/exp(-1.714 + 0.222*1 + 0.05843*10)
 ```
 
 ```
-## [1] 1.060171
+[1] 1.060171
 ```
  
 ---
@@ -603,10 +603,10 @@ En nuestro ejemplo: `\(\log \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text
 .pull-left[
 
 ```
-##                    Estimate Std. Error
-## (Intercept)     -1.71395429 0.20633183
-## factor(sex)male  0.22157111 0.19064190
-## ym               0.05842959 0.01727402
+                   Estimate Std. Error
+(Intercept)     -1.71395429 0.20633183
+factor(sex)male  0.22157111 0.19064190
+ym               0.05842959 0.01727402
 ```
 ]
 .pull-right[
@@ -684,9 +684,9 @@ summary(
 ```
 
 ```
-##   factor    AME     SE      z      p   lower  upper
-##  sexmale 0.0407 0.0351 1.1615 0.2454 -0.0280 0.1094
-##       ym 0.0107 0.0031 3.4740 0.0005  0.0047 0.0167
+  factor    AME     SE      z      p   lower  upper
+ sexmale 0.0407 0.0351 1.1615 0.2454 -0.0280 0.1094
+      ym 0.0107 0.0031 3.4740 0.0005  0.0047 0.0167
 ```
 ]
 
@@ -704,9 +704,9 @@ summary(margins(logit_affairs_sex_ym))
 ```
 
 ```
-##   factor    AME     SE      z      p   lower  upper
-##  sexmale 0.0407 0.0351 1.1615 0.2454 -0.0280 0.1094
-##       ym 0.0107 0.0031 3.4740 0.0005  0.0047 0.0167
+  factor    AME     SE      z      p   lower  upper
+ sexmale 0.0407 0.0351 1.1615 0.2454 -0.0280 0.1094
+      ym 0.0107 0.0031 3.4740 0.0005  0.0047 0.0167
 ```
 
 
@@ -738,7 +738,7 @@ print(paste0("AME Years of Marriage: ", ame))
 ```
 
 ```
-## [1] "AME Years of Marriage: 0.0107"
+[1] "AME Years of Marriage: 0.0107"
 ```
 ]
 
@@ -770,7 +770,7 @@ round(mean(me_ym_approx),4)
 ```
 
 ```
-## [1] 0.0107
+[1] 0.0107
 ```
 
 ---
@@ -823,9 +823,9 @@ summary(margins(logit_affairs_sex_ym2, at=list(male=mean_male, ym=mean_ym)))
 ```
 
 ```
-##  factor   male     ym    AME     SE      z      p   lower  upper
-##    male 0.4759 8.1777 0.0409 0.0351 1.1640 0.2444 -0.0280 0.1097
-##      ym 0.4759 8.1777 0.0108 0.0031 3.4270 0.0006  0.0046 0.0169
+ factor   male     ym    AME     SE      z      p   lower  upper
+   male 0.4759 8.1777 0.0409 0.0351 1.1640 0.2444 -0.0280 0.1097
+     ym 0.4759 8.1777 0.0108 0.0031 3.4270 0.0006  0.0046 0.0169
 ```
 
 --
@@ -847,10 +847,10 @@ grid &lt;- affairsdata %&gt;% data_grid(male=mean_male, ym=mean_ym, .model=logit
 ```
 
 ```
-## # A tibble: 1 x 2
-##    male    ym
-##   &lt;dbl&gt; &lt;dbl&gt;
-## 1 0.476  8.18
+# A tibble: 1 x 2
+   male    ym
+  &lt;dbl&gt; &lt;dbl&gt;
+1 0.476  8.18
 ```
 
 ```r
@@ -860,8 +860,8 @@ mem_ym = beta_ym*p_hat*(1-p_hat); round(mem_ym,4) # efecto marginal
 ```
 
 ```
-##     ym 
-## 0.0108
+    ym 
+0.0108 
 ```
 
 ---
@@ -887,8 +887,8 @@ round(mem_ym_approx,4) # efecto marginal
 ```
 
 ```
-##      1 
-## 0.0108
+     1 
+0.0108 
 ```
 
 ---
@@ -914,21 +914,21 @@ ym = quantile(affairsdata$ym,
 ```
 
 ```
-## Average marginal effects at specified values
+Average marginal effects at specified values
 ```
 
 ```
-## glm(formula = everaffair_d ~ factor(sex) + ym, family = binomial(link = "logit"),     data = affairsdata)
+glm(formula = everaffair_d ~ factor(sex) + ym, family = binomial(link = "logit"),     data = affairsdata)
 ```
 
 ```
-##  at(sex) at(ym)       ym sexfemale
-##     male      4 0.010066  -0.03581
-##   female      4 0.008824  -0.03581
-##     male      7 0.011039  -0.03953
-##   female      7 0.009806  -0.03953
-##     male     15 0.013305  -0.04865
-##   female     15 0.012318  -0.04865
+ at(sex) at(ym)       ym sexfemale
+    male      4 0.010066  -0.03581
+  female      4 0.008824  -0.03581
+    male      7 0.011039  -0.03953
+  female      7 0.009806  -0.03953
+    male     15 0.013305  -0.04865
+  female     15 0.012318  -0.04865
 ```
 ]
 
@@ -953,15 +953,15 @@ grid &lt;- grid %&gt;% mutate(mer_ym = beta_ym*p_hat*(1-p_hat)); grid  # efecto 
 ```
 
 ```
-## # A tibble: 6 x 4
-##   sex       ym p_hat  mer_ym
-##   &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
-## 1 female     4 0.185 0.00882
-## 2 female     7 0.213 0.00981
-## 3 female    15 0.302 0.0123 
-## 4 male       4 0.221 0.0101 
-## 5 male       7 0.253 0.0110 
-## 6 male      15 0.351 0.0133
+# A tibble: 6 x 4
+  sex       ym p_hat  mer_ym
+  &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+1 female     4 0.185 0.00882
+2 female     7 0.213 0.00981
+3 female    15 0.302 0.0123 
+4 male       4 0.221 0.0101 
+5 male       7 0.253 0.0110 
+6 male      15 0.351 0.0133 
 ```
 
 
@@ -983,15 +983,15 @@ grid &lt;- grid %&gt;% mutate(mem_ym_approx = (p_hat_delta - p_hat)/delta); grid
 ```
 
 ```
-## # A tibble: 6 x 3
-##   sex       ym mem_ym_approx
-##   &lt;fct&gt;  &lt;dbl&gt;         &lt;dbl&gt;
-## 1 female     4       0.00883
-## 2 female     7       0.00981
-## 3 female    15       0.0123 
-## 4 male       4       0.0101 
-## 5 male       7       0.0110 
-## 6 male      15       0.0133
+# A tibble: 6 x 3
+  sex       ym mem_ym_approx
+  &lt;fct&gt;  &lt;dbl&gt;         &lt;dbl&gt;
+1 female     4       0.00883
+2 female     7       0.00981
+3 female    15       0.0123 
+4 male       4       0.0101 
+5 male       7       0.0110 
+6 male      15       0.0133 
 ```
 
 ---
