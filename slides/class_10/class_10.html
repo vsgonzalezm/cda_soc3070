@@ -117,30 +117,30 @@ summary(logit_affairs_sex_ym)
 ```
 
 ```
-
-Call:
-glm(formula = everaffair_d ~ factor(sex) + ym, family = binomial(link = "logit"), 
-    data = affairsdata)
-
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--0.9294  -0.8232  -0.6625  -0.5775   1.9197  
-
-Coefficients:
-                Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)     -1.71395    0.20633  -8.307  &lt; 2e-16 ***
-factor(sex)male  0.22157    0.19064   1.162 0.245139    
-ym               0.05843    0.01727   3.383 0.000718 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-(Dispersion parameter for binomial family taken to be 1)
-
-    Null deviance: 675.38  on 600  degrees of freedom
-Residual deviance: 662.15  on 598  degrees of freedom
-AIC: 668.15
-
-Number of Fisher Scoring iterations: 4
+## 
+## Call:
+## glm(formula = everaffair_d ~ factor(sex) + ym, family = binomial(link = "logit"), 
+##     data = affairsdata)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.9294  -0.8232  -0.6625  -0.5775   1.9197  
+## 
+## Coefficients:
+##                 Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)     -1.71395    0.20633  -8.307  &lt; 2e-16 ***
+## factor(sex)male  0.22157    0.19064   1.162 0.245139    
+## ym               0.05843    0.01727   3.383 0.000718 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 675.38  on 600  degrees of freedom
+## Residual deviance: 662.15  on 598  degrees of freedom
+## AIC: 668.15
+## 
+## Number of Fisher Scoring iterations: 4
 ```
 ]
 
@@ -148,6 +148,7 @@ Number of Fisher Scoring iterations: 4
 class: inverse, center, middle
 
 ## Efectos marginales sobre el logit 
+
 
 ---
 ## Efectos marginales sobre el logit 
@@ -171,7 +172,7 @@ Dado el siguiente modelo de regresión logística:
 ]
 .pull-right[
 .content-box-yellow[
-"Un cambio en `\(\Delta\)` unidades de `\(x_{k}\)` se traduce en un cambio en `\(\Delta\)` `\(\beta_{k}\)` unidades en el logit de p"
+"Un cambio (infinitesimal) en `\(x_{k}\)` se traduce en un cambio en `\(\beta_{k}\)` unidades en el logit de p"
 ] 
 ]
 
@@ -198,10 +199,10 @@ En nuestro ejemplo: `\(\log \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text
 .pull-left[
 
 ```
-                   Estimate Std. Error
-(Intercept)     -1.71395429 0.20633183
-factor(sex)male  0.22157111 0.19064190
-ym               0.05842959 0.01727402
+##                    Estimate Std. Error
+## (Intercept)     -1.71395429 0.20633183
+## factor(sex)male  0.22157111 0.19064190
+## ym               0.05842959 0.01727402
 ```
 ]
 .pull-right[
@@ -215,10 +216,10 @@ ym               0.05842959 0.01727402
 .pull-left[
 
 ```
-                   Estimate Std. Error
-(Intercept)     -1.71395429 0.20633183
-factor(sex)male  0.22157111 0.19064190
-ym               0.05842959 0.01727402
+##                    Estimate Std. Error
+## (Intercept)     -1.71395429 0.20633183
+## factor(sex)male  0.22157111 0.19064190
+## ym               0.05842959 0.01727402
 ```
 ]
 .pull-right[
@@ -229,7 +230,7 @@ Si `male=1` y `ym=10`, entonces `logit(p)`=
 ```
 
 ```
-[1] -0.9077
+## [1] -0.9077
 ```
 
 Si `male=1` y `ym=11`, entonces `logit(p)`=
@@ -239,7 +240,7 @@ Si `male=1` y `ym=11`, entonces `logit(p)`=
 ```
 
 ```
-[1] -0.84927
+## [1] -0.84927
 ```
 
 ]
@@ -253,14 +254,232 @@ Por tanto, `\(\beta_{ym}\)`=
 ```
 
 ```
-[1] 0.05843
+## [1] 0.05843
 ```
 
 ---
 class: inverse, center, middle
 
-## Efectos marginales sobre la probabilidad de éxito 
+## Efectos multiplicativos sobre las odds de éxito 
 
+---
+## Efectos multiplicativos sobre las odds 
+
+Dado el siguiente modelo de regresión logística: 
+
+`$$\text{logit}(p_{i}) = \ln \frac{p_{i}}{1 - p_{i}} = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$`
+
+&lt;br&gt;
+--
+
+exponenciando a ambos lados obtenemos 
+
+`$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}}$$`
+
+--
+
+equivalentemente
+
+.content-box-blue[
+`$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots e^{\beta_{k} x_{ik}}$$`
+]
+
+---
+## Efectos multiplicativos sobre las odds 
+
+`$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots e^{\beta_{k} x_{ik}}$$`
+--
+
+Examinando esta ecuación observamos que cuando `\(x_1 = \dots = x_k = 0\)`, 
+
+
+&lt;br&gt;
+
+
+`$$\frac{p_{i}}{1 - p_{i}}=  e^{\beta_{0}}$$`
+Es decir, cuando `\(x_1 = \dots = x_k = 0\)` las odds de éxito están dadas por `\(e^{\beta_{0}}\)`.
+
+
+&lt;br&gt;
+--
+
+Generalizando,  observamos que cuando `\(x_1 = c_1  \dots = x_k = c_k\)`,  las odds de éxito están dadas por
+
+&lt;br&gt;
+
+`$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} c_{1}}  \dots e^{\beta_{k} c_{k}}$$`
+
+
+---
+## Efectos multiplicativos sobre las odds: odds ratios
+
+Considera la situación en que `\(i\)` y `\(j\)` son dos observaciones con `\(x_{k}=c\)` y `\(x_{k}=c+1\)`, respectivamente. El resto de las covariables toman valores idénticos. 
+--
+ Las odds de éxito para cada caso son:
+
+
+- `\(p_{i}/(1 - p_{i}) = e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots (e^{\beta_{k}})^{c}\)`
+
+- `\(p_{j}/(1 - p_{j}) = e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots (e^{\beta_{k}})^{c+1}\)`
+
+
+&lt;br&gt;
+--
+
+El ratio de las odd de éxito entre `\(j\)` e `\(i\)` está dado por:
+
+`\begin{align}
+\frac{p_{j}/(1 - p_{j})}{p_{i}/(1 - p_{i})} &amp;= \frac{e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots (e^{\beta_{k}})^{c+1}}{e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots (e^{\beta_{k}})^{c}} \\ \\
+&amp;= e^{\beta_{k}}
+\end{align}`
+
+En otras palabras, manteniendo otros factores constantes, `\(e^{\beta_{k}}\)` representa la odds ratio entre el caso con `\(x_{k}\)` aumentado en una unidad, y el caso con `\(x_{k}\)` en un nivel basal dado. 
+
+
+---
+## Efectos multiplicativos sobre las odds 
+
+
+.content-box-yellow[
+"Un cambio en `\(\Delta\)` unidades de `\(x_{k}\)` multiplica las las odds de éxito por `\(e^{\Delta \beta_{k}}\)`"
+] 
+
+&lt;br&gt;
+.bold[Propiedades]:
+
+--
+
+- `\(e^{\beta_{k}}\)` está restringido al rango `\([0,\infty+)\)`. Es una constante que "comprime" o amplifica las odds de éxito.
+
+--
+
+- Si `\(\beta_{k} &lt; 0  \to  (0 &lt; e^{\beta_{k}} &lt; 1)\)`. Es decir, un aumento en `\(x_{k}\)` está asociado con una reducción (multiplicativa) de las odds de éxito.
+
+--
+
+- Si `\(\beta_{k} = 0  \to  (e^{\beta_{k}} =1)\)`. Es decir, un cambio en `\(x_{k}\)` está asociado a un cambio nulo en las odds de éxito.
+
+--
+
+- Si `\(\beta_{k} &gt; 0  \to  (e^{\beta_{k}} &gt; 1)\)`. Es decir, un aumento en `\(x_{k}\)` está asociado a aumento (multiplicativo) en de las odds de éxito.
+
+---
+## Efectos marginales sobre las odds 
+
+Dado el siguiente modelo: 
+    
+`$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} x_{1}}  \dots e^{\beta_{k} x_{k}}$$`
+&lt;br&gt;
+--
+      
+      
+- El efecto marginal de `\(\beta_{k}\)` sobre las odds de éxito está dado por:
+      
+      
+.content-box-blue[
+`$$\frac{\partial \{ p_{i}/(1 - p_{i}) \} }{\partial x_{k}} = \beta_{k}  \cdot e^{\beta_{0}} \cdot  e^{\beta_{1} x_{1}} \cdot \cdot \cdot e^{\beta_{k} x_{k}} = \beta_{k} \cdot p_{i}/(1 - p_{i})$$`
+]
+    
+--
+      
+"Un cambio (infinitesimal) en `\(x_{k}\)` se traduce en un cambio en `\(\beta_{k} \cdot p_{i}/(1 - p_{i})\)` unidades en las odds de éxito"
+
+--
+
+- El efecto de `\(x_{k}\)` sobre las odds depende del valor de las odds, que a su vez depende de `\(x_{k}\)` y todas las covariables.
+
+---
+## Efectos marginales sobre las odds 
+
+En nuestro ejemplo: `\(\log \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}\)`, por tanto:
+  
+  
+.pull-left[
+  `\(\frac{p_{i}}{1 -p_{i}} = e^{\beta_{0}} \cdot  e^{\beta_{1}*\text{male}_{i}} \cdot e^{\beta_{2}*\text{ym}_{i}}\)`
+      
+
+```r
+# coeffs
+summary(logit_affairs_sex_ym)$coefficients[,c(1,2)]
+```
+
+```
+##                    Estimate Std. Error
+## (Intercept)     -1.71395429 0.20633183
+## factor(sex)male  0.22157111 0.19064190
+## ym               0.05842959 0.01727402
+```
+
+```r
+# exp(coeffs)
+exp(summary(logit_affairs_sex_ym)$coefficients[,c(1)])
+```
+
+```
+##     (Intercept) factor(sex)male              ym 
+##        0.180152        1.248036        1.060170
+```
+    
+]
+
+--
+  
+.pull-right[
+  ![](class_10_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+]
+
+---
+## Efectos marginales sobre las odds 
+
+
+.pull-left[
+
+```
+##                        coef exp.coef.
+## (Intercept)     -1.71395429  0.180152
+## factor(sex)male  0.22157111  1.248036
+## ym               0.05842959  1.060170
+```
+]
+.pull-right[
+Si `male=1` y `ym=10`, entonces las odds de tener un affair =
+
+```r
+exp(-1.714 + 0.222*1 + 0.05843*10)
+```
+
+```
+## [1] 0.4034511
+```
+
+Si `male=1` y `ym=11`, entonces las odds de tener un affair =
+
+```r
+exp(-1.714 + 0.222*1 + 0.05843*11)
+```
+
+```
+## [1] 0.4277271
+```
+
+]
+
+--
+
+Por tanto, `\(e^{\beta_{ym}}\)`=
+
+```r
+exp(-1.714 + 0.222*1 + 0.05843*11)/exp(-1.714 + 0.222*1 + 0.05843*10)
+```
+
+```
+## [1] 1.060171
+```
+ 
+---
+class: inverse, center, middle
+
+## Efectos marginales sobre la probabilidad de éxito 
 
 
 ---
@@ -272,9 +491,9 @@ Dado el siguiente modelo de regresión logística:
 
 &lt;br&gt;
 --
-Queremos saber el .bold[efecto marginal] de los predictores sobre la bold[probabilidad] de éxito. Formalmente
+Queremos saber el .bold[efecto marginal] de los predictores sobre la .bold[probabilidad] de éxito. Formalmente
 --
-`$$\frac{\partial p_{i}}{\partial x_{k}} = ?$$`
+`$$\frac{\partial p_{i}}{\partial x_{k}}$$`
 Paso a paso...
 
 
@@ -364,7 +583,7 @@ Corolario:
 &lt;br&gt;
 --
 
-Corolario:
+Corolario, 
 
 --
 
@@ -384,14 +603,14 @@ En nuestro ejemplo: `\(\log \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text
 .pull-left[
 
 ```
-                   Estimate Std. Error
-(Intercept)     -1.71395429 0.20633183
-factor(sex)male  0.22157111 0.19064190
-ym               0.05842959 0.01727402
+##                    Estimate Std. Error
+## (Intercept)     -1.71395429 0.20633183
+## factor(sex)male  0.22157111 0.19064190
+## ym               0.05842959 0.01727402
 ```
 ]
 .pull-right[
-![](class_10_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+![](class_10_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -400,7 +619,7 @@ ym               0.05842959 0.01727402
 .pull-left[
 `$$p_{i} = \frac{1}{1 + e^{-(\beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i})}}$$`
 
-![](class_10_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+![](class_10_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
 ]
 
 --
@@ -408,7 +627,7 @@ ym               0.05842959 0.01727402
 .pull-right[
 `$$\frac{\partial p_{i}}{\partial \text{ym} }= \beta_{\text{ym}} \cdot p_{i}(1 - p_{i})$$`
 
-![](class_10_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+![](class_10_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
 ]
 ---
 ## Efectos marginales sobre la probabilidad de éxito
@@ -465,9 +684,9 @@ summary(
 ```
 
 ```
-  factor    AME     SE      z      p   lower  upper
- sexmale 0.0407 0.0351 1.1615 0.2454 -0.0280 0.1094
-      ym 0.0107 0.0031 3.4740 0.0005  0.0047 0.0167
+##   factor    AME     SE      z      p   lower  upper
+##  sexmale 0.0407 0.0351 1.1615 0.2454 -0.0280 0.1094
+##       ym 0.0107 0.0031 3.4740 0.0005  0.0047 0.0167
 ```
 ]
 
@@ -485,9 +704,9 @@ summary(margins(logit_affairs_sex_ym))
 ```
 
 ```
-  factor    AME     SE      z      p   lower  upper
- sexmale 0.0407 0.0351 1.1615 0.2454 -0.0280 0.1094
-      ym 0.0107 0.0031 3.4740 0.0005  0.0047 0.0167
+##   factor    AME     SE      z      p   lower  upper
+##  sexmale 0.0407 0.0351 1.1615 0.2454 -0.0280 0.1094
+##       ym 0.0107 0.0031 3.4740 0.0005  0.0047 0.0167
 ```
 
 
@@ -508,20 +727,21 @@ me_ym = beta_ym*p_hat*(1-p_hat) # efector marginal para cada obs.
 --
 
 .pull-left[
-![](class_10_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+![](class_10_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
 ]
 
 .pull-left[
 
 ```r
-ame = mean(me_ym)
+ame = round(mean(me_ym),4)
 print(paste0("AME Years of Marriage: ", ame))
 ```
 
 ```
-[1] "AME Years of Marriage: 0.0107027685140805"
+## [1] "AME Years of Marriage: 0.0107"
 ```
 ]
+
 ---
 ## Efectos marginales sobre la probabilidad de éxito: AME
 
@@ -536,7 +756,6 @@ print(paste0("AME Years of Marriage: ", ame))
 
 
 ```r
-beta_ym = logit_affairs_sex_ym$coefficients[3] # coeficiente ym 
 p_hat &lt;- predict(logit_affairs_sex_ym, type="response") # prob predichas cada obs.
 
 delta = 0.01 # cantidad cambio
@@ -547,11 +766,11 @@ p_hat_delta &lt;- predict(logit_affairs_sex_ym, newdata=affairsdata_delta ,type=
 me_ym_approx &lt;- (p_hat_delta - p_hat)/delta # approx. numerica marginal effect.
 
 # average marginal effect
-mean(me_ym_approx)
+round(mean(me_ym_approx),4)
 ```
 
 ```
-[1] 0.01070427
+## [1] 0.0107
 ```
 
 ---
@@ -604,12 +823,11 @@ summary(margins(logit_affairs_sex_ym2, at=list(male=mean_male, ym=mean_ym)))
 ```
 
 ```
- factor   male     ym    AME     SE      z      p   lower  upper
-   male 0.4759 8.1777 0.0409 0.0351 1.1640 0.2444 -0.0280 0.1097
-     ym 0.4759 8.1777 0.0108 0.0031 3.4270 0.0006  0.0046 0.0169
+##  factor   male     ym    AME     SE      z      p   lower  upper
+##    male 0.4759 8.1777 0.0409 0.0351 1.1640 0.2444 -0.0280 0.1097
+##      ym 0.4759 8.1777 0.0108 0.0031 3.4270 0.0006  0.0046 0.0169
 ```
 
-&lt;br&gt;
 --
 
 ¿Cómo lo calculamos?
@@ -629,21 +847,21 @@ grid &lt;- affairsdata %&gt;% data_grid(male=mean_male, ym=mean_ym, .model=logit
 ```
 
 ```
-# A tibble: 1 x 2
-   male    ym
-  &lt;dbl&gt; &lt;dbl&gt;
-1 0.476  8.18
+## # A tibble: 1 x 2
+##    male    ym
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1 0.476  8.18
 ```
 
 ```r
-p_hat &lt;- predict(logit_affairs_sex_ym2, newdata=grid, type="response") # prob predichas cada obs.
+p_hat &lt;- predict(logit_affairs_sex_ym2, newdata=grid, type="response") # prob predichas 
 
-mem = beta_ym*p_hat*(1-p_hat); mem # efector marginal para cada obs.
+mem_ym = beta_ym*p_hat*(1-p_hat); round(mem_ym,4) # efecto marginal 
 ```
 
 ```
-        ym 
-0.01077914 
+##     ym 
+## 0.0108
 ```
 
 ---
@@ -658,33 +876,123 @@ Aproximación numérica, usando:
 ```r
 delta = 0.01 # cantidad cambio
 
-beta_ym = logit_affairs_sex_ym$coefficients[3] # coeficiente ym 
 grid &lt;- affairsdata %&gt;% data_grid(male=mean_male, ym=mean_ym, .model=logit_affairs_sex_ym2)
 grid_delta &lt;- affairsdata %&gt;% data_grid(male=mean_male, ym=mean_ym + delta, .model=logit_affairs_sex_ym2)
 
-p_hat &lt;- predict(logit_affairs_sex_ym2, newdata=grid, type="response") # prob predichas cada obs.
-p_hat_delta &lt;- predict(logit_affairs_sex_ym2, newdata=grid_delta, type="response") # prob predichas cada obs.
+p_hat &lt;- predict(logit_affairs_sex_ym2, newdata=grid, type="response") # prob predichas 
+p_hat_delta &lt;- predict(logit_affairs_sex_ym2, newdata=grid_delta, type="response") # prob predichas 
 
-mem_ym = beta_ym*p_hat*(1-p_hat); mem_ym # efector marginal para cada obs.
+mem_ym_approx = (p_hat_delta - p_hat)/delta
+round(mem_ym_approx,4) # efecto marginal 
 ```
 
 ```
-        ym 
-0.01077914 
+##      1 
+## 0.0108
+```
+
+---
+## Efectos marginales sobre la probabilidad de éxito: MER
+
+Una versión más general de MEM es calcular los efectos marginales para "valores representativos". 
+
+.pull-left[
+En `Stata`
+![ame](mer.png)
+]
+
+--
+
+.pull-right[
+En `R`
+
+```r
+margins(logit_affairs_sex_ym, 
+at = list(sex = c("male", "female"), 
+ym = quantile(affairsdata$ym, 
+              p=c(0.25,0.5,0.75)) ))
+```
+
+```
+## Average marginal effects at specified values
+```
+
+```
+## glm(formula = everaffair_d ~ factor(sex) + ym, family = binomial(link = "logit"),     data = affairsdata)
+```
+
+```
+##  at(sex) at(ym)       ym sexfemale
+##     male      4 0.010066  -0.03581
+##   female      4 0.008824  -0.03581
+##     male      7 0.011039  -0.03953
+##   female      7 0.009806  -0.03953
+##     male     15 0.013305  -0.04865
+##   female     15 0.012318  -0.04865
+```
+]
+
+--
+
+¿Cómo lo calculamos?
+
+---
+## Efectos marginales sobre la probabilidad de éxito: MER
+
+Solución analística, usando 
+`$$\frac{\partial p_{i}}{\partial \text{ym} }= \beta_{\text{ym}} \cdot p_{i}(1 - p_{i})$$`
+
+--
+
+
+```r
+beta_ym = logit_affairs_sex_ym$coefficients[3] # coeficiente ym 
+grid &lt;- affairsdata %&gt;% data_grid(sex, ym=quantile(affairsdata$ym, p=c(0.25,0.5,0.75)), .model=logit_affairs_sex_ym)
+grid &lt;- grid %&gt;% mutate(p_hat =predict(logit_affairs_sex_ym, newdata=grid, type="response")) # prob predichas
+grid &lt;- grid %&gt;% mutate(mer_ym = beta_ym*p_hat*(1-p_hat)); grid  # efecto marginal
+```
+
+```
+## # A tibble: 6 x 4
+##   sex       ym p_hat  mer_ym
+##   &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 female     4 0.185 0.00882
+## 2 female     7 0.213 0.00981
+## 3 female    15 0.302 0.0123 
+## 4 male       4 0.221 0.0101 
+## 5 male       7 0.253 0.0110 
+## 6 male      15 0.351 0.0133
 ```
 
 
 ---
-## Efectos marginales sobre el logit 
+## Efectos marginales sobre la probabilidad de éxito: MER
 
-En nuestro ejemplo: `\(\text{everaffair}_{i} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}\)`
+Aproximación numérica, usando: 
+`$$\frac{\partial p_{i}}{\partial x_{k}} \approx  \frac{p_{i}(x_{1}, \dots ,x_{k} = c + \delta) - p_{i}(x_{1}, \dots ,x_{k} = c )}{\delta}$$`
 
-.pull-left[
+--
 
-]
-.pull-right[
-![](class_10_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
-]
+```r
+delta = 0.01 # cantidad cambio
+grid &lt;- affairsdata %&gt;% data_grid(sex, ym=quantile(affairsdata$ym, p=c(0.25,0.5,0.75)), .model=logit_affairs_sex_ym)
+grid_delta &lt;- affairsdata %&gt;% data_grid(sex, ym=quantile(affairsdata$ym, p=c(0.25,0.5,0.75)) + delta, .model=logit_affairs_sex_ym)
+p_hat &lt;- predict(logit_affairs_sex_ym, newdata=grid, type="response") # prob predichas
+p_hat_delta &lt;- predict(logit_affairs_sex_ym, newdata=grid_delta, type="response") # prob predichas
+grid &lt;- grid %&gt;% mutate(mem_ym_approx = (p_hat_delta - p_hat)/delta); grid # efecto marginal
+```
+
+```
+## # A tibble: 6 x 3
+##   sex       ym mem_ym_approx
+##   &lt;fct&gt;  &lt;dbl&gt;         &lt;dbl&gt;
+## 1 female     4       0.00883
+## 2 female     7       0.00981
+## 3 female    15       0.0123 
+## 4 male       4       0.0101 
+## 5 male       7       0.0110 
+## 6 male      15       0.0133
+```
 
 ---
 class: inverse, center, middle
