@@ -46,7 +46,7 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
 - Tarea 2: [`[TC2]`](homework/tc_2.pdf) [`[TC2.Rmd]`](homework/tc_2.Rmd) [`[Soluciones]`](homework/tc_2_answers.pdf)[`[Soluciones.Rmd]`](homework/tc_2_answers.Rmd)
 - Tarea 3: [`[TC3]`](homework/tc_3.pdf) [`[TC3.Rmd]`](homework/tc_3.Rmd) [`[Soluciones]`](homework/tc_3_answers.pdf)[`[Soluciones.Rmd]`](homework/tc_3_answers.Rmd)
 - Tarea 4: [`[TC4]`](homework/tc_4.pdf) [`[TC4.Rmd]`](homework/tc_4.Rmd) [`[Soluciones]`](homework/tc_4_answers.pdf)[`[Soluciones.Rmd]`](homework/tc_4_answers.Rmd)
-- Tarea 5: [`[TC5]`](homework/tc_5.pdf) [`[TC5.Rmd]`](homework/tc_5.Rmd)
+- Tarea 5: [`[TC5]`](homework/tc_5.pdf) [`[TC5.Rmd]`](homework/tc_5.Rmd) [`[Soluciones]`](homework/tc_5_answers.pdf)[`[Soluciones.Rmd]`](homework/tc_5_answers.Rmd)
 
 
 #### Trabajos
