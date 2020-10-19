@@ -413,7 +413,7 @@ $$\frac{\partial \mathbb{E}(y_{i} \mid x_{1}, \dots, x_{k})}{\partial x_{k}} = \
  Asumamos que sólo la variable $x_{1}$ cambia en una unidad, de $x_{1}=c$ a $x_{1}=c+1$. Entonces:
 
 \begin{align}
-  \frac{\Delta y_{i}  }{\Delta x_{1}} &= \frac{ \mathbb{E}(y_{i} \mid x_{1}=c+1, \dots, x_{k})  - \mathbb{E}(y_{i} \mid x_{1}=c, \dots, x_{k})}{(c+1) - c} \\ \\
+  \frac{\Delta \mathbb{E}(y_{i})  }{\Delta x_{1}} &= \frac{ \mathbb{E}(y_{i} \mid x_{1}=c+1, \dots, x_{k})  - \mathbb{E}(y_{i} \mid x_{1}=c, \dots, x_{k})}{(c+1) - c} \\ \\
   &=(\beta_{0} + \beta_{1}(c+1) +  \dots + \beta_{l}x_{k}) - (\beta_{0} + \beta_{1}c  \dots + \beta_{l}x_{k}) = \beta_{1}(c+1) - \beta_{1}c \\ \\
   &= \beta_{1}c + \beta_{1} - \beta_{1}c = \beta_{1}
 \end{align}
@@ -428,7 +428,7 @@ En nuestro ejemplo:
 print(our_lm_ols)
 ```
 ]
-.pull-left[
+.pull-right[
 Si `x=50`, entonces `y`=
 ```{r}
 10.2 + 1.1*50
