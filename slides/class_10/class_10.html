@@ -92,7 +92,7 @@ donde,
 Continuando con los datos de infidelidad, ajustaremos el siguiente modelo:
 
 &lt;br&gt;
-`$$\underbrace{\log \frac{p_{i}}{ 1 - p_{i}}}_{\text{logit}(p_{i})}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}$$`
+`$$\underbrace{\ln \frac{p_{i}}{ 1 - p_{i}}}_{\text{logit}(p_{i})}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}$$`
 &lt;br&gt;
 
 donde:
@@ -180,19 +180,20 @@ Dado el siguiente modelo de regresión logística:
 
 ¿Por qué?
 --
- Asumamos que sólo la variable `\(x_{1}\)` cambia en una unidad, de `\(x_{1}=c\)` a `\(x_{1}=c+1\)`. Entonces:
+ Asumamos que sólo la variable `\(x_{k}\)` cambia en una unidad, de `\(x_{k}=c\)` a `\(x_{k}=c+1\)`. Entonces:
 
+--
 
 `\begin{align}
-  \frac{\Delta\text{logit}(p_{i}) }{\Delta x_{1}} &amp;= (\beta_{0} + \beta_{1}(c+1) +  \dots + \beta_{l}x_{k}) - (\beta_{0} + \beta_{1}c  \dots + \beta_{l}x_{k})  \\ 
-  &amp;=  \beta_{1}(c+1) - \beta_{1}c = \beta_{1}
+  \frac{\Delta\text{logit}(p_{i}) }{\Delta x_{k}} &amp;= (\beta_{0} + \beta_{1}x_{1} +  \dots + \beta_{k}(c+1)) - (\beta_{0} + \beta_{1}x_{1}  \dots + \beta_{k}c)  \\ 
+  &amp;=  \beta_{k}(c+1) - \beta_{k}c = \beta_{k}
 \end{align}`
 
 
 ---
 ## Efectos marginales sobre el logit 
 
-En nuestro ejemplo: `\(\log \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}\)`
+En nuestro ejemplo: `\(\ln \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}\)`
 
 &lt;br&gt;
 
@@ -391,7 +392,7 @@ Dado el siguiente modelo:
 ---
 ## Efectos marginales sobre las odds 
 
-En nuestro ejemplo: `\(\log \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}\)`, por tanto:
+En nuestro ejemplo: `\(\ln \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}\)`, por tanto:
   
   
 .pull-left[
@@ -504,7 +505,7 @@ Paso a paso...
 
 &lt;br&gt;
 
-`$$\log(p_{i}) - \log(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$`
+`$$\ln(p_{i}) - \ln(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$`
 
 
 ---
@@ -514,7 +515,7 @@ Paso a paso...
 - .bold[Paso 1]: reexpresar la ecuación de regresión como
 
 
-`$$\log(p_{i}) - \log(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$`
+`$$\ln(p_{i}) - \ln(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$`
 
 &lt;br&gt;
 --
@@ -597,7 +598,7 @@ Corolario,
 ---
 ## Efectos marginales sobre la probabilidad de éxito
 
-En nuestro ejemplo: `\(\log \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}\)`, por tanto:
+En nuestro ejemplo: `\(\ln \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}\)`, por tanto:
 `$$p_{i} = \frac{1}{1 + e^{-(\beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i})} }$$`
 
 .pull-left[
