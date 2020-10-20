@@ -1,6 +1,6 @@
 ---
 title: "Análisis de Datos Categóricos (SOC3070)"
-subtitle: "Clase #10"
+subtitle: "Clase #11"
 author: "<br> Mauricio Bucca<br> Profesor Asistente, Sociología UC"
 date: "[github.com/mebucca](https://github.com/mebucca)"
 output:
@@ -20,7 +20,7 @@ editor_options:
 
 class: inverse, center, middle
 
-#Regresión Logística, interpretación
+#Regresión Logística, inferencia
 
 ---
 ##Configuración
@@ -76,10 +76,33 @@ $$\underbrace{\ln \frac{p_{i}}{1 - p_{i}}}_{\text{Link logit}(p_{i})} = \beta_{0
 donde, 
 
 $$\ln \frac{p_{i}}{1 - p_{i}} = \underbrace{\beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}}_{\text{Predictor lineal  } \eta_{i}}$$
-<br>
+
+---
+## Efectos marginales sobre el logit 
+
+Dado el siguiente modelo de regresión logística: 
+
+$$\text{logit}(p_{i}) = \ln \frac{p_{i}}{1 - p_{i}} = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
 --
 
-- Interpretación: ¿cuál es el significado de $\beta_{0},\beta_{1}, \dots, \beta_{k}$?
+
+- El efecto marginal de $\beta_{k}$ sobre el logit de la probabilidad de éxito está dado por:
+
+
+<br>
+.pull-left[
+.content-box-blue[
+$$\frac{\partial\text{logit}(p_{i})}{\partial x_{k}} = \beta_{k}$$
+]
+]
+.pull-right[
+.content-box-yellow[
+"Un cambio (infinitesimal) en $x_{k}$ se traduce en un cambio en $\beta_{k}$ unidades en el logit de p"
+] 
+]
+
+
+
 
 ---
 ## Un ejemplo empírico
@@ -107,26 +130,12 @@ affairsdata <- affairsdata %>%
   mutate(everaffair_d = case_when(nbaffairs == 0 ~ 0, nbaffairs > 0 ~ 1))
 ```
 
+En nuestro ejemplo: $\log \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}$
+
+<br>
+
 .pull-left[
-Continuando con los datos de infidelidad, ajustaremos el siguiente modelo:
-
-<br>
-$$\underbrace{\ln \frac{p_{i}}{ 1 - p_{i}}}_{\text{logit}(p_{i})}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}$$
-<br>
-
-donde:
-
-- $p_{i} =\mathbb{P}(\text{everaffair}_{i}=1)$
-
-- $\text{logit}(p_{i})$ es el .bold[log odds] de tener un affair
-
-- $p_{i}$ y $\text{logit}(p_{i})$ son una función género (male) y años de matrimonio (ym).
-
-]
-
---
-.pull-right[
-```{r}
+```{r, echo=FALSE}
 logit_affairs_sex_ym <- 
   glm(everaffair_d ~ factor(sex) + ym, 
       family=binomial(link="logit"), 
@@ -135,64 +144,6 @@ summary(logit_affairs_sex_ym)
 ```
 ]
 
----
-class: inverse, center, middle
-
-## Efectos marginales sobre el logit 
-
-
----
-## Efectos marginales sobre el logit 
-
-Dado el siguiente modelo de regresión logística: 
-
-$$\text{logit}(p_{i}) = \ln \frac{p_{i}}{1 - p_{i}} = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
---
-
-- El intercepto $\beta_{0}$ corresponde al logit de la probabilidad de éxito cuando $x_{1} = \dots = x_{k} = 0$
-
---
-
-- El efecto marginal de $\beta_{k}$ sobre el logit de la probabilidad de éxito está dado por:
-
-
-.pull-left[
-.content-box-blue[
-$$\frac{\partial\text{logit}(p_{i})}{\partial x_{k}} = \beta_{k}$$
-]
-]
-.pull-right[
-.content-box-yellow[
-"Un cambio (infinitesimal) en $x_{k}$ se traduce en un cambio en $\beta_{k}$ unidades en el logit de p"
-] 
-]
-
---
-
-¿Por qué?
---
- Asumamos que sólo la variable $x_{k}$ cambia en una unidad, de $x_{k}=c$ a $x_{k}=c+1$. Entonces:
-
---
-
-\begin{align}
-  \frac{\Delta\text{logit}(p_{i}) }{\Delta x_{k}} &= (\beta_{0} + \beta_{1}x_{1} +  \dots + \beta_{k}(c+1)) - (\beta_{0} + \beta_{1}x_{1}  \dots + \beta_{k}c)  \\ 
-  &=  \beta_{k}(c+1) - \beta_{k}c = \beta_{k}
-\end{align}
-
-
----
-## Efectos marginales sobre el logit 
-
-En nuestro ejemplo: $\ln \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}$
-
-<br>
-
-.pull-left[
-```{r, echo=FALSE}
-summary(logit_affairs_sex_ym)$coefficients[,c(1,2)]
-```
-]
 .pull-right[
 ```{r, echo=FALSE, fig.width=6, fig.height=5}
 
@@ -212,87 +163,6 @@ predictions %>% ggplot(aes(x=ym, y=logit_hat, group=sex, colour=sex)) +
   annotate('text', x = 37, y = -1, label = "beta[ym]==0.0584", parse = TRUE, size=8) 
 ```
 ]
-
----
-## Efectos marginales sobre el logit 
-
-
-.pull-left[
-```{r, echo=FALSE}
-summary(logit_affairs_sex_ym)$coefficients[,c(1,2)]
-```
-]
-.pull-right[
-Si `male=1` y `ym=10`, entonces `logit(p)`=
-```{r}
--1.714 + 0.222*1 + 0.05843*10
-```
-
-Si `male=1` y `ym=11`, entonces `logit(p)`=
-```{r}
--1.714 + 0.222*1 + 0.05843*11
-```
-
-]
-
---
-
-Por tanto, $\beta_{ym}$=
-```{r}
-((-1.714 + 0.222*1 + 0.05843*11)-(-1.714 + 0.222*1 + 0.05843*10))/(11 - 10)
-```
-
----
-class: inverse, center, middle
-
-## Efectos multiplicativos sobre las odds de éxito 
-
----
-## Efectos multiplicativos sobre las odds 
-
-Dado el siguiente modelo de regresión logística: 
-
-$$\text{logit}(p_{i}) = \ln \frac{p_{i}}{1 - p_{i}} = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
-
-<br>
---
-
-exponenciando a ambos lados obtenemos 
-
-$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}}$$
-
---
-
-equivalentemente
-
-.content-box-blue[
-$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots e^{\beta_{k} x_{ik}}$$
-]
-
----
-## Efectos multiplicativos sobre las odds 
-
-$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots e^{\beta_{k} x_{ik}}$$
---
-
-Examinando esta ecuación observamos que cuando $x_1 = \dots = x_k = 0$, 
-
-
-<br>
-
-
-$$\frac{p_{i}}{1 - p_{i}}=  e^{\beta_{0}}$$
-Es decir, cuando $x_1 = \dots = x_k = 0$ las odds de éxito están dadas por $e^{\beta_{0}}$.
-
-
-<br>
---
-
-Generalizando,  observamos que cuando $x_1 = c_1  \dots = x_k = c_k$,  las odds de éxito están dadas por
-
-<br>
-
-$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} c_{1}}  \dots e^{\beta_{k} c_{k}}$$
 
 
 ---
@@ -348,108 +218,6 @@ En otras palabras, manteniendo otros factores constantes, $e^{\beta_{k}}$ repres
 
 - Si $\beta_{k} > 0  \to  (e^{\beta_{k}} > 1)$. Es decir, un aumento en $x_{k}$ está asociado a aumento (multiplicativo) en de las odds de éxito.
 
----
-## Efectos marginales sobre las odds 
-
-Dado el siguiente modelo: 
-    
-$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} x_{1}}  \dots e^{\beta_{k} x_{k}}$$
-<br>
---
-      
-      
-- El efecto marginal de $\beta_{k}$ sobre las odds de éxito está dado por:
-      
-      
-.content-box-blue[
-$$\frac{\partial \{ p_{i}/(1 - p_{i}) \} }{\partial x_{k}} = \beta_{k}  \cdot e^{\beta_{0}} \cdot  e^{\beta_{1} x_{1}} \cdot \cdot \cdot e^{\beta_{k} x_{k}} = \beta_{k} \cdot p_{i}/(1 - p_{i})$$
-]
-    
---
-      
-"Un cambio (infinitesimal) en $x_{k}$ se traduce en un cambio en $\beta_{k} \cdot p_{i}/(1 - p_{i})$ unidades en las odds de éxito"
-
---
-
-- El efecto de $x_{k}$ sobre las odds depende del valor de las odds, que a su vez depende de $x_{k}$ y todas las covariables.
-
----
-## Efectos marginales sobre las odds 
-
-En nuestro ejemplo: $\ln \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}$, por tanto:
-  
-  
-.pull-left[
-  $\frac{p_{i}}{1 -p_{i}} = e^{\beta_{0}} \cdot  e^{\beta_{1}*\text{male}_{i}} \cdot e^{\beta_{2}*\text{ym}_{i}}$
-      
-```{r}
-# coeffs
-summary(logit_affairs_sex_ym)$coefficients[,c(1,2)]
-    
-# exp(coeffs)
-exp(summary(logit_affairs_sex_ym)$coefficients[,c(1)])
-```
-    
-]
-
---
-  
-.pull-right[
-  ```{r, echo=FALSE, fig.height=6}
-  
-  # plot the result
-  
-  grid <- affairsdata  %>%data_grid(sex,ym=seq(0,90),.model=logit_affairs_sex_ym)
-  predictions <- cbind(grid,logit_hat = predict(logit_affairs_sex_ym, newdata = grid)) %>%
-    mutate(odds = exp(logit_hat)) 
-  
-  predictions %>% ggplot(aes(x=ym, y=odds, group=sex, colour=sex)) +  
-    geom_line(size=2, alpha = 1) +
-    scale_color_viridis_d() +  scale_fill_viridis_d() +
-    guides(fill=FALSE, color=FALSE) +
-    theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
-          axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
-          legend.text = element_text(size = 18), legend.position="bottom") +
-    labs(x="years of marriage", y="Odds of Affair") +
-    annotate('text', x = 60, y = 1, label = "e^beta[ym]==1.06", parse = TRUE, size=8) +
-    annotate('text', x = 58, y = 20, label = "e^beta[male]==1.21", parse = TRUE, size=8) 
-  ```
-]
-
----
-## Efectos marginales sobre las odds 
-
-
-.pull-left[
-```{r, echo=FALSE}
-data.frame(coef=summary(logit_affairs_sex_ym)$coefficients[,c(1)], `exp(coef)`=exp(summary(logit_affairs_sex_ym)$coefficients[,c(1)]))
-```
-]
-.pull-right[
-Si `male=1` y `ym=10`, entonces las odds de tener un affair =
-```{r}
-exp(-1.714 + 0.222*1 + 0.05843*10)
-```
-
-Si `male=1` y `ym=11`, entonces las odds de tener un affair =
-```{r}
-exp(-1.714 + 0.222*1 + 0.05843*11)
-```
-
-]
-
---
-
-Por tanto, $e^{\beta_{ym}}$=
-```{r}
-exp(-1.714 + 0.222*1 + 0.05843*11)/exp(-1.714 + 0.222*1 + 0.05843*10)
-```
- 
----
-class: inverse, center, middle
-
-## Efectos marginales sobre la probabilidad de éxito 
-
 
 ---
 ## Efectos marginales sobre la probabilidad de éxito
@@ -473,7 +241,7 @@ Paso a paso...
 
 <br>
 
-$$\ln(p_{i}) - \ln(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
+$$\log(p_{i}) - \log(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
 
 
 ---
@@ -483,7 +251,7 @@ $$\ln(p_{i}) - \ln(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x
 - .bold[Paso 1]: reexpresar la ecuación de regresión como
 
 
-$$\ln(p_{i}) - \ln(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
+$$\log(p_{i}) - \log(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
 
 <br>
 --
@@ -566,7 +334,7 @@ Corolario,
 ---
 ## Efectos marginales sobre la probabilidad de éxito
 
-En nuestro ejemplo: $\ln \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}$, por tanto:
+En nuestro ejemplo: $\log \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}$, por tanto:
 $$p_{i} = \frac{1}{1 + e^{-(\beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i})} }$$
 
 .pull-left[

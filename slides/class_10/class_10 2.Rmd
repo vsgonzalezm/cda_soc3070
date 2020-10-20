@@ -111,7 +111,7 @@ affairsdata <- affairsdata %>%
 Continuando con los datos de infidelidad, ajustaremos el siguiente modelo:
 
 <br>
-$$\underbrace{\ln \frac{p_{i}}{ 1 - p_{i}}}_{\text{logit}(p_{i})}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}$$
+$$\underbrace{\log \frac{p_{i}}{ 1 - p_{i}}}_{\text{logit}(p_{i})}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}$$
 <br>
 
 donde:
@@ -140,7 +140,6 @@ class: inverse, center, middle
 
 ## Efectos marginales sobre el logit 
 
-
 ---
 ## Efectos marginales sobre el logit 
 
@@ -163,7 +162,7 @@ $$\frac{\partial\text{logit}(p_{i})}{\partial x_{k}} = \beta_{k}$$
 ]
 .pull-right[
 .content-box-yellow[
-"Un cambio (infinitesimal) en $x_{k}$ se traduce en un cambio en $\beta_{k}$ unidades en el logit de p"
+"Un cambio en $\Delta$ unidades de $x_{k}$ se traduce en un cambio en $\Delta$ $\beta_{k}$ unidades en el logit de p"
 ] 
 ]
 
@@ -171,20 +170,19 @@ $$\frac{\partial\text{logit}(p_{i})}{\partial x_{k}} = \beta_{k}$$
 
 ¿Por qué?
 --
- Asumamos que sólo la variable $x_{k}$ cambia en una unidad, de $x_{k}=c$ a $x_{k}=c+1$. Entonces:
+ Asumamos que sólo la variable $x_{1}$ cambia en una unidad, de $x_{1}=c$ a $x_{1}=c+1$. Entonces:
 
---
 
 \begin{align}
-  \frac{\Delta\text{logit}(p_{i}) }{\Delta x_{k}} &= (\beta_{0} + \beta_{1}x_{1} +  \dots + \beta_{k}(c+1)) - (\beta_{0} + \beta_{1}x_{1}  \dots + \beta_{k}c)  \\ 
-  &=  \beta_{k}(c+1) - \beta_{k}c = \beta_{k}
+  \frac{\Delta\text{logit}(p_{i}) }{\Delta x_{1}} &= (\beta_{0} + \beta_{1}(c+1) +  \dots + \beta_{l}x_{k}) - (\beta_{0} + \beta_{1}c  \dots + \beta_{l}x_{k})  \\ 
+  &=  \beta_{1}(c+1) - \beta_{1}c = \beta_{1}
 \end{align}
 
 
 ---
 ## Efectos marginales sobre el logit 
 
-En nuestro ejemplo: $\ln \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}$
+En nuestro ejemplo: $\log \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}$
 
 <br>
 
@@ -245,210 +243,8 @@ Por tanto, $\beta_{ym}$=
 ---
 class: inverse, center, middle
 
-## Efectos multiplicativos sobre las odds de éxito 
-
----
-## Efectos multiplicativos sobre las odds 
-
-Dado el siguiente modelo de regresión logística: 
-
-$$\text{logit}(p_{i}) = \ln \frac{p_{i}}{1 - p_{i}} = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
-
-<br>
---
-
-exponenciando a ambos lados obtenemos 
-
-$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}}$$
-
---
-
-equivalentemente
-
-.content-box-blue[
-$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots e^{\beta_{k} x_{ik}}$$
-]
-
----
-## Efectos multiplicativos sobre las odds 
-
-$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots e^{\beta_{k} x_{ik}}$$
---
-
-Examinando esta ecuación observamos que cuando $x_1 = \dots = x_k = 0$, 
-
-
-<br>
-
-
-$$\frac{p_{i}}{1 - p_{i}}=  e^{\beta_{0}}$$
-Es decir, cuando $x_1 = \dots = x_k = 0$ las odds de éxito están dadas por $e^{\beta_{0}}$.
-
-
-<br>
---
-
-Generalizando,  observamos que cuando $x_1 = c_1  \dots = x_k = c_k$,  las odds de éxito están dadas por
-
-<br>
-
-$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} c_{1}}  \dots e^{\beta_{k} c_{k}}$$
-
-
----
-## Efectos multiplicativos sobre las odds: odds ratios
-
-Considera la situación en que $i$ y $j$ son dos observaciones con $x_{k}=c$ y $x_{k}=c+1$, respectivamente. El resto de las covariables toman valores idénticos. 
---
- Las odds de éxito para cada caso son:
-
-
-- $p_{i}/(1 - p_{i}) = e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots (e^{\beta_{k}})^{c}$
-
-- $p_{j}/(1 - p_{j}) = e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots (e^{\beta_{k}})^{c+1}$
-
-
-<br>
---
-
-El ratio de las odd de éxito entre $j$ e $i$ está dado por:
-
-\begin{align}
-\frac{p_{j}/(1 - p_{j})}{p_{i}/(1 - p_{i})} &= \frac{e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots (e^{\beta_{k}})^{c+1}}{e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots (e^{\beta_{k}})^{c}} \\ \\
-&= e^{\beta_{k}}
-\end{align}
-
-En otras palabras, manteniendo otros factores constantes, $e^{\beta_{k}}$ representa la odds ratio entre el caso con $x_{k}$ aumentado en una unidad, y el caso con $x_{k}$ en un nivel basal dado. 
-
-
----
-## Efectos multiplicativos sobre las odds 
-
-
-.content-box-yellow[
-"Un cambio en $\Delta$ unidades de $x_{k}$ multiplica las las odds de éxito por $e^{\Delta \beta_{k}}$"
-] 
-
-<br>
-.bold[Propiedades]:
-
---
-
-- $e^{\beta_{k}}$ está restringido al rango $[0,\infty+)$. Es una constante que "comprime" o amplifica las odds de éxito.
-
---
-
-- Si $\beta_{k} < 0  \to  (0 < e^{\beta_{k}} < 1)$. Es decir, un aumento en $x_{k}$ está asociado con una reducción (multiplicativa) de las odds de éxito.
-
---
-
-- Si $\beta_{k} = 0  \to  (e^{\beta_{k}} =1)$. Es decir, un cambio en $x_{k}$ está asociado a un cambio nulo en las odds de éxito.
-
---
-
-- Si $\beta_{k} > 0  \to  (e^{\beta_{k}} > 1)$. Es decir, un aumento en $x_{k}$ está asociado a aumento (multiplicativo) en de las odds de éxito.
-
----
-## Efectos marginales sobre las odds 
-
-Dado el siguiente modelo: 
-    
-$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} x_{1}}  \dots e^{\beta_{k} x_{k}}$$
-<br>
---
-      
-      
-- El efecto marginal de $\beta_{k}$ sobre las odds de éxito está dado por:
-      
-      
-.content-box-blue[
-$$\frac{\partial \{ p_{i}/(1 - p_{i}) \} }{\partial x_{k}} = \beta_{k}  \cdot e^{\beta_{0}} \cdot  e^{\beta_{1} x_{1}} \cdot \cdot \cdot e^{\beta_{k} x_{k}} = \beta_{k} \cdot p_{i}/(1 - p_{i})$$
-]
-    
---
-      
-"Un cambio (infinitesimal) en $x_{k}$ se traduce en un cambio en $\beta_{k} \cdot p_{i}/(1 - p_{i})$ unidades en las odds de éxito"
-
---
-
-- El efecto de $x_{k}$ sobre las odds depende del valor de las odds, que a su vez depende de $x_{k}$ y todas las covariables.
-
----
-## Efectos marginales sobre las odds 
-
-En nuestro ejemplo: $\ln \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}$, por tanto:
-  
-  
-.pull-left[
-  $\frac{p_{i}}{1 -p_{i}} = e^{\beta_{0}} \cdot  e^{\beta_{1}*\text{male}_{i}} \cdot e^{\beta_{2}*\text{ym}_{i}}$
-      
-```{r}
-# coeffs
-summary(logit_affairs_sex_ym)$coefficients[,c(1,2)]
-    
-# exp(coeffs)
-exp(summary(logit_affairs_sex_ym)$coefficients[,c(1)])
-```
-    
-]
-
---
-  
-.pull-right[
-  ```{r, echo=FALSE, fig.height=6}
-  
-  # plot the result
-  
-  grid <- affairsdata  %>%data_grid(sex,ym=seq(0,90),.model=logit_affairs_sex_ym)
-  predictions <- cbind(grid,logit_hat = predict(logit_affairs_sex_ym, newdata = grid)) %>%
-    mutate(odds = exp(logit_hat)) 
-  
-  predictions %>% ggplot(aes(x=ym, y=odds, group=sex, colour=sex)) +  
-    geom_line(size=2, alpha = 1) +
-    scale_color_viridis_d() +  scale_fill_viridis_d() +
-    guides(fill=FALSE, color=FALSE) +
-    theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
-          axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
-          legend.text = element_text(size = 18), legend.position="bottom") +
-    labs(x="years of marriage", y="Odds of Affair") +
-    annotate('text', x = 60, y = 1, label = "e^beta[ym]==1.06", parse = TRUE, size=8) +
-    annotate('text', x = 58, y = 20, label = "e^beta[male]==1.21", parse = TRUE, size=8) 
-  ```
-]
-
----
-## Efectos marginales sobre las odds 
-
-
-.pull-left[
-```{r, echo=FALSE}
-data.frame(coef=summary(logit_affairs_sex_ym)$coefficients[,c(1)], `exp(coef)`=exp(summary(logit_affairs_sex_ym)$coefficients[,c(1)]))
-```
-]
-.pull-right[
-Si `male=1` y `ym=10`, entonces las odds de tener un affair =
-```{r}
-exp(-1.714 + 0.222*1 + 0.05843*10)
-```
-
-Si `male=1` y `ym=11`, entonces las odds de tener un affair =
-```{r}
-exp(-1.714 + 0.222*1 + 0.05843*11)
-```
-
-]
-
---
-
-Por tanto, $e^{\beta_{ym}}$=
-```{r}
-exp(-1.714 + 0.222*1 + 0.05843*11)/exp(-1.714 + 0.222*1 + 0.05843*10)
-```
- 
----
-class: inverse, center, middle
-
 ## Efectos marginales sobre la probabilidad de éxito 
+
 
 
 ---
@@ -460,9 +256,9 @@ $$\ln \frac{p_{i}}{1 - p_{i}} = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k}
 
 <br>
 --
-Queremos saber el .bold[efecto marginal] de los predictores sobre la .bold[probabilidad] de éxito. Formalmente
+Queremos saber el .bold[efecto marginal] de los predictores sobre la bold[probabilidad] de éxito. Formalmente
 --
-$$\frac{\partial p_{i}}{\partial x_{k}}$$
+$$\frac{\partial p_{i}}{\partial x_{k}} = ?$$
 Paso a paso...
 
 
@@ -473,7 +269,7 @@ Paso a paso...
 
 <br>
 
-$$\ln(p_{i}) - \ln(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
+$$\log(p_{i}) - \log(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
 
 
 ---
@@ -483,7 +279,7 @@ $$\ln(p_{i}) - \ln(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x
 - .bold[Paso 1]: reexpresar la ecuación de regresión como
 
 
-$$\ln(p_{i}) - \ln(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
+$$\log(p_{i}) - \log(1-p_{i}) = \beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}$$
 
 <br>
 --
@@ -552,7 +348,7 @@ $$\frac{\partial p_{i}}{\partial x_{k}}= \beta_{k} \cdot \Bigg(\frac{1}{1 + e^{-
 <br>
 --
 
-Corolario, 
+Corolario:
 
 --
 
@@ -566,7 +362,7 @@ Corolario,
 ---
 ## Efectos marginales sobre la probabilidad de éxito
 
-En nuestro ejemplo: $\ln \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}$, por tanto:
+En nuestro ejemplo: $\log \frac{p_{i}}{1 -p_{i}} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}$, por tanto:
 $$p_{i} = \frac{1}{1 + e^{-(\beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i})} }$$
 
 .pull-left[
@@ -677,7 +473,7 @@ Cantidades de interes:
 ]
 
 ---
-## Efectos marginales sobre la probabilidad de éxito: AME
+## Efectos marginales sobre la probabilidad de éxito: Average Marginal Effects
 
 .bold[AME]: Efecto marginal promedio (en muestra)
 
@@ -693,8 +489,8 @@ En `R`
 ```{r}
 library("margins")
 summary(
-  margins(logit_affairs_sex_ym)
-  )
+  margins(logit_affairs_sex_ym, 
+          vce="bootstrap"))
 ```
 ]
 
@@ -704,10 +500,10 @@ summary(
 ¿Cómo lo calculamos?
 
 ---
-## Efectos marginales sobre la probabilidad de éxito: AME
+## Efectos marginales sobre la probabilidad de éxito: Average Marginal Effects
 
 ```{r}
-summary(margins(logit_affairs_sex_ym))
+summary(margins(logit_affairs_sex_ym, vce="bootstrap"))
 ```
 
 
@@ -738,13 +534,12 @@ me_ym %>% as_tibble() %>%
 
 .pull-left[
 ```{r}
-ame = round(mean(me_ym),4)
+ame = mean(me_ym)
 print(paste0("AME Years of Marriage: ", ame))
 ```
 ]
-
 ---
-## Efectos marginales sobre la probabilidad de éxito: AME
+## Efectos marginales sobre la probabilidad de éxito: Average Marginal Effects
 
 ¿Y si no conocemos la expresión analítica?
 --
@@ -756,6 +551,7 @@ $$\frac{\partial p_{i}}{\partial x_{k}} \approx  \frac{p_{i}(x_{1}, \dots ,x_{k}
 --
 
 ```{r}
+beta_ym = logit_affairs_sex_ym$coefficients[3] # coeficiente ym 
 p_hat <- predict(logit_affairs_sex_ym, type="response") # prob predichas cada obs.
 
 delta = 0.01 # cantidad cambio
@@ -766,17 +562,16 @@ p_hat_delta <- predict(logit_affairs_sex_ym, newdata=affairsdata_delta ,type="re
 me_ym_approx <- (p_hat_delta - p_hat)/delta # approx. numerica marginal effect.
 
 # average marginal effect
-round(mean(me_ym_approx),4)
+mean(me_ym_approx)
 ```
 
 ---
-## Efectos marginales sobre la probabilidad de éxito: MEM
+## Efectos marginales sobre la probabilidad de éxito: Marginal Effect at the Mean
 
 .bold[MEM]: Efecto marginal al valor promedio (en muestra)
 
-En `Stata`
-
 .pull-left[
+En `Stata`
 ![mem](mem.png)
 ]
 
@@ -784,139 +579,55 @@ En `Stata`
 
 .pull-right[
 
-![ah](http://25.media.tumblr.com/tumblr_lx16y1gdGm1qls3mfo1_500.gif)
-
-
 ]
-
 ---
-## Efectos marginales sobre la probabilidad de éxito: MEM
+## Efectos marginales sobre la probabilidad de éxito: Marginal Effect at the Mean
 
---
-
-- ¿Cuál media?
-  - a) ¿La media de "years of marriage" para cada género por separado?
-  - b) ¿La media global de "years of marriage" por cada género por separado?
-  - c) ¿La media global de "years of marriage" y la media género (como var. continua)?
-
---
-
-Depende de que lo que queremos.
-
---
-
-Implentamos opción (c) en `R`
-```{r, warning=FALSE, message=FALSE}
-affairsdata <- affairsdata %>% mutate(male = 1*(sex=="male"))
-logit_affairs_sex_ym2 <- glm(everaffair_d ~ male + ym, family=binomial(link="logit"), 
-                             data=affairsdata)
-
-mean_male = mean(affairsdata$male)
-mean_ym = mean(affairsdata$ym)
-
-summary(margins(logit_affairs_sex_ym2, at=list(male=mean_male, ym=mean_ym)))
-```
-
---
-
-¿Cómo lo calculamos?
-
----
-## Efectos marginales sobre la probabilidad de éxito: MEM
-
-Solución analística, usando 
-$$\frac{\partial p_{i}}{\partial \text{ym} }= \beta_{\text{ym}} \cdot p_{i}(1 - p_{i})$$
-
---
-
+En `R`
 ```{r}
+library("margins")
 
-beta_ym = logit_affairs_sex_ym$coefficients[3] # coeficiente ym 
-grid <- affairsdata %>% data_grid(male=mean_male, ym=mean_ym, .model=logit_affairs_sex_ym2); grid
-p_hat <- predict(logit_affairs_sex_ym2, newdata=grid, type="response") # prob predichas 
-
-mem_ym = beta_ym*p_hat*(1-p_hat); round(mem_ym,4) # efecto marginal 
-
+affairsdata <- affairsdata %>% mutate(male = 1*(sex=="male"))
+logit_affairs_sex_ym2 <- glm(everaffair_d ~ male + ym, family=binomial(link="logit"), data=affairsdata)
+summary(
+  margins(logit_affairs_sex_ym2, at=list(male=mean(affairsdata$male), ym=mean(affairsdata$ym)),
+          vce="bootstrap"))
 ```
 
----
-## Efectos marginales sobre la probabilidad de éxito: MEM
-
-Aproximación numérica, usando: 
-$$\frac{\partial p_{i}}{\partial x_{k}} \approx  \frac{p_{i}(x_{1}, \dots ,x_{k} = c + \delta) - p_{i}(x_{1}, \dots ,x_{k} = c )}{\delta}$$
 <br>
 --
 
-```{r}
-delta = 0.01 # cantidad cambio
-
-grid <- affairsdata %>% data_grid(male=mean_male, ym=mean_ym, .model=logit_affairs_sex_ym2)
-grid_delta <- affairsdata %>% data_grid(male=mean_male, ym=mean_ym + delta, .model=logit_affairs_sex_ym2)
-
-p_hat <- predict(logit_affairs_sex_ym2, newdata=grid, type="response") # prob predichas 
-p_hat_delta <- predict(logit_affairs_sex_ym2, newdata=grid_delta, type="response") # prob predichas 
-
-mem_ym_approx = (p_hat_delta - p_hat)/delta
-round(mem_ym_approx,4) # efecto marginal 
-```
-
----
-## Efectos marginales sobre la probabilidad de éxito: MER
-
-Una versión más general de MEM es calcular los efectos marginales para "valores representativos". 
-
-.pull-left[
-En `Stata`
-![ame](mer.png)
-]
-
---
-
-.pull-right[
-En `R`
-```{r}
-margins(logit_affairs_sex_ym, 
-at = list(sex = c("male", "female"), 
-ym = quantile(affairsdata$ym, 
-              p=c(0.25,0.5,0.75)) ))
-```
-]
-
---
-
 ¿Cómo lo calculamos?
 
----
-## Efectos marginales sobre la probabilidad de éxito: MER
-
-Solución analística, usando 
-$$\frac{\partial p_{i}}{\partial \text{ym} }= \beta_{\text{ym}} \cdot p_{i}(1 - p_{i})$$
-
---
-
-```{r}
-beta_ym = logit_affairs_sex_ym$coefficients[3] # coeficiente ym 
-grid <- affairsdata %>% data_grid(sex, ym=quantile(affairsdata$ym, p=c(0.25,0.5,0.75)), .model=logit_affairs_sex_ym)
-grid <- grid %>% mutate(p_hat =predict(logit_affairs_sex_ym, newdata=grid, type="response")) # prob predichas
-grid <- grid %>% mutate(mer_ym = beta_ym*p_hat*(1-p_hat)); grid  # efecto marginal
-```
-
 
 ---
-## Efectos marginales sobre la probabilidad de éxito: MER
+## Efectos marginales sobre el logit 
 
-Aproximación numérica, usando: 
-$$\frac{\partial p_{i}}{\partial x_{k}} \approx  \frac{p_{i}(x_{1}, \dots ,x_{k} = c + \delta) - p_{i}(x_{1}, \dots ,x_{k} = c )}{\delta}$$
+En nuestro ejemplo: $\text{everaffair}_{i} = \beta_{0} + \beta_{1}*\text{male}_{i} + \beta_{2}*\text{ym}_{i}$
 
---
-```{r}
-delta = 0.01 # cantidad cambio
-grid <- affairsdata %>% data_grid(sex, ym=quantile(affairsdata$ym, p=c(0.25,0.5,0.75)), .model=logit_affairs_sex_ym)
-grid_delta <- affairsdata %>% data_grid(sex, ym=quantile(affairsdata$ym, p=c(0.25,0.5,0.75)) + delta, .model=logit_affairs_sex_ym)
-p_hat <- predict(logit_affairs_sex_ym, newdata=grid, type="response") # prob predichas
-p_hat_delta <- predict(logit_affairs_sex_ym, newdata=grid_delta, type="response") # prob predichas
-grid <- grid %>% mutate(mem_ym_approx = (p_hat_delta - p_hat)/delta); grid # efecto marginal
+.pull-left[
+
+]
+.pull-right[
+```{r, echo=FALSE, fig.height=6}
+
+# plot the result
+
+grid <- affairsdata  %>%data_grid(sex,ym=seq(0,90),.model=logit_affairs_sex_ym)
+predictions <- cbind(grid,logit_hat = predict(logit_affairs_sex_ym, newdata = grid)) %>%
+                mutate(odds = exp(logit_hat))
+
+predictions %>% ggplot(aes(x=ym, y=odds, group=sex, colour=sex)) +  
+  geom_line(size=2, alpha = 1) +
+  scale_color_viridis_d() +  scale_fill_viridis_d() +
+  guides(fill=FALSE, color=FALSE) +
+  theme(axis.text.y = element_text(size = 22), axis.text.x = element_text(size = 22),
+  axis.title.y = element_text(size = 24), axis.title.x = element_text(size = 24), 
+  legend.text = element_text(size = 18), legend.position="bottom") +
+  labs(x="years of marriage", y="logit(Affair)") +
+  annotate('text', x = 50, y = 1, label = "beta[ym]==0.0584", parse = TRUE, size=8) 
 ```
+]
 
 ---
 class: inverse, center, middle

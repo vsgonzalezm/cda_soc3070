@@ -135,16 +135,16 @@ Por tanto, es conveniente expresar `\(\eta\)` en función de `\(p\)` ...
 
 --
 
-`\(p_{i} = \frac{e^{\eta_{i}}}{1 + e^{\eta_{i}}} = \frac{1}{1/e^{\eta_{i}} + 1}\)`
+`\(p_{i} = \frac{e^{\eta_{i}}}{1 + e^{\eta_{i}}} = \frac{1}{e^{- \eta_{i}} + 1}\)`
 
 --
 
-`\(\frac{1}{e^{\eta_{i}}} + 1 = \frac{1}{p_{i}}\)`
+`\(e^{-\eta_{i}} + 1 = \frac{1}{p_{i}}\)`
 
 
 --
 
-`\(\frac{1}{e^{\eta_{i}}} = \frac{1}{p_{i}} - 1 =  \frac{1 - p_{i}}{p_{i}}\)`
+`\(e^{- \eta_{i}} = \frac{1}{p_{i}} - 1 =  \frac{1 - p_{i}}{p_{i}}\)`
 
 --
 
@@ -398,11 +398,11 @@ específicamente: `\(p_{i} =\frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{rate}_{
 --
 
 por tanto, 
-`$$\ell\ell(\beta_{0},\beta_{1} \mid y_{1}, \dots, y_{1}) = \sum_{i=1}^{n} \bigg( y_{i} \ln \frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{rate}_{i}})} + (1-y_{i}) \ln(1-\frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{rate}_{i}})}) \bigg)$$`
+`$$\ell\ell(\beta_{0},\beta_{1} \mid y_{1}, \dots, y_{1}) = \sum_{i=1}^{n} \bigg( y_{i} \ln \frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{rate}_{i})}} + (1-y_{i}) \ln(1-\frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{rate}_{i})}}) \bigg)$$`
 
 En definitiva, nuestros MLE son:
 
-`$$\hat{\beta_{0}},\hat{\beta_{1}} = \underset{\beta_{0},\beta_{1}}{\arg\max\ } \sum_{i=1}^{n} \bigg( y_{i} \ln \frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{rate}_{i}})} + (1-y_{i}) \ln(1-\frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{rate}_{i}})}) \bigg)$$`
+`$$\hat{\beta_{0}},\hat{\beta_{1}} = \underset{\beta_{0},\beta_{1}}{\arg\max\ } \sum_{i=1}^{n} \bigg( y_{i} \ln \frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{rate}_{i})}} + (1-y_{i}) \ln(1-\frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{rate}_{i})}}) \bigg)$$`
 ---
 ## Estimación (MLE)
 
