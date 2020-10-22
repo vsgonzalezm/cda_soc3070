@@ -99,11 +99,19 @@ strong {
   color: #0099ff;
 }
 
-
 .img-right{
   height: 300px;
   width: 300px;
   top: 34%;
+  left: 65%;
+  position: absolute;
+}
+
+
+.img-right-small{
+  height: 130px;
+  width: 130px;
+  top: 14%;
   left: 65%;
   position: absolute;
 }

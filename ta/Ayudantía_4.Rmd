@@ -1,0 +1,303 @@
+---
+title: "Ayudantía 4"
+subtitle: "Análisis de Datos Categóricos"
+author: "Roberto Velázquez"
+institute: 💻 📊 🎨🎻🎷 
+date: "21-10-2020"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default","default-fonts","gentle-r.css"]
+    df_print: default
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+editor_options: 
+  chunk_output_type: console
+---
+
+# A.- Regresión Logística (GLM)
+
+Trabajemos sobre los datos de la **National Survey of Culture and the Arts 2018** vista en la ayudantía pasada. Recordemos que la encuesta fue coordinada por el *National Endowment for the Arts USA* con un muestreo representativo de la población de EEUU. La muestra contiene 8609 y 10 de variables de interés.
+
+![](nefa.png)
+
+---
+
+# A.- Regresión Logística (GLM)
+
+.pull-left[
+- **Ejercicio:**
+
+En 2019 *The Art of the Steal* inauguró un interesante campo de discusión en torno al problema de la relación entre los públicos de arte y la estratificación de capital cultural de acuerdo al género, la raza, y la edad de los amantes de los museos. Don Argott notó a través del caso de los visitantes a museos en Philadelphiia, San Francisco, New York, Los Angeles, Dallas y Chicago el efecto de ciertas características sociodemográficas centrales en la sociedad estadounidense que es necesario profundizar en el actual contexto de la llamada globalización cultural y cosmopolitismo estético. 
+
+Así, parece interesante ajustar un modelo predictivo de la asistencia a museos en Estados Unidos (los cuales concentran el 45% de las colecciones de arte contemporáneo del mundo) como función de dichas variables. 
+]
+
+![](taos.png)
+
+---
+
+# A.- Regresión Logística (GLM)
+
+- Codififación de variables y ajuste de GLM: 
+
+```{r echo=TRUE, warning=FALSE, comment='#'}
+library(tibble)
+```
+
+```{r echo=TRUE, comment='#'}
+#Cargar base de datos
+load("nsca2018.Rda")
+tibble(data1)
+```
+
+---
+
+# A.- Regresión Logística (GLM)
+
+- Codififación de variables y ajuste de GLM: 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, comment='#'}
+library(tidyverse)
+library(car)
+```
+
+```{r echo=TRUE, comment='#'}
+# Sintaxis
+#Conversión de factor a vector (tidyverse)
+data1 <- data1 %>% 
+  mutate(sexo_b = as.numeric(sexo))
+data1 <- data1 %>% 
+  mutate(museos_b = as.numeric(museos))
+data1 <- data1 %>% 
+  mutate(raza_b = as.numeric(raza))
+#Codificación dummies (car)
+data1$sexo_b <- recode(data1$sexo_b, "1=0; 2=1")
+data1$museos_b <- recode(data1$museos_b, "1=1; 2=0")
+data1$raza_b <- recode(data1$raza_b, "1=0; 2:26=1")
+```
+
+---
+
+# A.- Regresión Logística (GLM)
+
+**1- Ajuste un modelo de regresión logística que predice la asistencia a museos como función del sexo, la raza y la edad de los encuestados.** 
+
+Formalmente:
+
+
+<br>
+$$\underbrace{\ln \frac{p_{i}}{ 1 - p_{i}}}_{\text{logit}(p_{i})}    = \beta_{0} + \beta_{1}\text{mujer}_{i} + \beta_{2}\text{no blanque}_{i} + \beta_{3}\text{edad}_{i}$$
+<br>
+
+donde:
+
+- $p_{i} =\mathbb{P}(\text{asisitir museos}_{i}=1)$
+
+- $\text{logit}(p_{i})$ es el .bold[log odds] de tener asistir al museo.
+
+- $p_{i}$ y $\text{logit}(p_{i})$ son una función de sexo (mujer), raza (no blanque) y edad (años).
+
+---
+
+# A.- Regresión Logística (GLM)
+
+**Respuesta**:
+
+```{r echo=TRUE, comment='#'}
+#Estimación de GLM (Regresión logística)
+rl1 <- glm(1*museos_b ~ sexo_b + raza_b + edad, family = binomial(link=logit), data=data1)
+summary(rl1)
+```
+
+---
+
+# A.- Regresión Logística (GLM)
+
+**2- Interprete el intercepto y los efectos del modelo en términos de log-odds.**
+
+Formalmente:
+
+$$\frac{\partial\text{logit}(p_{i})}{\partial x_{k}} = \beta_{k}$$
+
+```{r echo=TRUE, comment='#'}
+#Estimación de GLM (Regresión logística)
+summary(rl1)$coefficients[,1]
+```
+
+--
+
+**Respuesta**
+
+El intercepto es de -0.772 log-odds, que corresponde al logaritmo natural de las odds de que un hombre blanco con 0 años de edad haya asistido a un museo en 2018. El coeﬁciente asociado a sexo indica que las log-odd esperadas de asistir al museo para una mujer son 0.238 puntos mayores que la de los hombres. El coeﬁciente asociado a raza indica que las log-odd esperadas de asistir al museo para una persona no blanca son 0.323 puntos menores que las de una persona blanca. Finalmente, el coeficiente de edad nos indica que por cada año adicional de edad las log-odd de asistir a un museo disminuyen en 0.008 puntos.
+
+---
+# A.- Regresión Logística (GLM)
+
+**3- Ajuste un modelo que evalue asistencia a museos en función de las mismas variables consideradas, pero esta vez incorporando sexo y raza como efecto multiplicativo (interacción). Interprete los coeficientes en términos de odds-ratio**.
+
+Formalmente:
+
+$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots e^{\beta_{k} x_{ik}}$$
+
+
+donde:
+
+- $e^{\beta_{k}}$ está restringido al rango $[0,\infty+)$. Es una constante que "comprime" o amplifica las odds de éxito.
+
+- Si $\beta_{k} < 0  \to  (0 < e^{\beta_{k}} < 1)$. Es decir, un aumento en $x_{k}$ está asociado con una reducción (multiplicativa) de las odds de éxito.
+
+- Si $\beta_{k} = 0  \to  (e^{\beta_{k}} =1)$. Es decir, un cambio en $x_{k}$ está asociado a un cambio nulo en las odds de éxito.
+
+- Si $\beta_{k} > 0  \to  (e^{\beta_{k}} > 1)$. Es decir, un aumento en $x_{k}$ está asociado a aumento (multiplicativo) en de las odds de éxito.
+
+---
+
+# A.- Regresión Logística (GLM)
+
+**Respuesta**:
+
+```{r echo=TRUE, comment='#'}
+#Estimación de GLM (Regresión logística)
+rl2 <- glm(1*museos_b ~ sexo_b*raza_b + edad, family = binomial(link=logit), data=data1)
+exp(summary(rl2)$coefficients[,1])
+```
+
+Formalmente (ejemplo de intercepto):
+
+$$\ln \frac{\mathbb{P}(\text{Asistir| Sexo=0, Raza=0, Edad=0, Sexo:Raza=0)}}{1 - \mathbb{P}(\text{Asistir| Sexo=0, Raza=0, Edad=0, Sexo:Raza=0)}} = \beta_{0}$$
+
+Y así al exponenciar:
+
+$$\frac{\mathbb{P}(\text{Asistir| Sexo=0, Raza=0, Edad=0, Sexo:Raza=0)}}{1 - \mathbb{P}(\text{Asistir| Sexo=0, Raza=0, Edad=0, Sexo:Raza=0)}} = e^{\beta_{0}}$$
+
+---
+
+# A.- Regresión Logística (GLM)
+
+**Respuesta**:
+
+```{r echo=TRUE, comment='#'}
+#Estimación de GLM (Regresión logística)
+rl2 <- glm(1*museos_b ~ sexo_b*raza_b + edad, family = binomial(link=logit), data=data1)
+exp(summary(rl2)$coefficients[,1])
+```
+
+--
+
+El intercepto nos indica que las odds de que un hombre blanco con 0 años de edad haya asistido a un museo en 2018 son de 0.459. El coeﬁciente asociado a sexo indica que las odds de que una mujer blanca haya asistido al museo son 1.29 las odds de un hombre blanco, con un efecto significativo al 99,9% de confianza, controlando por todas las covariables. El coeficiente asociado a raza indica que las odds de que un hombre no blanco haya asistido al museo son 0.763 las odds de que un hombre blanco haya asistido al museo con un efecto significativo al 95% de confianza, controlando por todas las covariables. 
+
+--
+
+Por su parte, el coeficiente asociado a edad nos indica que por cada año adicional de edad las odds de que un individuo asistiera al museo en 2018 disminuye en 0.991 puntos, con un efecto significativo al 99,9% de confianza, controlando por todas las covariables. Finalmente, el coeficiente de la interacción de sexo y raza nos indica que las odds de que una mujer no blanca haya asistido al museo son 0.914 las odds de que un hombre no blanco haya asistido al museo. Este efecto no presenta significancia estadística en ninguno de los niveles de confianza convencionales. 
+
+---
+
+# A.- Regresión Logística (GLM)
+
+**4- Considerando el último modelo ajustado ¿Cuáles son las probabilidades esperadas de que un individuo no blanco, sea hombre o mujer, asistiera al museo en 2018?**
+
+Formalmente para mujer:
+
+- $\ln \frac{\mathbb{P}(\text{Asistir| Sexo=1, Raza=1)}}{1 - \mathbb{P}(\text{Asistir| Sexo=0, Raza=1)}} = \beta_{0} + \beta_{sexo}$
+
+Así, al exponenciar:
+
+$$\mathbb{P}(\text{Asistir| Sexo=1, Raza=1)} = \frac{1}{1 + e^{-(\beta_{0} + \beta_{sexo})}}$$
+
+Formalmente para hombre:
+
+- $\ln \frac{\mathbb{P}(\text{Asistir| Sexo=0, Raza=1)}}{1 - \mathbb{P}(\text{Asistir| Sexo=1, Raza=1)}} = \beta_{0} + \beta_{sexo}$
+
+Así, al exponenciar:
+
+$$\mathbb{P}(\text{Asistir| Sexo=0, Raza=1)} = \frac{1}{1 + e^{-(\beta_{0} + \beta_{sexo})}}$$
+---
+
+# A.- Regresión Logística (GLM)
+
+**Respuesta**:
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, comment='#'}
+library(modelr)
+```
+
+```{r echo=TRUE, comment='#'}
+#Estimación de GLM (Regresión logística)
+grid <- data1 %>% data_grid(sexo_b,raza_b=1,.model=rl2) 
+grid_p <- grid %>% mutate(vlog = predict(rl2, newdata = grid), prob = 1/(1 + exp(-vlog))) 
+print(grid_p)
+```
+
+--
+
+La probabilidad de que una mujer no blanca haya asistido al museo en 2018 es de 0.212, o un 21.2%. La probabilidad de que un hombre no blanca haya asistido al museo en 2018 es de 0.186, o  un 18.6%.
+
+---
+
+# A.- Regresión Logística (GLM)
+
+**5- Considerando el último modelo ajustado ¿Cuál sería la probabilidad esperada de que una mujer no blanca de 40 años de edad asistiera al museo?**
+
+Formalmente:
+
+$$\mathbb{P}(\text{Asistir| Sexo=1, Raza=1, Edad=40,Sexo:Raza=1)} = \frac{1}{1 + e^{-(\beta_{0} + \beta_{sexo}+ \beta_{raza}+ \beta_{edad} + \beta_{sexo*edad})}}$$
+--
+
+**Respuesta**:
+
+$$\mathbb{P}(\text{Asistir| Sexo=1, Raza=1, Edad=40, Sexo:Raza=1)} = \frac{1}{1 + e^{-(\beta_{0} + \beta_{sexo} + \beta_{raza} + \beta_{edad} + \beta_{sexo*edad} )}}$$
+
+```{r echo=TRUE, comment='#'}
+#Estimación de GLM (Regresión logística)
+summary(rl2)$coefficients[,1]
+```
+
+
+
+
+
+---
+
+# A.- Regresión Logística (GLM)
+
+**Respuesta**:
+
+$$\mathbb{P}(\text{Asistir| Sexo=1, Raza=1, Edad=40, Sexo:Raza=1)} = \frac{1}{1 + e^{-(-0.778 + 0.251*1 - 0.269*1 -0.008*40 -0.088*1)}}$$
+
+**Práctica**: 
+
+Entonces ¿Cuál sería la probabilidad esperada de que una mujer no blanca de 40 años de edad asistiera al museo?
+Interprete en base al resultado de la función.
+
+---
+
+# Referencias Sugeridas:
+
+• Laurie Hanquinet & Mike Savage (2016). Routledge International Handbook of the Sociology of Art and Culture. London: Routledge.
+
+• Hadley Wickham (2015). Advanced R, CRC Press, Taylor & Francis Group, Boca Raton, FL. En https://adv-r.hadley.nz/
+
+• Hadley Wickham and Garrett Grolemund (2017). R for Data Science. Import, Tidy, Transform, Visualize, and Model Data. O’Reilly Media, Inc.. En https://r4ds.had.co.nz/
+
+
+---
+class: inverse, center, middle
+
+.huge[
+**¡Hasta la próxima!**
+]
+
+ 💻 📊 🎨🎻🎷 
+ 
+<br>
+Roberto Velázquez <br>
+https://github.com/rovelazqu <br>
+
+
+
+

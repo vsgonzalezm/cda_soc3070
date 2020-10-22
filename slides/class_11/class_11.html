@@ -66,7 +66,7 @@ donde,
 &lt;br&gt;
 --
 
-- .bold[Inferencia]: ¿que podemos decir sobre `\(\hat{\beta}_{0},\hat{\beta}_{1}, \dots, \hat{\beta}_{k}\)` más allá de nuestra muestra?
+- .bold[Inferencia]: ¿que podemos decir sobre `\(\hat{\beta}_{0},\hat{\beta}_{1}, \dots, \hat{\beta}_{k}\)`  (o cualquier producto de éstos) más allá de nuestra muestra?
 
 ---
 class: inverse, center, middle
@@ -120,47 +120,401 @@ Notar que `\(\frac{\sigma_{\theta}}{\sqrt{n}}\)` es el "standard error" (SE) de 
 ---
 ## Inferencia acerca de parámetros del modelo: intervalos de confianza
 
-&lt;br&gt;
+Dado que `\(\hat{\theta} \sim \mathcal{N}(\theta, \frac{\sigma_{\theta}}{\sqrt{n}})\)` ...
 
-Por tanto, podemos construir un intervalo de confianza de la siguiente manera:
+&lt;br&gt;
+--
+
+podemos construir un intervalo de confianza de la siguiente manera:
 
 `$$(1 - \alpha) \text{ CI}_{\hat{\theta}} = \hat{\theta} \pm \Phi^{-1}(\alpha/2) \cdot SE_{\hat{\theta}}$$`
 &lt;br&gt;
+--
 
-Ejemplo, podemos construir un intervalo al 95% de confianza está dado por:
+Ejemplo, un intervalo al 95% de confianza está dado por:
 
 `$$95\% \text{ CI}_{\hat{\theta}} = \hat{\theta} \pm 1.96 \cdot  \frac{\sigma_{\theta}}{\sqrt{n}}$$`
 ---
-class: center, middle
-
-## Inferencia acerca de parámetros del modelo: tests
+## Inferencia acerca de parámetros del modelo: intervalos de confianza
 
 
-![tests](ttest_gelman.png)
----
-class: center, middle
-
-## Delta Method
 
 
----
-## Delta Method
+```
+## everaffair_d ~ factor(sex) + ym
+```
 
-Por series de Taylor:
+```
+##                    Estimate Std. Error   z value     Pr(&gt;|z|)
+## (Intercept)     -1.71395429 0.20633183 -8.306786 9.832929e-17
+## factor(sex)male  0.22157111 0.19064190  1.162237 2.451391e-01
+## ym               0.05842959 0.01727402  3.382513 7.182590e-04
+```
 
-`$$g(X) \approx g(c) + g^{'}(c)( X - c)$$`
 --
 
-En el caso de una variable aleatoria y :
+Intervalo de confianza al 95% para coeficiente de "years of marriage"
 
-$$g(X) \approx g(\theta) + g^{'}(\theta)(X - \theta) $$
+
+```r
+beta_ym &lt;- summary(logit_affairs_sex_ym)$coefficients["ym","Estimate"]
+se_ym &lt;- summary(logit_affairs_sex_ym)$coefficients["ym","Std. Error"]
+ci_beta_ym &lt;- beta_ym + c(-2,2)*se_ym; ci_beta_ym
+```
+
+```
+## [1] 0.02388155 0.09297763
+```
+
+--
+
+
+```r
+confint(logit_affairs_sex_ym)
+```
+
+```
+## Waiting for profiling to be done...
+```
+
+```
+##                       2.5 %      97.5 %
+## (Intercept)     -2.12990424 -1.31985336
+## factor(sex)male -0.15199429  0.59625678
+## ym               0.02479755  0.09260135
+```
+
+---
+## Inferencia acerca de parámetros del modelo: tests
+
+.middle[
+.center[
+![tests](ttest_gelman.png)
+
+]
+]
+
+---
+class: inverse, center, middle
+
+## Delta Method
+
+
+---
+## Delta Method
+
+[Series de Taylor](https://en.wikipedia.org/wiki/Taylor_series) permiten aproximar el valor de una función `\(g(x)\)` -- potencialmente compleja -- usando una  una suma infinita de términos. Aquí la primera expansión de la serie:
+
+
+$$g(x) \approx g(c) + g^{'}(c)(x - c) $$
+--
+
+.pull-left[
+Ejemplo: 
+.content-box-blue[
+- `\(g(x) = \ln(x)\)`
+
+- `\(c=5\)`
+
+- `\(g^{'}(x) = \frac{d\ln(x)}{dx}= \frac{1}{x}\)`
+
+]
+]
+
+--
+
+.pull-right[
+Aproximación via serie de Taylor centrada en 5
+.content-box-yellow[
+`\begin{align}
+\ln(x) &amp;\approx \ln(5) + \frac{1}{5}(x - 5) \\
+       &amp;\approx 1.609438 + 0.2 \cdot (x - 5) \\
+       &amp; .
+\end{align}`
+]
+]
+
+--
+
+- Cuando `\(x=5.5\)`, `\(\ln(5.5) = 1.704748\)`. Aproximación: `\(1.609438 + 0.2 \cdot 0.5 = 1.709438\)`
+
+--
+
+
+- Cuando `\(x=10\)`, `\(\ln(10) = 2.302585\)`. Aproximación: `\(1.609438 + 0.2 \cdot 5 = 2.609438\)`
+
+&lt;style type="text/css"&gt;
+.pull-right ~ * { clear: unset; }
+.pull-right + * { clear: both; }
+&lt;/style&gt;
+
+---
+## Delta Method
+
+Aplicando `\(g(x) \approx g(c) + g^{'}(c)(x - c)\)` a un estimador `\(\hat{\theta}\)` (variable) y donde `\(\theta\)` es el valor verdadero del parámetro (constante), obtenemos:
+
 &lt;br&gt;
 
+`$$g(\hat{\theta}) \approx g(\theta) + g^{'}(\theta)(\hat{\theta} - \theta)$$`
+&lt;br&gt;
+--
+
+So what?
+
+&lt;br&gt;
+--
+
+- Si, tal como vimos, `\(\hat{\theta} \sim \mathcal{N}(\theta, \frac{\sigma_{\theta}}{\sqrt{n}})\)` ...
+
+--
+
+- .bold[¿Cual es la distribución de] `\(g(\hat{\theta})\)`?
+
+
+---
+## Delta Method
+
+Dado,
+`$$g(\hat{\theta}) \approx g(\theta) + g^{'}(\theta)(\hat{\theta} - \theta)$$`
+
+--
+
+- `\(\mathbb{E}(\hat{\theta})\)`:
+
+--
+
+
 `\begin{align}
-\mathbb{Var}[g(X)] &amp;\approx \mathbb{Var}[ g(\theta) + g^{'}(\theta)(X - \theta)] \\ \\
-&amp;\approx \mathbb{Var}[g(\theta) + g^{'}(\theta)X   -  g^{'}(\theta)\theta] \\ \\
-&amp;\approx   [g^{'}(\theta)]^{2} \mathbb{Var}[X]   
+\mathbb{E}[g(\hat{\theta})] &amp;\approx \mathbb{E}[ g(\theta) + g^{'}(\theta)(\hat{\theta} - \theta) ] \\ \\
+&amp;\approx \mathbb{E}[ g(\theta)] + g^{'}(\theta)\mathbb{E}[(\hat{\theta} - \theta) ]  \\ \\
+&amp;\approx \mathbb{E}[ g(\theta)] + g^{'}(\theta)(\mathbb{E}[\hat{\theta}] - \theta) \\ \\
+&amp;\approx \mathbb{E}[ g(\theta)] + g^{'}(\theta)(\theta - \theta) \\ \\
+&amp;\approx \mathbb{E}[ g(\theta)] = g(\theta)  
 \end{align}`
+
+
+---
+## Delta Method
+
+Dado,
+`$$g(\hat{\theta}) \approx g(\theta) + g^{'}(\theta)(\hat{\theta} - \theta)$$`
+--
+
+- `\(\mathbb{Var}(\hat{\theta})\)`:
+
+
+--
+
+`\begin{align}
+ &amp;\approx \mathbb{Var}[ g(\theta) + g^{'}(\theta)(\hat{\theta} - \theta) ] \\ \\
+&amp;\approx \mathbb{Var}[g(\theta) + g^{'}(\theta)\hat{\theta}   -  g^{'}(\theta)\theta] \\ \\
+&amp;\approx   [g^{'}(\theta)]^{2} \mathbb{Var}[\hat{\theta}]   
+\end{align}`
+
+&lt;br&gt;
+--
+
+- `\(\sqrt{\mathbb{Var}[g(\hat{\theta})]}: SE_{g(\hat{\theta})}\)`: 
+
+`$$\approx g^{'}(\theta) SE_{\hat{\theta}}$$`   
+
+---
+## Delta Method
+
+Se puede mostrar tambien que `\(g(\hat{\theta})\)` distribuye normal.
+
+--
+
+En particular:
+
+`$$g(\hat{\theta}) \sim \mathcal{N}\bigg(\mu=g(\theta), \sigma=g^{'}(\theta) SE_{\hat{\theta}} \bigg)$$` 
+
+---
+## Delta Method: ejemplo empírico (1)
+
+Retomando nuestro modelo de clases anteriores -- donde `\(p\)` es la probabilidad de haber tenido un affair:
+`$$\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}$$`
+
+--
+
+Ahora calculemos un IC al 95% para efecto el de "years of marriage" como .bold["odds ratio"]: `\(e^{\beta_{2}}\)`
+
+--
+
+.img-right-small[
+![d](meme.png)
+]
+
+--
+
+
+Usando `\(g(\hat{\theta}) \sim \mathcal{N}\big(g(\theta), g^{'}(\theta) \cdot SE_{\hat{\theta}} \big)\)` obtenemos...
+--
+
+.pull-left[
+.content-box-blue[
+
+- `\(g(\hat{\beta}_{2}) = e^{\hat{\beta}_{2}}\)`
+
+- `\(\mathbb{E}(e^{\hat{\beta}_{2}}) = e^{\beta_{2}}\)`
+
+- `\(g^{'}(\beta_{2}) =  e^{\beta_{2}}\)` 
+
+- `\(SE_{e^{\hat{\beta}_{2}}} = e^{\beta_{2}} \cdot SE_{\hat{\beta}_{2}}\)`
+]
+]
+
+--
+
+.pull-right[
+.content-box-yellow[
+`$$e^{\hat{\beta}_{2}} \sim \mathcal{N}\big(e^{\beta_{2}}, e^{\beta_{2}} \cdot SE_{\hat{\beta}_{2}} \big)$$`
+]
+
+Remplazar el parámetro "verdadero" `\(\beta_{2}\)` por nuestro "estimate" en muestra.
+
+]
+
+
+
+---
+## Delta Method: ejemplo empírico (1)
+
+
+```
+## everaffair_d ~ factor(sex) + ym
+```
+
+```
+##                    Estimate Std. Error   z value     Pr(&gt;|z|)
+## (Intercept)     -1.71395429 0.20633183 -8.306786 9.832929e-17
+## factor(sex)male  0.22157111 0.19064190  1.162237 2.451391e-01
+## ym               0.05842959 0.01727402  3.382513 7.182590e-04
+```
+
+
+```r
+exp_beta_ym &lt;- exp(beta_ym); exp_beta_ym
+```
+
+```
+## [1] 1.06017
+```
+
+```r
+se_exp_ym &lt;- exp_beta_ym*se_ym; se_exp_ym
+```
+
+```
+## [1] 0.0183134
+```
+
+```r
+ci_exp_beta_ym &lt;- exp_beta_ym + c(-2,2)*se_exp_ym; ci_exp_beta_ym
+```
+
+```
+## [1] 1.023544 1.096797
+```
+
+
+&lt;style type="text/css"&gt;
+.pull-right ~ * { clear: unset; }
+.pull-right + * { clear: both; }
+&lt;/style&gt;
+
+---
+## Delta Method: ejemplo empírico (1)
+
+
+```
+## everaffair_d ~ factor(sex) + ym
+```
+
+```
+##                    Estimate Std. Error   z value     Pr(&gt;|z|)
+## (Intercept)     -1.71395429 0.20633183 -8.306786 9.832929e-17
+## factor(sex)male  0.22157111 0.19064190  1.162237 2.451391e-01
+## ym               0.05842959 0.01727402  3.382513 7.182590e-04
+```
+
+Versión automática usando función `deltamethod` en paquete `msm`:
+
+
+```r
+library(msm)
+se_delta &lt;- deltamethod(g=~exp(x1), mean=beta_ym, cov=(se_ym)^2); se_delta 
+```
+
+```
+## [1] 0.0183134
+```
+
+```r
+#intervalo de confianza
+exp_beta_ym + c(-2,2)*se_delta
+```
+
+```
+## [1] 1.023544 1.096797
+```
+
+
+---
+
+## Delta Method: ejemplo empírico (1)
+
+A partir de `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)` 
+
+-  Calculemos ahora un IC al 95% para el Average Marginal Effect de"years of marriage" sobre la probabilidad de ser infiel
+
+Para usar `\(g(\hat{\theta}) \sim \mathcal{N}\big(g(\theta), g^{'}(\theta) \cdot SE_{\hat{\theta}} \big)\)` necesitamos...
+
+
+
+- `\(g(\hat{\beta}_{2}) = \frac{\partial p_{i}}{\partial \text{ym}}= \hat{\beta}_{2} \cdot \Bigg(\frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i} )}}\Bigg) \Bigg(1 - \frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i})}}\Bigg)\)`
+
+- `\(\mathbb{E}(\frac{\partial p_{i}}{\partial \text{ym}}) =  \dots\)`
+
+- `\(g^{'}(\frac{\partial p_{i}}{\partial \text{ym}}) =  \dots\)` 
+
+--
+
+.img-right-small[
+![d](meme.png)
+]
+
+--
+
+
+Usando `\(g(\hat{\theta}) \sim \mathcal{N}\big(g(\theta), g^{'}(\theta) \cdot SE_{\hat{\theta}} \big)\)` obtenemos...
+--
+
+.pull-left[
+.content-box-blue[
+
+- `\(g(\hat{\beta}_{ym}) = e^{\hat{\beta}_{ym}}\)`
+
+- `\(\mathbb{E}(e^{\hat{\beta}_{ym}}) = e^{\beta_{ym}}\)`
+
+- `\(g^{'}(\beta_{ym}) =  e^{\beta_{ym}}\)` 
+
+- `\(SE_{e^{\hat{\beta}_{ym}}} = e^{\beta_{ym}} \cdot SE_{\hat{\beta}_{ym}}\)`
+]
+]
+
+--
+
+.pull-right[
+.content-box-yellow[
+`$$e^{\hat{\beta}_{ym}} \sim \mathcal{N}\big(e^{\beta_{ym}}, e^{\beta_{ym}} \cdot SE_{\hat{\beta}_{ym}} \big)$$`
+]
+
+Remplazar el parámetro "verdadero" `\(\beta_{ym}\)` por nuestro "estimate" en muestra.
+
+]
+
+
 
 ---
 class: inverse, center, middle
