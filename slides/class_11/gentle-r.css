@@ -116,6 +116,23 @@ strong {
   position: absolute;
 }
 
+
+.img-right-bottom{
+  height: 200px;
+  width: 200px;
+  top: 64%;
+  left: 65%;
+  position: absolute;
+}
+
+.img-right-bottom2{
+  height: 200px;
+  width: 200px;
+  top: 5%;
+  left: 75%;
+  position: absolute;
+}
+
 .img-right img {
   width: 100%;
 }

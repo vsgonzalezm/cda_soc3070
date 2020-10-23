@@ -4,7 +4,6 @@
     <title>Análisis de Datos Categóricos (SOC3070)</title>
     <meta charset="utf-8" />
     <meta name="author" content="  Mauricio Bucca  Profesor Asistente, Sociología UC" />
-    <script src="libs/header-attrs-2.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link rel="stylesheet" href="gentle-r.css" type="text/css" />
@@ -134,6 +133,17 @@ podemos construir un intervalo de confianza de la siguiente manera:
 Ejemplo, un intervalo al 95% de confianza está dado por:
 
 `$$95\% \text{ CI}_{\hat{\theta}} = \hat{\theta} \pm 1.96 \cdot  \frac{\sigma_{\theta}}{\sqrt{n}}$$`
+
+---
+## Inferencia acerca de parámetros del modelo: tests
+
+.middle[
+.center[
+![tests](ttest_gelman.png)
+
+]
+]
+
 ---
 ## Inferencia acerca de parámetros del modelo: intervalos de confianza
 
@@ -157,13 +167,13 @@ Intervalo de confianza al 95% para coeficiente de "years of marriage"
 
 
 ```r
-beta_ym &lt;- summary(logit_affairs_sex_ym)$coefficients["ym","Estimate"]
-se_ym &lt;- summary(logit_affairs_sex_ym)$coefficients["ym","Std. Error"]
-ci_beta_ym &lt;- beta_ym + c(-2,2)*se_ym; ci_beta_ym
+beta2 &lt;- summary(logit_affairs_sex_ym)$coefficients["ym","Estimate"]
+se_beta2 &lt;- summary(logit_affairs_sex_ym)$coefficients["ym","Std. Error"]
+ci_beta2 &lt;- beta2 + c(-1.96,1.96)*se_beta2; ci_beta2
 ```
 
 ```
-## [1] 0.02388155 0.09297763
+## [1] 0.02457252 0.09228667
 ```
 
 --
@@ -184,15 +194,6 @@ confint(logit_affairs_sex_ym)
 ## ym               0.02479755  0.09260135
 ```
 
----
-## Inferencia acerca de parámetros del modelo: tests
-
-.middle[
-.center[
-![tests](ttest_gelman.png)
-
-]
-]
 
 ---
 class: inverse, center, middle
@@ -394,7 +395,7 @@ Remplazar el parámetro "verdadero" `\(\beta_{2}\)` por nuestro "estimate" en mu
 
 
 ```r
-exp_beta_ym &lt;- exp(beta_ym); exp_beta_ym
+expbeta2 &lt;- exp(beta2); expbeta2
 ```
 
 ```
@@ -402,7 +403,7 @@ exp_beta_ym &lt;- exp(beta_ym); exp_beta_ym
 ```
 
 ```r
-se_exp_ym &lt;- exp_beta_ym*se_ym; se_exp_ym
+se_expbeta2_delta &lt;- expbeta2*se_beta2; se_expbeta2_delta
 ```
 
 ```
@@ -410,11 +411,11 @@ se_exp_ym &lt;- exp_beta_ym*se_ym; se_exp_ym
 ```
 
 ```r
-ci_exp_beta_ym &lt;- exp_beta_ym + c(-2,2)*se_exp_ym; ci_exp_beta_ym
+ci_expbeta2_delta &lt;- expbeta2 + c(-1.96,1.96)*se_expbeta2_delta; ci_expbeta2_delta
 ```
 
 ```
-## [1] 1.023544 1.096797
+## [1] 1.024276 1.096065
 ```
 
 
@@ -443,7 +444,7 @@ Versión automática usando función `deltamethod` en paquete `msm`:
 
 ```r
 library(msm)
-se_delta &lt;- deltamethod(g=~exp(x1), mean=beta_ym, cov=(se_ym)^2); se_delta 
+se_expbeta2_delta &lt;- deltamethod(g=~exp(x1), mean=beta2, cov=(se_beta2)^2); se_expbeta2_delta 
 ```
 
 ```
@@ -452,69 +453,277 @@ se_delta &lt;- deltamethod(g=~exp(x1), mean=beta_ym, cov=(se_ym)^2); se_delta
 
 ```r
 #intervalo de confianza
-exp_beta_ym + c(-2,2)*se_delta
+ci_expbeta2_delta &lt;- expbeta2 + c(-1.96,1.96)*se_expbeta2_delta; ci_expbeta2_delta
 ```
 
 ```
-## [1] 1.023544 1.096797
+## [1] 1.024276 1.096065
 ```
 
 
 ---
 
-## Delta Method: ejemplo empírico (1)
+## Delta Method: ejemplo empírico (2)
 
 A partir de `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)` 
 
 -  Calculemos ahora un IC al 95% para el Average Marginal Effect de"years of marriage" sobre la probabilidad de ser infiel
 
-Para usar `\(g(\hat{\theta}) \sim \mathcal{N}\big(g(\theta), g^{'}(\theta) \cdot SE_{\hat{\theta}} \big)\)` necesitamos...
-
-
-
-- `\(g(\hat{\beta}_{2}) = \frac{\partial p_{i}}{\partial \text{ym}}= \hat{\beta}_{2} \cdot \Bigg(\frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i} )}}\Bigg) \Bigg(1 - \frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i})}}\Bigg)\)`
-
-- `\(\mathbb{E}(\frac{\partial p_{i}}{\partial \text{ym}}) =  \dots\)`
-
-- `\(g^{'}(\frac{\partial p_{i}}{\partial \text{ym}}) =  \dots\)` 
 
 --
 
-.img-right-small[
-![d](meme.png)
+Usemos `\(g(\hat{\theta}) \sim \mathcal{N}\big(g(\theta), g^{'}(\theta) \cdot SE_{\hat{\theta}} \big)\)`  !!!
+--
+ Sólo necesitamos...
+
+&lt;br&gt;
+--
+
+- `\(g(\hat{\beta}_{2}) = \frac{1}{N} \sum^{N}_{i=1} \frac{\partial p_{i}}{\partial \text{ym}}= \hat{\beta}_{2} \cdot \Bigg(\frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i} )}}\Bigg) \Bigg(1 - \frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i})}}\Bigg)\)`
+
+- `\(\mathbb{E}(\frac{1}{N} \sum^{N}_{i=1} \frac{\partial p_{i}}{\partial \text{ym}}) =  \dots\)`
+
+- `\(g^{'}(\frac{1}{N} \sum^{N}_{i=1} \frac{\partial p_{i}}{\partial \text{ym}}) =  \dots\)` 
+
+--
+
+.img-right-bottom[
+![scream](scream.gif)
 ]
 
+&lt;br&gt;
 --
 
+Dificil, pero no imposible. Largo...
 
-Usando `\(g(\hat{\theta}) \sim \mathcal{N}\big(g(\theta), g^{'}(\theta) \cdot SE_{\hat{\theta}} \big)\)` obtenemos...
---
+---
+class: inverse, center, middle
+
+## Bootstrap Method 
+
+---
+## Bootstrap Method 
+
+.center[
+![boots](boots.jpg)
+]
+
+
+---
+## Bootstrap Method 
 
 .pull-left[
-.content-box-blue[
+![boots](rambo.jpg)
 
-- `\(g(\hat{\beta}_{ym}) = e^{\hat{\beta}_{ym}}\)`
-
-- `\(\mathbb{E}(e^{\hat{\beta}_{ym}}) = e^{\beta_{ym}}\)`
-
-- `\(g^{'}(\beta_{ym}) =  e^{\beta_{ym}}\)` 
-
-- `\(SE_{e^{\hat{\beta}_{ym}}} = e^{\beta_{ym}} \cdot SE_{\hat{\beta}_{ym}}\)`
-]
 ]
 
 --
 
 .pull-right[
-.content-box-yellow[
-`$$e^{\hat{\beta}_{ym}} \sim \mathcal{N}\big(e^{\beta_{ym}}, e^{\beta_{ym}} \cdot SE_{\hat{\beta}_{ym}} \big)$$`
+![boots](boots.jpg)
 ]
 
-Remplazar el parámetro "verdadero" `\(\beta_{ym}\)` por nuestro "estimate" en muestra.
+---
+## Bootstrap Method 
 
+.bold[Intuición:]
+
+--
+
+- Estimamos un modelo y tenemos una cierta "cantidad de interés" (estimate)
+
+--
+
+
+- No conocemos la distribución nuestro estimate a través de infinitas muestras porque sólo tenemos una muestra. 
+
+--
+
+- Tampoco tenemos conocimiento teórico sobre la distribución de nuestro estimate.
+
+--
+
+- Podemos tomar muestras de nuestra muestra, preservando cualquier distribución desconocida subyacente.
+
+--
+
+- Podemos observar y estudiar el comportamiento de nuestro estimate en estas muestras de nuestras muestras.
+
+---
+## Bootstrap Method 
+
+.bold[Muestrando desde la muestra:]
+
+¿Cuántas muestras podemos tomar (con reemplazo) a partir de nuestra muestra?
+--
+ .bold[Respuesta]: `\(n^n\)`
+
+&lt;br&gt;
+--
+
+`$$\text{muestra} : \left[\begin{array}{@{}c@{}}
+    1 \\
+    2 \\
+    3 
+    \end{array} \right]$$`
+
+&lt;br&gt;
+--
+
+`$$\text{posibles muestras de la muesta:} \left[\begin{array}{@{}c@{}} 
+    1 \\
+    1 \\
+    1 
+    \end{array} \right] 
+    \text{ o}  \left[\begin{array}{@{}c@{}} 
+    1 \\
+    1 \\
+    2 
+    \end{array} \right] 
+    \text{ o}  \left[\begin{array}{@{}c@{}} 
+    1 \\
+    3 \\
+    2 
+    \end{array} \right] 
+    \text{ o}  \left[\begin{array}{@{}c@{}} 
+    3 \\
+    1 \\
+    2 
+    \end{array} \right] 
+    \text{ o}  \left[\begin{array}{@{}c@{}} 
+    3 \\
+    3 \\
+    3 
+    \end{array} \right]  ...$$`
+
+---
+## Bootstrap Method
+
+.bold[Esquema del algoritmo] (Bootstrap no paramétrico):
+
+--
+
+1. Asume que la distribución empírica del los datos `\(\hat{F}(X)\)` refleja la distribución de probabilidad de las variables de interés `\(F(X)\)`.
+
+--
+
+2. A partir de la muestra obtenén una muestra aleatoria del mismo tamaño que la muestra original (N), con reemplazo:  `\(X_{b}\)`
+
+--
+
+3. Calcula el estimate de interés en dicha muestra de la muestra: `\(\hat{\theta_{b}} = g(X_{b})\)`.
+
+--
+
+4. Repite los pasos 2 y 3 un gran número de veces B.
+
+--
+
+5. El conjunto de B resultados obtenidos corresponde a la "Bootstrap distribution" del estimate.
+
+--
+
+6. Evalúa la distribución del estimate (SE,CI, etc)
+
+---
+## Bootstrap Method: ejemplo empírico (1)
+
+A partir de `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)`, calculemos un IC al 95% para el coeficiente de  "years of marriage": `\(\beta_{2}\)`
+
+--
+
+
+```r
+# Escribir una función que ejecute re-sampling y la estimación
+bs_beta2  &lt;- function(x) {
+  data_b  &lt;- sample_n(affairsdata,size=nrow(affairsdata),replace=TRUE)
+  logit_b &lt;- glm(everaffair_d ~ factor(sex) + ym, family=binomial(link="logit"), data=data_b)
+  beta2_b &lt;- logit_b$coefficients[3]
+  return(beta2_b)
+}
+
+# Iterar función y almacenar resultados 
+nreps = 500
+betas2_bs &lt;- replicate(nreps,bs_beta2() )
+
+head(betas2_bs)
+```
+
+```
+##         ym         ym         ym         ym         ym         ym 
+## 0.07257291 0.03981730 0.03861407 0.04865359 0.07015028 0.08475544
+```
+
+---
+## Bootstrap Method: ejemplo empírico (1)
+
+.pull-left[
+
+```r
+se_beta2_delta &lt;- sd(betas2_bs)
+se_beta2_delta
+```
+
+```
+## [1] 0.01743355
+```
+
+```r
+ci_beta2_delta &lt;- 
+  quantile(betas2_bs, p=c(0.025,0.975))
+  ci_beta2_delta
+```
+
+```
+##       2.5%      97.5% 
+## 0.02475593 0.09305305
+```
+]
+
+.pull-right[
+![](class_11_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
 ]
 
 
+---
+## Bootstrap Method: ejemplo empírico (1)
+
+
+¿Un IC al 95% para efecto el de "years of marriage" como .bold["odds ratio"]: `\(e^{\beta_{2}}\)`? 
+
+Bootstrapeando ...
+--
+
+.img-right-bottom2[
+![easy](easy.gif)
+]
+
+
+--
+
+&lt;br&gt;
+
+
+```r
+# Escribir una función que ejecute re-sampling y la estimación
+bs_expbeta2  &lt;- function(x) {
+  data_b  &lt;- sample_n(affairsdata,size=nrow(affairsdata),replace=TRUE)
+  logit_b &lt;- glm(everaffair_d ~ factor(sex) + ym, family=binomial(link="logit"), data=data_b)
+  expbeta2_b &lt;- exp(logit_b$coefficients[3])
+  return(expbeta2_b)
+}
+
+# Iterar función y almacenar resultados 
+nreps = 500 
+expbetas2_bs &lt;- replicate(nreps,bs_expbeta2() )
+
+head(betas2_bs)
+```
+
+```
+##         ym         ym         ym         ym         ym         ym 
+## 0.07257291 0.03981730 0.03861407 0.04865359 0.07015028 0.08475544
+```
 
 ---
 class: inverse, center, middle
@@ -527,10 +736,6 @@ class: inverse, center, middle
 Mauricio Bucca &lt;br&gt;
 https://mebucca.github.io/ &lt;br&gt;
 github.com/mebucca
-
-
-
-
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
