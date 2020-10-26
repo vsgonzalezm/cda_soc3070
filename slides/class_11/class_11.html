@@ -60,9 +60,10 @@ donde,
 
 donde, 
 
+.content-box-blue[
 `$$\underbrace{\ln \frac{p_{i}}{1 - p_{i}}}_{\text{Link logit}(p_{i})} = \overbrace{\beta_{0} + \beta_{1} x_{i1} + \dots + \beta_{k} x_{ik}}^{\text{Predictor lineal  } \eta_{i}}$$`
+]
 
-&lt;br&gt;
 --
 
 - .bold[Inferencia]: ¿que podemos decir sobre `\(\hat{\beta}_{0},\hat{\beta}_{1}, \dots, \hat{\beta}_{k}\)`  (o cualquier producto de éstos) más allá de nuestra muestra?
@@ -70,7 +71,7 @@ donde,
 ---
 class: inverse, center, middle
 
-## Inferencia estadística para GLMs
+## Inferencia estadística para regresión logística (y GLMs)
 
 
 ---
@@ -137,6 +138,8 @@ Ejemplo, un intervalo al 95% de confianza está dado por:
 ---
 ## Inferencia acerca de parámetros del modelo: tests
 
+--
+
 .middle[
 .center[
 ![tests](ttest_gelman.png)
@@ -145,9 +148,13 @@ Ejemplo, un intervalo al 95% de confianza está dado por:
 ]
 
 ---
-## Inferencia acerca de parámetros del modelo: intervalos de confianza
+## Inferencia acerca de parámetros del modelo: ejemplo empírico
 
 
+
+Retomando nuestro modelo de clases anteriores: `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)`
+
+--
 
 
 ```
@@ -163,7 +170,11 @@ Ejemplo, un intervalo al 95% de confianza está dado por:
 
 --
 
-Intervalo de confianza al 95% para coeficiente de "years of marriage"
+.content-box-blue[
+.bold[Calculemos un IC al 95% para efecto el de "years of marriage" sobre el logit de ser infiel:] `\(\beta_{2}\)`
+]
+
+--
 
 
 ```r
@@ -196,6 +207,23 @@ confint(logit_affairs_sex_ym)
 
 
 ---
+## Inferencia acerca de parámetros del modelo: ejemplo empírico
+
+--
+
+.content-box-blue[
+.bold[Calculemos ahora un IC al 95% para efecto multiplicativo de "years of marriage" sobre las odds de ser infiel:] `\(e^{\beta_{2}}\)`
+]
+
+--
+
+![michael](michael.gif)
+
+--
+
+¿Cuál es la sampling distribution de una función de nuestro estimate?
+
+---
 class: inverse, center, middle
 
 ## Delta Method
@@ -206,6 +234,7 @@ class: inverse, center, middle
 
 [Series de Taylor](https://en.wikipedia.org/wiki/Taylor_series) permiten aproximar el valor de una función `\(g(x)\)` -- potencialmente compleja -- usando una  una suma infinita de términos. Aquí la primera expansión de la serie:
 
+--
 
 $$g(x) \approx g(c) + g^{'}(c)(x - c) $$
 --
@@ -265,9 +294,6 @@ So what?
 &lt;br&gt;
 --
 
-- Si, tal como vimos, `\(\hat{\theta} \sim \mathcal{N}(\theta, \frac{\sigma_{\theta}}{\sqrt{n}})\)` ...
-
---
 
 - .bold[¿Cual es la distribución de] `\(g(\hat{\theta})\)`?
 
@@ -275,7 +301,7 @@ So what?
 ---
 ## Delta Method
 
-Dado,
+Dado
 `$$g(\hat{\theta}) \approx g(\theta) + g^{'}(\theta)(\hat{\theta} - \theta)$$`
 
 --
@@ -297,7 +323,7 @@ Dado,
 ---
 ## Delta Method
 
-Dado,
+Dado
 `$$g(\hat{\theta}) \approx g(\theta) + g^{'}(\theta)(\hat{\theta} - \theta)$$`
 --
 
@@ -324,37 +350,57 @@ Dado,
 
 Se puede mostrar tambien que `\(g(\hat{\theta})\)` distribuye normal.
 
+&lt;br&gt;
 --
 
 En particular:
 
+.content-box-blue[
 `$$g(\hat{\theta}) \sim \mathcal{N}\bigg(\mu=g(\theta), \sigma=g^{'}(\theta) SE_{\hat{\theta}} \bigg)$$` 
-
+]
 ---
-## Delta Method: ejemplo empírico (1)
-
-Retomando nuestro modelo de clases anteriores -- donde `\(p\)` es la probabilidad de haber tenido un affair:
-`$$\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}$$`
+## Delta Method: ejemplo empírico
 
 --
 
-Ahora calculemos un IC al 95% para efecto el de "years of marriage" como .bold["odds ratio"]: `\(e^{\beta_{2}}\)`
+Retomando nuestro modelo: `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)`
+
 
 --
 
-.img-right-small[
-![d](meme.png)
+.content-box-blue[
+.bold[Calculemos  IC al 95% para efecto multiplicativo de "years of marriage" sobre las odds de ser infiel:] `\(e^{\beta_{2}}\)`
 ]
 
 --
 
+Usando `\(g(\hat{\theta}) \sim \mathcal{N}\big(g(\theta), g^{'}(\theta) \cdot SE_{\hat{\theta}} \big)\)` obtenemos...
+
+.img-bottom-right[
+![d](easy.gif)
+]
+
+
+
+---
+## Delta Method: ejemplo empírico
+
+
+Retomando nuestro modelo: `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)`
+
+
+
+.content-box-blue[
+.bold[Calculemos IC al 95% para efecto multiplicativo de "years of marriage" sobre las odds de ser infiel:] `\(e^{\beta_{2}}\)`
+]
+
 
 Usando `\(g(\hat{\theta}) \sim \mathcal{N}\big(g(\theta), g^{'}(\theta) \cdot SE_{\hat{\theta}} \big)\)` obtenemos...
---
 
+
+--
 .pull-left[
 .content-box-blue[
-
 - `\(g(\hat{\beta}_{2}) = e^{\hat{\beta}_{2}}\)`
 
 - `\(\mathbb{E}(e^{\hat{\beta}_{2}}) = e^{\beta_{2}}\)`
@@ -372,14 +418,14 @@ Usando `\(g(\hat{\theta}) \sim \mathcal{N}\big(g(\theta), g^{'}(\theta) \cdot SE
 `$$e^{\hat{\beta}_{2}} \sim \mathcal{N}\big(e^{\beta_{2}}, e^{\beta_{2}} \cdot SE_{\hat{\beta}_{2}} \big)$$`
 ]
 
-Remplazar el parámetro "verdadero" `\(\beta_{2}\)` por nuestro "estimate" en muestra.
+Remplazar el parámetro "verdadero" por nuestro "estimate" en muestra.
 
 ]
 
 
 
 ---
-## Delta Method: ejemplo empírico (1)
+## Delta Method: ejemplo empírico
 
 
 ```
@@ -392,6 +438,8 @@ Remplazar el parámetro "verdadero" `\(\beta_{2}\)` por nuestro "estimate" en mu
 ## factor(sex)male  0.22157111 0.19064190  1.162237 2.451391e-01
 ## ym               0.05842959 0.01727402  3.382513 7.182590e-04
 ```
+
+--
 
 
 ```r
@@ -425,7 +473,7 @@ ci_expbeta2_delta &lt;- expbeta2 + c(-1.96,1.96)*se_expbeta2_delta; ci_expbeta2_
 &lt;/style&gt;
 
 ---
-## Delta Method: ejemplo empírico (1)
+## Delta Method: ejemplo empírico
 
 
 ```
@@ -438,6 +486,9 @@ ci_expbeta2_delta &lt;- expbeta2 + c(-1.96,1.96)*se_expbeta2_delta; ci_expbeta2_
 ## factor(sex)male  0.22157111 0.19064190  1.162237 2.451391e-01
 ## ym               0.05842959 0.01727402  3.382513 7.182590e-04
 ```
+
+--
+&lt;br&gt;
 
 Versión automática usando función `deltamethod` en paquete `msm`:
 
@@ -462,24 +513,43 @@ ci_expbeta2_delta &lt;- expbeta2 + c(-1.96,1.96)*se_expbeta2_delta; ci_expbeta2_
 
 
 ---
+## Delta Method: ejemplo empírico
 
-## Delta Method: ejemplo empírico (2)
+Continuando con nuestro modelo: `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)`
 
-A partir de `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)` 
+--
 
--  Calculemos ahora un IC al 95% para el Average Marginal Effect de"years of marriage" sobre la probabilidad de ser infiel
+.content-box-blue[
+.bold[Calculemos ahora IC al 95% para el Average Marginal Effect de"years of marriage" sobre la probabilidad de ser infiel]
+]
 
 
 --
 
-Usemos `\(g(\hat{\theta}) \sim \mathcal{N}\big(g(\theta), g^{'}(\theta) \cdot SE_{\hat{\theta}} \big)\)`  !!!
---
- Sólo necesitamos...
+Usando `\(g(\hat{\theta}) \sim \mathcal{N}\big(g(\theta), g^{'}(\theta) \cdot SE_{\hat{\theta}} \big)\)`, sólo necesitamos...
 
-&lt;br&gt;
---
+.img-bottom-right[
+![d](easy.gif)
+]
 
-- `\(g(\hat{\beta}_{2}) = \frac{1}{N} \sum^{N}_{i=1} \frac{\partial p_{i}}{\partial \text{ym}}= \hat{\beta}_{2} \cdot \Bigg(\frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i} )}}\Bigg) \Bigg(1 - \frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i})}}\Bigg)\)`
+---
+## Delta Method: ejemplo empírico
+
+Continuando con nuestro modelo: `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)`
+
+
+
+.content-box-blue[
+.bold[Calculemos ahora IC al 95% para el Average Marginal Effect de"years of marriage" sobre la probabilidad de ser infiel]
+]
+
+
+
+Usando `\(g(\hat{\theta}) \sim \mathcal{N}\big(g(\theta), g^{'}(\theta) \cdot SE_{\hat{\theta}} \big)\)`, sólo necesitamos...
+
+
+
+- `\(g(\hat{\beta}_{2}) = \frac{1}{N} \sum^{N}_{i=1} \frac{\partial p_{i}}{\partial \text{ym}}= \frac{1}{N} \sum^{N}_{i=1}  \hat{\beta}_{2} \cdot \Bigg(\frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i} )}}\Bigg) \Bigg(1 - \frac{1}{1 + e^{-(\beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i})}}\Bigg)\)`
 
 - `\(\mathbb{E}(\frac{1}{N} \sum^{N}_{i=1} \frac{\partial p_{i}}{\partial \text{ym}}) =  \dots\)`
 
@@ -491,26 +561,358 @@ Usemos `\(g(\hat{\theta}) \sim \mathcal{N}\big(g(\theta), g^{'}(\theta) \cdot SE
 ![scream](scream.gif)
 ]
 
+---
+class: inverse, center, middle
+
+## Simulation and Resampling Methods
+
+
+---
+## Métodos de simulación y re-muestreo para inferencia estadística
+
 &lt;br&gt;
 --
 
-Dificil, pero no imposible. Largo...
+- Incluso para estimadores muy simples es difícil (o imposible) determinar la distribución de la muestra.
+
+--
+
+- Cuando es posible, los resultados se basan en supuestos sobre distribución, comportamientos asintóticos y aproximaciones que no siempre se cumplen.  
+
+--
+
+- Los métodos de simulación y re-muestreo ofrecen una alternativa cuando no se dispone de soluciones analíticas (una formula conocida).
+
+--
+
+- Estos métodos son computacionalmente intensivos, lo que los hacía inviables en el pasado pero no actualmente.
+
+--
+
+- Dos métodos especialmente útiles:
+
+ - Monte Carlo Simulation
+ 
+ - Boostrapping
 
 ---
 class: inverse, center, middle
 
-## Bootstrap Method 
+## Monte Carlo Simulation
 
 ---
-## Bootstrap Method 
+## Monte Carlo Simulation
 
-.center[
-![boots](boots.jpg)
+
+![casino](mc_casino.jpg)
+---
+## Monte Carlo Simulation
+
+
+.bold[Intuición:]
+
+--
+
+- Estimamos un modelo y tenemos una cierta "cantidad de interés" (estimate)
+
+--
+
+
+- No conocemos la distribución de nuestro estimate a través de infinitas muestras porque sólo tenemos una muestra. 
+
+
+--
+
+- Tampoco tenemos conocimiento teórico sobre la distribución de nuestro estimate.
+
+--
+
+- Sin embargo, "conocemos" la distribución de nuestros datos y sus parámetros, por tanto, podemos generar muestras aleatorias.
+
+--
+
+- Podemos observar y estudiar el comportamiento de nuestro estimate en estas muestras generadas aleatoriamente.
+
+---
+## Monte Carlo Simulation
+
+.bold[Esquema del algoritmo]:
+
+--
+
+1. Asume una la distribución los datos.
+
+
+--
+
+2. Usando la distribución asumida y los parámetros estimados (en nuestro caso, `\(y \sim \text{Binomial}(\hat{p} = \text{logit}^{-1}(X\hat{\theta}))\)` ), genera una muestra aleatoriad de datos `\(y_{m}\)`
+
+--
+
+3. Regresiona `\(y_{m}\)` y `\(X\)` para obtener el estimate `\(\hat{\theta}_{m}\)` 
+
+--
+
+4. Repite los pasos 2 y 3  M veces (número grande).
+
+--
+
+5. El conjunto de M resultados obtenidos corresponde a la "Monte Carlo distribution" del estimate.
+
+--
+
+6. Evalúa la distribución del estimate (SE,CI, etc) o de cualquier cantidad derivada de éste.
+
+
+---
+## Monte Carlo Simulation: ejemplo empírico
+
+Siguiendo con `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)`, 
+--
+
+.content-box-blue[
+.bold[Calculemos un IC al 95% para efecto el de "years of marriage" sobre el logit de ser infiel:] `\(\beta_{2}\)`
+]
+
+--
+
+
+```r
+# Escribir una función que ejecute re-sampling y la estimación
+mc_beta2  &lt;- function(x) {
+  p_hat   &lt;- predict(logit_affairs_sex_ym, type="response")
+  y_m     &lt;- rbinom(n=length(p_hat),size=1,prob=p_hat)
+  logit_m &lt;- glm(y_m ~ factor(affairsdata$sex) + affairsdata$ym, family=binomial(link="logit"))
+  beta2_m &lt;- logit_m$coefficients[3]
+  return(ym=beta2_m)
+}
+# Iterar función y almacenar resultados 
+nreps = 2000
+betas2_mc &lt;- replicate(nreps,mc_beta2()); head(betas2_mc)
+```
+
+```
+## affairsdata$ym affairsdata$ym affairsdata$ym affairsdata$ym affairsdata$ym 
+##     0.05146268     0.05560868     0.06016580     0.04846167     0.02811260 
+## affairsdata$ym 
+##     0.05555154
+```
+
+---
+## Monte Carlo Simulation: ejemplo empírico
+
+--
+
+.pull-left[
+
+```r
+betasall_mc &lt;- sim(logit_affairs_sex_ym, n.sims=2000)@coef
+betasall_mc %&gt;% head(4)
+```
+
+```
+##      (Intercept) factor(sex)male         ym
+## [1,]   -1.698518    -0.004230119 0.06917410
+## [2,]   -1.741403     0.389068043 0.05508404
+## [3,]   -1.513140     0.202690967 0.03834317
+## [4,]   -1.622648     0.152309530 0.04851111
+```
+
+```r
+se_beta2_mc &lt;- sd(betasall_mc[,"ym"]); se_beta2_mc
+```
+
+```
+## [1] 0.01700079
+```
+
+```r
+ci_beta2_mc &lt;- 
+  quantile(betasall_mc[,"ym"], p=c(0.025,0.975))
+  ci_beta2_mc
+```
+
+```
+##       2.5%      97.5% 
+## 0.02620450 0.09114127
+```
+]
+
+--
+
+.pull-right[
+![](class_11_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+]
+
+---
+## Monte Carlo Simulation: ejemplo empírico
+
+.content-box-blue[
+¿Un IC al 95% para efecto el de "years of marriage" como .bold["odds ratio"]: `\(e^{\beta_{2}}\)`? 
+]
+
+Simulando ...
+--
+
+.img-right-bottom2[
+![easy](easy.gif)
+]
+
+--
+
+
+```r
+betasall_mc &lt;- sim(logit_affairs_sex_ym, n.sims=2000)@coef
+expbetasall_mc &lt;- exp(betasall_mc)
+expbetasall_mc %&gt;% head()
+```
+
+```
+##      (Intercept) factor(sex)male       ym
+## [1,]   0.1848239       0.9555037 1.054114
+## [2,]   0.1618621       1.4213703 1.063487
+## [3,]   0.1325152       1.3378590 1.084000
+## [4,]   0.1999550       1.0681191 1.060567
+## [5,]   0.2556474       1.4339205 1.020179
+## [6,]   0.1227470       1.1098605 1.104933
+```
+
+
+---
+## Monte Carlo Simulation: ejemplo empírico
+
+--
+
+.pull-left[
+
+```r
+se_exbeta2_mc &lt;- sd(expbetasall_mc[,"ym"]); se_exbeta2_mc
+```
+
+```
+## [1] 0.01851656
+```
+
+```r
+ci_expbeta2_mc &lt;- 
+  quantile(expbetasall_mc[,"ym"], p=c(0.025,0.975))
+  ci_expbeta2_mc
+```
+
+```
+##     2.5%    97.5% 
+## 1.023863 1.097732
+```
+]
+
+--
+
+.pull-right[
+![](class_11_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+]
+
+---
+## Monte Carlo Simulation: ejemplo empírico
+
+
+.content-box-blue[
+.bold[Calculemos ahora IC al 95% para el Average Marginal Effect de"years of marriage" sobre la probabilidad de ser infiel]
+]
+
+
+--
+
+Simulando ...
+
+.img-bottom-right[
+![easy](easy.gif)
 ]
 
 
 ---
-## Bootstrap Method 
+## Monte Carlo Simulation: ejemplo empírico
+
+
+.content-box-blue[
+.bold[Calculemos ahora IC al 95% para el Average Marginal Effect de"years of marriage" sobre la probabilidad de ser infiel]
+]
+
+--
+
+
+Simulando ...
+
+
+
+```r
+mc_ame_beta2  &lt;- function(x) {
+  p_hat   &lt;- predict(logit_affairs_sex_ym, type="response")
+  y_m     &lt;- rbinom(n=length(p_hat),size=1,prob=p_hat)
+  logit_m &lt;- glm(y_m ~ factor(affairsdata$sex) + affairsdata$ym, family=binomial(link="logit"))
+  p_hat_m &lt;- predict(logit_m, type="response")
+  beta2_m &lt;- logit_m$coefficients[3]
+  me_m    &lt;-  beta2_m*p_hat_m*(1-p_hat_m) 
+  ame_m   &lt;- mean(me_m)
+  return(ame_m)
+}
+# Iterar función y almacenar resultados 
+nreps = 2000
+ame_ym_mc &lt;- replicate(nreps,mc_ame_beta2()); head(ame_ym_mc,4)
+```
+
+```
+## [1] 0.008883067 0.014971353 0.008348255 0.011654252
+```
+
+---
+## Monte Carlo Simulation: ejemplo empírico
+
+
+.pull-left[
+
+```r
+p_hat   &lt;- predict(logit_affairs_sex_ym, type = "response")
+me_ym   &lt;- beta2*p_hat*(1-p_hat)
+ame_ym  &lt;- mean(me_ym); ame_ym
+```
+
+```
+## [1] 0.01070277
+```
+
+```r
+se_ame_ym_bs &lt;- sd(ame_ym_mc); se_ame_ym_bs 
+```
+
+```
+## [1] 0.003076942
+```
+
+```r
+ci_ame_ym_mc &lt;- 
+  quantile(ame_ym_mc, p=c(0.025,0.975))
+  ci_ame_ym_mc
+```
+
+```
+##        2.5%       97.5% 
+## 0.004690266 0.016804841
+```
+]
+
+--
+
+.pull-right[
+![](class_11_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+]
+
+---
+
+&lt;br&gt;
+
+.bold[¿Y si ni siquiera conocemos la distribución de nuestros datos?]
+--
+.bold[¿Y si nuestro modelo no es paramétrico?]
 
 .pull-left[
 ![boots](rambo.jpg)
@@ -522,6 +924,11 @@ class: inverse, center, middle
 .pull-right[
 ![boots](boots.jpg)
 ]
+
+---
+class: inverse, center, middle
+
+## Bootstrap Method 
 
 ---
 ## Bootstrap Method 
@@ -603,15 +1010,15 @@ class: inverse, center, middle
 
 --
 
-1. Asume que la distribución empírica del los datos `\(\hat{F}(X)\)` refleja la distribución de probabilidad de las variables de interés `\(F(X)\)`.
+1. Asume que la distribución empírica del los datos refleja la distribución de probabilidad de las variables de interés.
 
 --
 
-2. A partir de la muestra obtenén una muestra aleatoria del mismo tamaño que la muestra original (N), con reemplazo:  `\(X_{b}\)`
+2. A partir de la muestra obtenén una muestra aleatoria del mismo tamaño que la muestra original (N), con reemplazo:  `\((y_{b},X_{b})\)`
 
 --
 
-3. Calcula el estimate de interés en dicha muestra de la muestra: `\(\hat{\theta_{b}} = g(X_{b})\)`.
+3. Regresiona `\(y_{b}\)` y `\(X_{b}\)` para obtener el estimate `\(\hat{\theta}_{b}\)` 
 
 --
 
@@ -623,12 +1030,17 @@ class: inverse, center, middle
 
 --
 
-6. Evalúa la distribución del estimate (SE,CI, etc)
+6. Evalúa la distribución del estimate (SE,CI, etc) o de cualquier cantidad derivada de éste.
 
 ---
-## Bootstrap Method: ejemplo empírico (1)
+## Bootstrap Method: ejemplo empírico 
 
-A partir de `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)`, calculemos un IC al 95% para el coeficiente de  "years of marriage": `\(\beta_{2}\)`
+Siguiendo con `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)`, 
+--
+
+.content-box-blue[
+.bold[Calculemos un IC al 95% para efecto el de "years of marriage" sobre el logit de ser infiel:] `\(\beta_{2}\)`
+]
 
 --
 
@@ -643,65 +1055,74 @@ bs_beta2  &lt;- function(x) {
 }
 
 # Iterar función y almacenar resultados 
-nreps = 500
-betas2_bs &lt;- replicate(nreps,bs_beta2() )
-
-head(betas2_bs)
+nreps = 2000
+betas2_bs &lt;- replicate(nreps,bs_beta2()); head(betas2_bs)
 ```
 
 ```
 ##         ym         ym         ym         ym         ym         ym 
-## 0.07257291 0.03981730 0.03861407 0.04865359 0.07015028 0.08475544
+## 0.07743217 0.07533579 0.04380318 0.07109119 0.07599709 0.04344652
 ```
 
 ---
-## Bootstrap Method: ejemplo empírico (1)
+## Bootstrap Method: ejemplo empírico 
 
 .pull-left[
 
 ```r
-se_beta2_delta &lt;- sd(betas2_bs)
-se_beta2_delta
+se_beta2_bs &lt;- sd(betas2_bs)
+se_beta2_bs
 ```
 
 ```
-## [1] 0.01743355
+## [1] 0.01648759
 ```
 
 ```r
-ci_beta2_delta &lt;- 
+ci_beta2_bs &lt;- 
   quantile(betas2_bs, p=c(0.025,0.975))
-  ci_beta2_delta
+  ci_beta2_bs
 ```
 
 ```
 ##       2.5%      97.5% 
-## 0.02475593 0.09305305
+## 0.02585743 0.09117889
 ```
 ]
 
-.pull-right[
-![](class_11_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
-]
-
-
----
-## Bootstrap Method: ejemplo empírico (1)
-
-
-¿Un IC al 95% para efecto el de "years of marriage" como .bold["odds ratio"]: `\(e^{\beta_{2}}\)`? 
-
-Bootstrapeando ...
 --
 
-.img-right-bottom2[
+.pull-right[
+![](class_11_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+]
+
+---
+## Bootstrap Method: ejemplo empírico 
+
+.content-box-blue[
+¿Un IC al 95% para efecto el de "years of marriage" como .bold["odds ratio"]: `\(e^{\beta_{2}}\)`? 
+]
+
+--
+
+Bootstrapeando ...
+
+
+.img-bottom-right[
 ![easy](easy.gif)
 ]
 
 
---
+---
+## Bootstrap Method: ejemplo empírico 
 
-&lt;br&gt;
+.content-box-blue[
+¿Un IC al 95% para efecto el de "years of marriage" como .bold["odds ratio"]: `\(e^{\beta_{2}}\)`? 
+]
+
+
+Bootstrapeando ...
+
 
 
 ```r
@@ -714,16 +1135,151 @@ bs_expbeta2  &lt;- function(x) {
 }
 
 # Iterar función y almacenar resultados 
-nreps = 500 
-expbetas2_bs &lt;- replicate(nreps,bs_expbeta2() )
-
-head(betas2_bs)
+nreps = 2000 
+expbetas2_bs &lt;- replicate(nreps,bs_expbeta2()); head(expbetas2_bs)
 ```
 
 ```
-##         ym         ym         ym         ym         ym         ym 
-## 0.07257291 0.03981730 0.03861407 0.04865359 0.07015028 0.08475544
+##       ym       ym       ym       ym       ym       ym 
+## 1.063435 1.041132 1.061592 1.063071 1.041011 1.056147
 ```
+
+---
+## Bootstrap Method: ejemplo empírico 
+
+.pull-left[
+
+```r
+se_expbeta2_bs &lt;- sd(expbetas2_bs)
+se_expbeta2_bs
+```
+
+```
+## [1] 0.01763901
+```
+
+```r
+ci_expbeta2_bs &lt;- 
+  quantile(expbetas2_bs, p=c(0.025,0.975))
+  ci_expbeta2_bs
+```
+
+```
+##     2.5%    97.5% 
+## 1.026531 1.096067
+```
+]
+
+--
+
+.pull-right[
+![](class_11_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
+]
+
+---
+## Bootstrap Method: ejemplo empírico
+
+.content-box-blue[
+.bold[Calculemos ahora IC al 95% para el Average Marginal Effect de"years of marriage" sobre la probabilidad de ser infiel]
+]
+
+--
+
+Bootstrapeando ...
+
+.img-bottom-right[
+![easy](easy.gif)
+]
+
+
+---
+## Bootstrap Method: ejemplo empírico
+
+.content-box-blue[
+.bold[Calculemos ahora IC al 95% para el Average Marginal Effect de"years of marriage" sobre la probabilidad de ser infiel]
+]
+
+
+Bootstrapeando ...
+
+
+```r
+# Escribir una función que ejecute re-sampling y la estimación
+bs_ame_ym  &lt;- function(x) {
+  data_b   &lt;- sample_n(affairsdata,size=nrow(affairsdata),replace=TRUE)
+  logit_b  &lt;- glm(everaffair_d ~ factor(sex) + ym, family=binomial(link="logit"), data=data_b)
+  beta2_b  &lt;- logit_b$coefficients[3]
+  p_hat_b  &lt;- predict(logit_b, type = "response")
+  me_ym_b   &lt;- beta2_b*p_hat_b*(1-p_hat_b)
+  return(ame_ym_b = mean(me_ym_b))
+}
+
+# Iterar función y almacenar resultados 
+nreps = 2000 
+ame_ym_bs &lt;- replicate(nreps,bs_ame_ym()); head(ame_ym_bs)
+```
+
+```
+## [1] 0.017796591 0.009229415 0.011059382 0.009350072 0.011967101 0.012932793
+```
+
+
+---
+## Bootstrap Method: ejemplo empírico
+
+.pull-left[
+
+```r
+p_hat   &lt;- predict(logit_affairs_sex_ym, type = "response")
+me_ym   &lt;- beta2*p_hat*(1-p_hat)
+ame_ym  &lt;- mean(me_ym); ame_ym
+```
+
+```
+## [1] 0.01070277
+```
+
+```r
+se_ame_ym_bs &lt;- sd(ame_ym_bs)
+se_ame_ym_bs
+```
+
+```
+## [1] 0.003004656
+```
+
+```r
+ci_ame_ym_bs &lt;- 
+  quantile(ame_ym_bs, p=c(0.025,0.975))
+  ci_ame_ym_bs
+```
+
+```
+##        2.5%       97.5% 
+## 0.004705823 0.016534069
+```
+]
+
+--
+
+.pull-right[
+![](class_11_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
+]
+
+---
+## Bootstrap Method: más ... 
+
+
+
+.pull-left[
+![](class_11_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
+]
+
+--
+
+.pull-right[
+![](class_11_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+]
 
 ---
 class: inverse, center, middle

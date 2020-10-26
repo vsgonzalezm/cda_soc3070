@@ -120,7 +120,15 @@ strong {
 .img-right-bottom{
   height: 200px;
   width: 200px;
-  top: 64%;
+  top: 69%;
+  left: 65%;
+  position: absolute;
+}
+
+.img-bottom-right{
+  height: 250px;
+  width: 250px;
+  top: 54%;
   left: 65%;
   position: absolute;
 }
