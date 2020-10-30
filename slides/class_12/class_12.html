@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Análisis de Datos Categóricos (SOC3070)</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="  Mauricio Bucca  Profesor Asistente, Sociología UC" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="gentle-r.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Análisis de Datos Categóricos (SOC3070)
+## Clase #11
+### <br> Mauricio Bucca<br> Profesor Asistente, Sociología UC
+### <a href="https://github.com/mebucca">github.com/mebucca</a>
+
+---
+
+class: inverse, center, middle
+#Ajuste y comparación de modelos
+
+---
+class: inverse, center, middle
+
+##Deviance
+
+---
+## Comparación entre modelos
+
+
+
+
+Retomando nuestro modelo de clases anteriores: `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)`
+
+--
+
+
+```
+##              Estimate Std. Error   z value     Pr(&gt;|z|)
+## (Intercept) -1.608587 0.18327371 -8.776966 1.679433e-18
+## ym           0.058822 0.01724147  3.411658 6.456917e-04
+```
+
+```
+## [1] "log-likelihood: -331.75 Deviance: 663.5"
+```
+
+```
+## [1] "AIC: 667.5 BIC: 676.297"
+```
+
+&lt;br&gt;
+--
+
+¿Cómo saber si este modelo "complejo" (2 predictores) tiene un desempeño sustancialmente mejor un sub-modelo, más simple)
+
+
+```
+##                    Estimate Std. Error   z value     Pr(&gt;|z|)
+## (Intercept)     -1.71395429 0.20633183 -8.306786 9.832929e-17
+## ym               0.05842959 0.01727402  3.382513 7.182590e-04
+## factor(sex)male  0.22157111 0.19064190  1.162237 2.451391e-01
+```
+
+```
+## [1] "log-likelihood: -331.074 Deviance: 662.148"
+```
+
+```
+## [1] "AIC: 668.148 BIC: 681.344"
+```
+
+
+---
+## Likelihood del modelo
+
+Recordar que cada observación es una manifestación de una variable Bernoulli:
+
+
+`\(Y_{i} \sim \text{Bernoulli}(p_{i}) \quad \text{ es decir } \quad \mathbb{P}(Y_{i}= y) = p_{i}^{y}(1-p_{i})^{1-y} \quad \text{ donde } \quad y \in \{0,1\}\)`
+
+--
+
+Por tanto, la probabilidad de observar estos datos es descrita por la siguiente función:
+
+`$$\mathbb{P}(y_{1}, \dots, y_{1}) = \Pi_{i=1}^{n} p_{i}^{y_{i}}(1-p_{i})^{1-y_{i}}$$`
+&lt;br&gt;
+--
+
+En consecuencia, la .bold[likelihood function] de `\(p_{i}\)` es:
+
+`$$\mathcal{L}(p_{i} \mid y_{1}, \dots, y_{1}) = \Pi_{i=1}^{n} p_{i}^{y_{i}}(1-p_{i})^{1-y_{i}}$$`
+
+--
+
+y la .bold[log likelihood function] de `\(p_{i}\)` es:
+
+
+`$$\ell\ell(p_{i} \mid y_{1}, \dots, y_{1}) = \sum_{i=1}^{n} \bigg( y_{i} \ln p_{i} + (1-y_{i}) \ln(1-p_{i}) \bigg)$$`
+
+
+donde: `\(p_{i} =\frac{1}{1 + e^{-(\beta_{0} + \beta_{1}x_{i} + \dots \beta_{k}x_{k}})}\)`
+
+
+---
+## Likelihood del modelo
+
+
+.bold[Implentación en] `R`:
+ 
+
+```r
+ll &lt;- function(b0,b1,b2) {
+  y = affairsdata$everaffair_d
+  eta = b0  + b1*affairsdata$ym + b2*I(1*(affairsdata$sex=="male"))
+  ell = sum( y*log(1/(1 + exp(-eta))) +  (1-y)*log(1 - (1/(1 + exp(-eta)))))
+  return(ll = ell)
+}
+```
+
+--
+
+
+```r
+ll(b0=1.2,b1=0.7,b2=1)
+```
+
+```
+## [1] -3204.082
+```
+
+--
+
+
+```r
+ll(b0=1.2,b1=0.7,b2=0)
+```
+
+```
+## [1] -3001.423
+```
+---
+## Likelihood del modelo M
+
+En nuestro ejemplo empírico: `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)`
+--
+
+.pull-left[
+
+```
+##              Estimate Std. Error
+## (Intercept) -1.608587 0.18327371
+## ym           0.058822 0.01724147
+```
+
+```
+## [1] "log-likelihood: -331.75"
+```
+]
+.pull-right[
+
+```
+##                    Estimate Std. Error
+## (Intercept)     -1.71395429 0.20633183
+## ym               0.05842959 0.01727402
+## factor(sex)male  0.22157111 0.19064190
+```
+
+```
+## [1] "log-likelihood: -331.074"
+```
+]
+
+--
+
+
+```r
+# log-likelihood modelos
+ll_m0 &lt;- ll(b0=-1.608587,b1=0.058822,b2=0)
+ll_m1 &lt;- ll(b0=-1.71395429,b1=0.05842959,b2=0.22157111)
+print(paste0("ll modelo 0: ",ll_m0,"ll modelo 1: ",ll_m1))
+```
+
+```
+## [1] "ll modelo 0: -331.750092041096ll modelo 1: -331.074096822558"
+```
+
+--
+
+El modelo más complejo es "mejor" que el modelo más simple, pero ...
+--
+ ¿Es .bold[signicativamente mejor]?
+ 
+
+---
+## Likelihood del model "saturado"
+
+`$$\newcommand{\vect}[1]{\boldsymbol{#1}}$$`
+
+- .bold[Modelo saturado] ( `\(M_S\)` ): es el modelo que asume que cada observación tiene sus propios parámetros, es decir, estima  `\(n\)`-parámetros, `\(\vect{\beta}_{S}\)`. El modelo saturado describe perfectamente los datos: mejor "fit" posible, pero el menos "parsimonioso".
+
+--
+
+  - La log-likelihood de este modelo es `\(\ell\ell_{S}: \ell\ell(\vect{\beta}_{S} | \vect{y})\)`, donde `\(\ell\ell_{S}\)` es mayor que la likelihood de cualquier otro modelo para los mismos datos, asumiendo misma distribución y misma función de enlace.
+  
+&lt;br&gt;
+--
+
+
+```r
+# modelo saturado 
+id = seq(1:length(affairsdata$everaffair_d))
+logit_affairs_sex_sat &lt;-  glm(everaffair_d ~ factor(id) , family=binomial(link="logit"), 
+                              data=affairsdata)
+
+ll_sat &lt;- logLik(logit_affairs_sex_sat); ll_sat
+```
+
+```
+## 'log Lik.' -1.743274e-09 (df=601)
+```
+
+--
+
+Prácticamente, `\(\ell\ell_{S}=0\)`. ¿Por qué?
+
+---
+## Likelihood del model "nulo"
+
+
+- .bold[Modelo nulo] ( `\(M_0\)` ): es el modelo que asume que cada observación tiene sus propios parámetros, es decir, estima  `\(n\)`-parámetros, `\(\vect{\beta}_{0}\)`. El modelo saturado describe perfectamente los datos: mejor "fit" posible, pero el menos "parsimonioso".
+
+--
+
+  - La log-likelihood de este modelo es `\(\ell\ell_{0}: \ell\ell(\beta_{0} | \vect{y})\)`, donde `\(\ell\ell_{0}\)` es menor que la likelihood de cualquier otro modelo.
+  
+&lt;br&gt;
+--
+
+
+```r
+# modelo saturado 
+id = seq(1:length(affairsdata$everaffair_d))
+logit_affairs_sex_sat &lt;-  glm(everaffair_d ~ factor(id) , family=binomial(link="logit"), 
+                              data=affairsdata)
+
+ll_sat &lt;- logLik(logit_affairs_sex_sat); ll_sat
+```
+
+```
+## 'log Lik.' -1.743274e-09 (df=601)
+```
+
+--
+
+Prácticamente, `\(\ell\ell_{S}=0\)`. ¿Por qué?
+
+
+---
+## Likelihood ratio
+
+`\begin{align}
+&amp;\text{LR}: \frac{\mathcal{L}_{S}}{\mathcal{L}_{M}}  \implies  \\ \\
+&amp;\log \text{LR} : \log \frac{\mathcal{L}_{S}}{\mathcal{L}_{M}} = \log\mathcal{L}_{S} - \log \mathcal{L}_{M} 
+\end{align}`
+
+
+`\begin{align}
+\text{Deviance} &amp;: 2 \log \text{LR} \\
+&amp;: 2 (\log\mathcal{L}_{S} - \log \mathcal{L}_{M} )
+\end{align}`
+
+
+---
+## Null Deviance y Residual Deviance
+
+`\begin{align}
+\log \bigg(\frac{\mathcal{L_S}}{} \bigg)
+\end{align}`
+
+
+Los modelos nulo y saturado sirven como referencia para evaluar el ajuste de un modelo. 
+
+- `\(\text{Deviance}: -2(\ell\ell_{M} - \ell\ell_{S})\)`, o "residual deviance"
+
+- `\(\text{Null Deviance}: -2(\ell\ell_{M} - \ell\ell_{0})\)`, o "residual deviance"
+
+---
+class: inverse, center, middle
+
+.huge[
+**Hasta la próxima clase. Gracias!**
+]
+
+&lt;br&gt;
+Mauricio Bucca &lt;br&gt;
+https://mebucca.github.io/ &lt;br&gt;
+github.com/mebucca
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

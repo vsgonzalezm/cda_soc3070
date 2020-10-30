@@ -659,7 +659,7 @@ betasall_mc %>% head(4)
 se_beta2_mc <- sd(betasall_mc[,"ym"]); se_beta2_mc
 
 ci_beta2_mc <- 
-  quantile(betasall_mc[,"ym"], p=c(0.025,0.975))
+  quantile(betasall_mc[,"ym"], p=c(0.06,0.975))
   ci_beta2_mc
 ```
 ]

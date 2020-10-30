@@ -1,0 +1,267 @@
+---
+title: "Ayudantía 5"
+subtitle: "Análisis de Datos Categóricos"
+author: "Roberto Velázquez"
+institute: 💻 📊 🎨🎻🎷 
+date: "29-10-2020"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default","default-fonts","gentle-r.css"]
+    df_print: default
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+editor_options: 
+  chunk_output_type: console
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+Trabajemos sobre los datos de la **National Survey of Culture and the Arts 2018** vista en la ayudantía pasada. Recordemos que la encuesta fue coordinada por el *National Endowment for the Arts USA* con un muestreo representativo de la población de EEUU. La muestra contiene 8609 y 10 de variables de interés.
+
+![](nefa.png)
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+.pull-left[
+- **Ejercicio:**
+
+En 2019 *The Art of the Steal* inauguró un interesante campo de discusión en torno al problema de la relación entre los públicos de arte y la estratificación de capital cultural de acuerdo al género, la raza, y la edad de los amantes de los museos. Don Argott notó a través del caso de los visitantes a museos en Philadelphiia, San Francisco, New York, Los Angeles, Dallas y Chicago el efecto de ciertas características sociodemográficas centrales en la sociedad estadounidense que es necesario profundizar en el actual contexto de la llamada globalización cultural y cosmopolitismo estético. 
+
+Así, parece interesante ajustar un modelo predictivo de la asistencia a museos en Estados Unidos (los cuales concentran el 45% de las colecciones de arte contemporáneo del mundo) como función de dichas variables. 
+]
+
+![](taos.png)
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+**1) Ajuste un modelo de regreesión logística que evalúe asistencia a museos en función del sexo, la raza, y la edad de los asistentes, incorporando sexo y raza como efecto multiplicativo (interacción).** 
+
+Formalmente:
+
+$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots e^{\beta_{k} x_{ik}}$$
+
+
+donde:
+
+- $e^{\beta_{k}}$ está restringido al rango $[0,\infty+)$. Es una constante que "comprime" o amplifica las odds de éxito.
+
+- Si $\beta_{k} < 0  \to  (0 < e^{\beta_{k}} < 1)$. Es decir, un aumento en $x_{k}$ está asociado con una reducción (multiplicativa) de las odds de éxito.
+
+- Si $\beta_{k} = 0  \to  (e^{\beta_{k}} =1)$. Es decir, un cambio en $x_{k}$ está asociado a un cambio nulo en las odds de éxito.
+
+- Si $\beta_{k} > 0  \to  (e^{\beta_{k}} > 1)$. Es decir, un aumento en $x_{k}$ está asociado a aumento (multiplicativo) en de las odds de éxito.
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+- Codififación de variables y ajuste de GLM: 
+
+```{r echo=TRUE, warning=FALSE, comment='#'}
+library(tibble)
+```
+
+```{r echo=TRUE, comment='#'}
+#Cargar base de datos
+load("nsca2018.Rda")
+tibble(data1)
+```
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+- Codififación de variables: 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, comment='#'}
+library(tidyverse)
+library(car)
+```
+
+```{r echo=TRUE, comment='#'}
+# Sintaxis
+#Conversión de factor a vector (tidyverse)
+data1 <- data1 %>% 
+  mutate(sexo_b = as.numeric(sexo))
+data1 <- data1 %>% 
+  mutate(museos_b = as.numeric(museos))
+data1 <- data1 %>% 
+  mutate(raza_b = as.numeric(raza))
+#Codificación dummies (car)
+data1$sexo_b <- recode(data1$sexo_b, "1=0; 2=1")
+data1$museos_b <- recode(data1$museos_b, "1=1; 2=0")
+data1$raza_b <- recode(data1$raza_b, "1=0; 2:26=1")
+```
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+- Ajuste de GLM:
+
+```{r echo=TRUE, comment='#'}
+#Estimación de GLM (Regresión logística)
+rl <- glm(1*museos_b ~ sexo_b*raza_b + edad, family = binomial(link=logit), data=data1)
+exp(summary(rl)$coefficients[,1])
+summary(rl)$coefficients
+```
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+- Ajuste de GLM:
+
+Formalmente (ejemplo de intercepto):
+
+$$\ln \frac{\mathbb{P}(\text{Asistir| Sexo=0, Raza=0, Edad=0, Sexo:Raza=0)}}{1 - \mathbb{P}(\text{Asistir| Sexo=0, Raza=0, Edad=0, Sexo:Raza=0)}} = \beta_{0}$$
+
+Y así al exponenciar:
+
+$$\frac{\mathbb{P}(\text{Asistir| Sexo=0, Raza=0, Edad=0, Sexo:Raza=0)}}{1 - \mathbb{P}(\text{Asistir| Sexo=0, Raza=0, Edad=0, Sexo:Raza=0)}} = e^{\beta_{0}}$$
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+**2) A partir del modelo estimado ( $\frac{p_i}{1-p_i}=\beta_{0} + \beta_{sexo} + \beta_{raza} + \beta_{edad} + \beta_{sexo*raza}$ ), calcule un IC al 95% para efecto de años de edad como "odds ratio", utilizando el Bootstrap Method.**
+
+--
+
+- Recuerde que el Bootstrap Method:
+
+1. Asume que la distribución empírica del los datos refleja la distribución de probabilidad de las variables de interés.
+
+2. A partir de la muestra obtenén una muestra aleatoria del mismo tamaño que la muestra original (N), con reemplazo:  $(y_{b},X_{b})$
+
+3. Regresiona $y_{b}$ y $X_{b}$ para obtener el estimate $\hat{\theta}_{b}$ 
+
+4. Repite los pasos 2 y 3 un gran número de veces B.
+
+5. El conjunto de B resultados obtenidos corresponde a la "Bootstrap distribution" del estimate.
+
+6. Evalúa la distribución del estimate (SE,CI, etc) o de cualquier cantidad derivada de éste.
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+**2) A partir del modelo estimado ( $\frac{p_i}{1-p_i}=\beta_{0} + \beta_{sexo} + \beta_{raza} + \beta_{edad} + \beta_{sexo*raza}$ ), calcule un IC al 95% para efecto de años de edad como "odds ratio", utilizando el Bootstrap Method.**
+
+```{r echo=TRUE, comment='#'}
+# Sintaxis
+# Función de resampling y estimación de modelo
+bs_expedad  <- function(x) {
+  data_bs  <- sample_n(data1,size=nrow(data1),replace=TRUE)
+  rl_bs <- glm(1*museos_b ~ sexo_b*raza_b + edad, family = binomial(link=logit), data=data_bs)
+  expbeta_bs <- exp(rl_bs$coefficients[4])
+  return(expbeta_bs)
+}
+
+# Iterar función y almacenar resultados
+nreps = 100 
+expbetas_bs <- replicate(nreps,bs_expedad()); head(expbetas_bs)
+```
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+**2) A partir del modelo estimado ( $\frac{p_i}{1-p_i}=\beta_{0} + \beta_{sexo} + \beta_{raza} + \beta_{edad} + \beta_{sexo*raza}$ ), calcule un IC al 95% para efecto de años de edad como "odds ratio", utilizando el Bootstrap Method.**
+
+```{r echo=TRUE, comment='#'}
+# Sintaxis
+# Cálculo de Standard Errors en base a Bootstrap Distribution
+se_expbeta_bs <- sd(expbetas_bs)
+se_expbeta_bs
+```
+
+```{r echo=TRUE, comment='#'}
+# Sintaxis
+# Cálculo de Intervalos de Confianza
+ci_expbeta_bs <- 
+  quantile(expbetas_bs, p=c(0.025,0.975))
+ci_expbeta_bs
+
+```
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+**3) Calcule un IC al 95% para  el Average Marginal Effect de edad sobre la probabilidad de haber asistido al museo, utilizando el Bootstrap Method.**
+
+```{r echo=TRUE, comment='#'}
+# Sintaxis
+# Función de resampling y estimación de modelo
+bs_ame_edad  <- function(x) {
+  data_bs  <- sample_n(data1,size=nrow(data1),replace=TRUE)
+  rl_bs <- glm(1*museos_b ~ sexo_b*raza_b + edad, family = binomial(link=logit), data=data_bs)
+  beta_bs <- rl_bs$coefficients[4]
+  p_hat_b  <- predict(rl_bs, type = "response")
+  me_edad_b   <- beta_bs*p_hat_b*(1-p_hat_b)
+  return(ame_edad_b = mean(me_edad_b))
+}
+  
+# Iterar función y almacenar resultados
+nreps = 100 
+ame_edad_bs <- replicate(nreps,bs_ame_edad()); head(ame_edad_bs)
+```
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+**3) Calcule un IC al 95% para  el Average Marginal Effect de edad sobre la probabilidad de haber asistido al museo, utilizando el Bootstrap Method.**
+
+```{r echo=TRUE, comment='#'}
+# Sintaxis
+# Cálculo de Standard Errors en base a Bootstrap Distribution
+se_ame_edad_bs <- sd(ame_edad_bs)
+se_ame_edad_bs
+```
+
+```{r echo=TRUE, comment='#'}
+# Sintaxis
+# Cálculo de Intervalos de Confianza
+ci_ame_edad_bs <- 
+  quantile(ame_edad_bs, p=c(0.025,0.975))
+  ci_ame_edad_bs
+
+```
+
+---
+
+# Referencias Sugeridas:
+
+• Laurie Hanquinet & Mike Savage (2016). Routledge International Handbook of the Sociology of Art and Culture. London: Routledge.
+
+• Hadley Wickham (2015). Advanced R, CRC Press, Taylor & Francis Group, Boca Raton, FL. En https://adv-r.hadley.nz/
+
+• Hadley Wickham and Garrett Grolemund (2017). R for Data Science. Import, Tidy, Transform, Visualize, and Model Data. O’Reilly Media, Inc.. En https://r4ds.had.co.nz/
+
+
+---
+class: inverse, center, middle
+
+.huge[
+**¡Hasta la próxima!**
+]
+
+ 💻 📊 🎨🎻🎷 
+ 
+<br>
+Roberto Velázquez <br>
+https://github.com/rovelazqu <br>
+
+
+
+
