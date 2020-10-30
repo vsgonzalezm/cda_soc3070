@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Ayudantía 5</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Roberto Velázquez" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="gentle-r.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Ayudantía 5
+## Análisis de Datos Categóricos
+### Roberto Velázquez
+### 💻 📊 🎨🎻🎷
+### 29-10-2020
+
+---
+
+
+# A.- Bootstrap Method - Ejercicio
+
+Trabajemos sobre los datos de la **National Survey of Culture and the Arts 2018** vista en la ayudantía pasada. Recordemos que la encuesta fue coordinada por el *National Endowment for the Arts USA* con un muestreo representativo de la población de EEUU. La muestra contiene 8609 y 10 de variables de interés.
+
+![](nefa.png)
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+.pull-left[
+- **Ejercicio:**
+
+En 2019 *The Art of the Steal* inauguró un interesante campo de discusión en torno al problema de la relación entre los públicos de arte y la estratificación de capital cultural de acuerdo al género, la raza, y la edad de los amantes de los museos. Don Argott notó a través del caso de los visitantes a museos en Philadelphiia, San Francisco, New York, Los Angeles, Dallas y Chicago el efecto de ciertas características sociodemográficas centrales en la sociedad estadounidense que es necesario profundizar en el actual contexto de la llamada globalización cultural y cosmopolitismo estético. 
+
+Así, parece interesante ajustar un modelo predictivo de la asistencia a museos en Estados Unidos (los cuales concentran el 45% de las colecciones de arte contemporáneo del mundo) como función de dichas variables. 
+]
+
+![](taos.png)
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+**1) Ajuste un modelo de regreesión logística que evalúe asistencia a museos en función del sexo, la raza, y la edad de los asistentes, incorporando sexo y raza como efecto multiplicativo (interacción).** 
+
+Formalmente:
+
+`$$\frac{p_{i}}{1 - p_{i}} =  e^{\beta_{0}} \cdot e^{\beta_{1} x_{i1}}  \dots e^{\beta_{k} x_{ik}}$$`
+
+
+donde:
+
+- `\(e^{\beta_{k}}\)` está restringido al rango `\([0,\infty+)\)`. Es una constante que "comprime" o amplifica las odds de éxito.
+
+- Si `\(\beta_{k} &lt; 0  \to  (0 &lt; e^{\beta_{k}} &lt; 1)\)`. Es decir, un aumento en `\(x_{k}\)` está asociado con una reducción (multiplicativa) de las odds de éxito.
+
+- Si `\(\beta_{k} = 0  \to  (e^{\beta_{k}} =1)\)`. Es decir, un cambio en `\(x_{k}\)` está asociado a un cambio nulo en las odds de éxito.
+
+- Si `\(\beta_{k} &gt; 0  \to  (e^{\beta_{k}} &gt; 1)\)`. Es decir, un aumento en `\(x_{k}\)` está asociado a aumento (multiplicativo) en de las odds de éxito.
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+- Codififación de variables y ajuste de GLM: 
+
+
+```r
+library(tibble)
+```
+
+
+```r
+#Cargar base de datos
+load("nsca2018.Rda")
+tibble(data1)
+```
+
+```
+# # A tibble: 8,609 x 11
+#    sexo    edad raza   educacion  hijes jazz  clasica opera ballet museos libros
+#    &lt;fct&gt;  &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt;      &lt;dbl&gt; &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt; 
+#  1 (2) F…    48 (01) … (37) 11th…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
+#  2 (2) F…    78 (01) … (39) High…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
+#  3 (2) F…    72 (01) … (39) High…     0 (2) … (2) No  (2) … (2) No (2) No (1) Y…
+#  4 (1) M…    51 (01) … (46) Doct…     1 (2) … (2) No  (2) … (2) No (2) No (2) No
+#  5 (2) F…    57 (01) … (39) High…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
+#  6 (2) F…    66 (01) … (39) High…     0 (2) … (2) No  (2) … (2) No (2) No (1) Y…
+#  7 (1) M…    73 (01) … (39) High…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
+#  8 (1) M…    19 (01) … (39) High…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
+#  9 (2) F…    68 (01) … (36) 10th…     0 (2) … (2) No  (2) … (2) No (2) No (2) No
+# 10 (1) M…    63 (01) … (39) High…     0 (2) … (2) No  (2) … (2) No (2) No (1) Y…
+# # … with 8,599 more rows
+```
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+- Codififación de variables: 
+
+
+```r
+library(tidyverse)
+library(car)
+```
+
+
+```r
+# Sintaxis
+#Conversión de factor a vector (tidyverse)
+data1 &lt;- data1 %&gt;% 
+  mutate(sexo_b = as.numeric(sexo))
+data1 &lt;- data1 %&gt;% 
+  mutate(museos_b = as.numeric(museos))
+data1 &lt;- data1 %&gt;% 
+  mutate(raza_b = as.numeric(raza))
+#Codificación dummies (car)
+data1$sexo_b &lt;- recode(data1$sexo_b, "1=0; 2=1")
+data1$museos_b &lt;- recode(data1$museos_b, "1=1; 2=0")
+data1$raza_b &lt;- recode(data1$raza_b, "1=0; 2:26=1")
+```
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+- Ajuste de GLM:
+
+
+```r
+#Estimación de GLM (Regresión logística)
+rl &lt;- glm(1*museos_b ~ sexo_b*raza_b + edad, family = binomial(link=logit), data=data1)
+exp(summary(rl)$coefficients[,1])
+```
+
+```
+#   (Intercept)        sexo_b        raza_b          edad sexo_b:raza_b 
+#     0.4590367     1.2856994     0.7635225     0.9918287     0.9149127
+```
+
+```r
+summary(rl)$coefficients
+```
+
+```
+#                   Estimate  Std. Error    z value     Pr(&gt;|z|)
+# (Intercept)   -0.778625147 0.080475399 -9.6753189 3.838930e-22
+# sexo_b         0.251302874 0.054890831  4.5782304 4.689260e-06
+# raza_b        -0.269812665 0.110339961 -2.4452851 1.447377e-02
+# edad          -0.008204835 0.001395193 -5.8807881 4.083177e-09
+# sexo_b:raza_b -0.088926652 0.142598469 -0.6236158 5.328800e-01
+```
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+- Ajuste de GLM:
+
+Formalmente (ejemplo de intercepto):
+
+`$$\ln \frac{\mathbb{P}(\text{Asistir| Sexo=0, Raza=0, Edad=0, Sexo:Raza=0)}}{1 - \mathbb{P}(\text{Asistir| Sexo=0, Raza=0, Edad=0, Sexo:Raza=0)}} = \beta_{0}$$`
+
+Y así al exponenciar:
+
+`$$\frac{\mathbb{P}(\text{Asistir| Sexo=0, Raza=0, Edad=0, Sexo:Raza=0)}}{1 - \mathbb{P}(\text{Asistir| Sexo=0, Raza=0, Edad=0, Sexo:Raza=0)}} = e^{\beta_{0}}$$`
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+**2) A partir del modelo estimado ( `\(\frac{p_i}{1-p_i}=\beta_{0} + \beta_{sexo} + \beta_{raza} + \beta_{edad} + \beta_{sexo*raza}\)` ), calcule un IC al 95% para efecto de años de edad como "odds ratio", utilizando el Bootstrap Method.**
+
+--
+
+- Recuerde que el Bootstrap Method:
+
+1. Asume que la distribución empírica del los datos refleja la distribución de probabilidad de las variables de interés.
+
+2. A partir de la muestra obtenén una muestra aleatoria del mismo tamaño que la muestra original (N), con reemplazo:  `\((y_{b},X_{b})\)`
+
+3. Regresiona `\(y_{b}\)` y `\(X_{b}\)` para obtener el estimate `\(\hat{\theta}_{b}\)` 
+
+4. Repite los pasos 2 y 3 un gran número de veces B.
+
+5. El conjunto de B resultados obtenidos corresponde a la "Bootstrap distribution" del estimate.
+
+6. Evalúa la distribución del estimate (SE,CI, etc) o de cualquier cantidad derivada de éste.
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+**2) A partir del modelo estimado ( `\(\frac{p_i}{1-p_i}=\beta_{0} + \beta_{sexo} + \beta_{raza} + \beta_{edad} + \beta_{sexo*raza}\)` ), calcule un IC al 95% para efecto de años de edad como "odds ratio", utilizando el Bootstrap Method.**
+
+
+```r
+# Sintaxis
+# Función de resampling y estimación de modelo
+bs_expedad  &lt;- function(x) {
+  data_bs  &lt;- sample_n(data1,size=nrow(data1),replace=TRUE)
+  rl_bs &lt;- glm(1*museos_b ~ sexo_b*raza_b + edad, family = binomial(link=logit), data=data_bs)
+  expbeta_bs &lt;- exp(rl_bs$coefficients[4])
+  return(expbeta_bs)
+}
+
+# Iterar función y almacenar resultados
+nreps = 100 
+expbetas_bs &lt;- replicate(nreps,bs_expedad()); head(expbetas_bs)
+```
+
+```
+#      edad      edad      edad      edad      edad      edad 
+# 0.9911366 0.9911697 0.9944971 0.9907779 0.9934260 0.9929586
+```
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+**2) A partir del modelo estimado ( `\(\frac{p_i}{1-p_i}=\beta_{0} + \beta_{sexo} + \beta_{raza} + \beta_{edad} + \beta_{sexo*raza}\)` ), calcule un IC al 95% para efecto de años de edad como "odds ratio", utilizando el Bootstrap Method.**
+
+
+```r
+# Sintaxis
+# Cálculo de Standard Errors en base a Bootstrap Distribution
+se_expbeta_bs &lt;- sd(expbetas_bs)
+se_expbeta_bs
+```
+
+```
+# [1] 0.001302586
+```
+
+
+```r
+# Sintaxis
+# Cálculo de Intervalos de Confianza
+ci_expbeta_bs &lt;- 
+  quantile(expbetas_bs, p=c(0.025,0.975))
+ci_expbeta_bs
+```
+
+```
+#      2.5%     97.5% 
+# 0.9897258 0.9946115
+```
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+**3) Calcule un IC al 95% para  el Average Marginal Effect de edad sobre la probabilidad de haber asistido al museo, utilizando el Bootstrap Method.**
+
+
+```r
+# Sintaxis
+# Función de resampling y estimación de modelo
+bs_ame_edad  &lt;- function(x) {
+  data_bs  &lt;- sample_n(data1,size=nrow(data1),replace=TRUE)
+  rl_bs &lt;- glm(1*museos_b ~ sexo_b*raza_b + edad, family = binomial(link=logit), data=data_bs)
+  beta_bs &lt;- rl_bs$coefficients[4]
+  p_hat_b  &lt;- predict(rl_bs, type = "response")
+  me_edad_b   &lt;- beta_bs*p_hat_b*(1-p_hat_b)
+  return(ame_edad_b = mean(me_edad_b))
+}
+  
+# Iterar función y almacenar resultados
+nreps = 100 
+ame_edad_bs &lt;- replicate(nreps,bs_ame_edad()); head(ame_edad_bs)
+```
+
+```
+# [1] -0.001804146 -0.001510000 -0.001372745 -0.001767178 -0.001735245
+# [6] -0.001592505
+```
+
+---
+
+# A.- Bootstrap Method - Ejercicio
+
+**3) Calcule un IC al 95% para  el Average Marginal Effect de edad sobre la probabilidad de haber asistido al museo, utilizando el Bootstrap Method.**
+
+
+```r
+# Sintaxis
+# Cálculo de Standard Errors en base a Bootstrap Distribution
+se_ame_edad_bs &lt;- sd(ame_edad_bs)
+se_ame_edad_bs
+```
+
+```
+# [1] 0.000218791
+```
+
+
+```r
+# Sintaxis
+# Cálculo de Intervalos de Confianza
+ci_ame_edad_bs &lt;- 
+  quantile(ame_edad_bs, p=c(0.025,0.975))
+  ci_ame_edad_bs
+```
+
+```
+#         2.5%        97.5% 
+# -0.001947085 -0.001113383
+```
+
+---
+
+# Referencias Sugeridas:
+
+• Laurie Hanquinet &amp; Mike Savage (2016). Routledge International Handbook of the Sociology of Art and Culture. London: Routledge.
+
+• Hadley Wickham (2015). Advanced R, CRC Press, Taylor &amp; Francis Group, Boca Raton, FL. En https://adv-r.hadley.nz/
+
+• Hadley Wickham and Garrett Grolemund (2017). R for Data Science. Import, Tidy, Transform, Visualize, and Model Data. O’Reilly Media, Inc.. En https://r4ds.had.co.nz/
+
+
+---
+class: inverse, center, middle
+
+.huge[
+**¡Hasta la próxima!**
+]
+
+ 💻 📊 🎨🎻🎷 
+ 
+&lt;br&gt;
+Roberto Velázquez &lt;br&gt;
+https://github.com/rovelazqu &lt;br&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
