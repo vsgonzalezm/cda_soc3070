@@ -22,9 +22,9 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
 - Modelo Lineal de Probabilidad: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_7/class_7#1) [`[Código]`](slides/class_7/class_7.Rmd)  
 - Modelos Lineales Generalizados [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_8/class_8#1) [`[Código]`](slides/class_8/class_8.Rmd)  
 - Modelos de Regresión Logística
-  - Estructura teórica y estimación: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_9/class_9#1) [`[Código]`](slides/class_9/class_9.Rmd)
+  - Estructura teórica y estimación via MLE: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_9/class_9#1) [`[Código]`](slides/class_9/class_9.Rmd)
   - Interpretación de efectos: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_10/class_10#1) [`[Código]`](slides/class_10/class_10.Rmd)
-  - Inferencia: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_11/class_11#1) [`[Código]`](slides/class_11/class_11.Rmd)
+  - Inferencia (Delta method, Monte Carlo y Bootstrap): [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_11/class_11#1) [`[Código]`](slides/class_11/class_11.Rmd)
 
 - Modelos de Regresión Logística Ordenada
 - Modelos de Regresión Logística Multinomial 
