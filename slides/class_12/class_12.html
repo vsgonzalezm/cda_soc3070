@@ -13,90 +13,95 @@
 class: center, middle, inverse, title-slide
 
 # Análisis de Datos Categóricos (SOC3070)
-## Clase #11
+## Clase #12
 ### <br> Mauricio Bucca<br> Profesor Asistente, Sociología UC
 ### <a href="https://github.com/mebucca">github.com/mebucca</a>
 
 ---
 
 class: inverse, center, middle
-#Ajuste y comparación de modelos
+#Ajuste y Predicción
+
+---
+
+## (Estimación + Inferencia) vs Predicción
+
+&lt;br&gt;
+--
+
+Mullainathan and Spiess (2017) llaman esta distinción:
+
+&lt;br&gt;
+
+.huge[
+.center[
+`\(\hat{\beta}-\text{problems} \quad\)` vs `\(\quad \hat{y}-\text{problems}\)`
+]
+]
+
 
 ---
 class: inverse, center, middle
 
-##Deviance
+## Bondad de ajuste en regresión logística (y GLM's)
 
 ---
-## Comparación entre modelos
+
+## Ejemplo empírico
+
+`$$\newcommand{\vect}[1]{\boldsymbol{#1}}$$`
 
 
 
+Continuando con el ejemplo de clases anteriores, ajustamos el siguiente modelo:
 
-Retomando nuestro modelo de clases anteriores: `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)`
+`$$\ln \frac{p_{i}}{1-p_{i}} = \beta_{0} + \beta_{1}\text{ym}_{i} + \beta_{2}\text{male}_{i} + \beta_{3}\text{rate}_{i} + \beta_{4}\text{rate}^{2}_{i}$$`
 
---
-
-
-```
-##              Estimate Std. Error   z value     Pr(&gt;|z|)
-## (Intercept) -1.608587 0.18327371 -8.776966 1.679433e-18
-## ym           0.058822 0.01724147  3.411658 6.456917e-04
-```
-
-```
-## [1] "log-likelihood: -331.75 Deviance: 663.5"
-```
-
-```
-## [1] "AIC: 667.5 BIC: 676.297"
-```
+Llamemos a este modelo, modelo `\(M_1\)`:
 
 &lt;br&gt;
---
-
-¿Cómo saber si este modelo "complejo" (2 predictores) tiene un desempeño sustancialmente mejor un sub-modelo, más simple)
 
 
 ```
-##                    Estimate Std. Error   z value     Pr(&gt;|z|)
-## (Intercept)     -1.71395429 0.20633183 -8.306786 9.832929e-17
-## ym               0.05842959 0.01727402  3.382513 7.182590e-04
-## factor(sex)male  0.22157111 0.19064190  1.162237 2.451391e-01
+##                     Estimate Std. Error    z value   Pr(&gt;|z|)
+## (Intercept)      0.149861306 0.82300610  0.1820902 0.85551198
+## ym               0.037699456 0.01813912  2.0783503 0.03767711
+## factor(sex)male  0.249972343 0.19690565  1.2695032 0.20426166
+## rate            -0.411820264 0.50252200 -0.8195069 0.41249725
+## I(rate^2)       -0.008931688 0.07364745 -0.1212763 0.90347221
 ```
 
 ```
-## [1] "log-likelihood: -331.074 Deviance: 662.148"
+## [1] "log-likelihood: -316.105 Deviance: 632.21"
 ```
 
 ```
-## [1] "AIC: 668.148 BIC: 681.344"
+## [1] "AIC: 642.21 BIC: 664.202"
 ```
-
 
 ---
-## Likelihood del modelo
+## Likelihood
 
-Recordar que cada observación es una manifestación de una variable Bernoulli:
-
-
-`\(Y_{i} \sim \text{Bernoulli}(p_{i}) \quad \text{ es decir } \quad \mathbb{P}(Y_{i}= y) = p_{i}^{y}(1-p_{i})^{1-y} \quad \text{ donde } \quad y \in \{0,1\}\)`
-
+Recordar que la likelihood es: `\(\mathcal{L}(\vect{\beta} \mid \text{ Datos}) = \mathbb{P}(\text{ Datos } \mid \vect{\beta})\)`.
 --
+ En el caso de un modelo de regresión logística los datos distribuyen Bernoulli.
 
-Por tanto, la probabilidad de observar estos datos es descrita por la siguiente función:
+
+- Por tanto, la probabilidad conjunta de las `\(n\)` observaciones es:
 
 `$$\mathbb{P}(y_{1}, \dots, y_{1}) = \Pi_{i=1}^{n} p_{i}^{y_{i}}(1-p_{i})^{1-y_{i}}$$`
+
 &lt;br&gt;
 --
 
-En consecuencia, la .bold[likelihood function] de `\(p_{i}\)` es:
+- Por tanto, la .bold[likelihood function] de `\(p_{i}\)` es:
 
 `$$\mathcal{L}(p_{i} \mid y_{1}, \dots, y_{1}) = \Pi_{i=1}^{n} p_{i}^{y_{i}}(1-p_{i})^{1-y_{i}}$$`
 
+&lt;br&gt;
 --
 
-y la .bold[log likelihood function] de `\(p_{i}\)` es:
+- La .bold[log likelihood function] de `\(p_{i}\)` es:
 
 
 `$$\ell\ell(p_{i} \mid y_{1}, \dots, y_{1}) = \sum_{i=1}^{n} \bigg( y_{i} \ln p_{i} + (1-y_{i}) \ln(1-p_{i}) \bigg)$$`
@@ -106,187 +111,855 @@ donde: `\(p_{i} =\frac{1}{1 + e^{-(\beta_{0} + \beta_{1}x_{i} + \dots \beta_{k}x
 
 
 ---
-## Likelihood del modelo
+## Likelihood de nuestro modelo, `\(M_1\)`
 
-
-.bold[Implentación en] `R`:
- 
 
 ```r
-ll &lt;- function(b0,b1,b2) {
+ll &lt;- function(b0,b1,b2,b3,b4) {
   y = affairsdata$everaffair_d
-  eta = b0  + b1*affairsdata$ym + b2*I(1*(affairsdata$sex=="male"))
+  eta = b0  + b1*affairsdata$ym + b2*I(1*(affairsdata$sex=="male")) + b3*affairsdata$rate + b4*I((affairsdata$rate)^2)
   ell = sum( y*log(1/(1 + exp(-eta))) +  (1-y)*log(1 - (1/(1 + exp(-eta)))))
   return(ll = ell)
 }
 ```
 
 --
+.pull-left[
+
+```r
+ll(b0=1.2,b1=0.7,b2=1, b3=0.3,b4=0.1)
+```
+
+```
+## [1] -4545.561
+```
+]
+
+.pull-right[
+
+```r
+ll(b0=0.15,b1=0.04,b2=0.25, b3=-0.41,b4=-0.01)
+```
+
+```
+## [1] -316.1242
+```
+]
+
+&lt;br&gt;
+--
+
+.bold[Maximum Likelihood Estimators]: los parámetros estimados son aquellos que maximizan la likelihood function. La likelihood maximizada en este caso es:
 
 
 ```r
-ll(b0=1.2,b1=0.7,b2=1)
+ll_m &lt;- logLik(logit_affairs); print(c(Likelihood=exp(ll_m[1]), log_likelihood=ll_m[1]))
 ```
 
 ```
-## [1] -3204.082
+##     Likelihood log_likelihood 
+##  5.217357e-138  -3.161048e+02
 ```
+
+---
+## Modelo "saturado"
+
+--
+
+- .bold[Modelo saturado] ( `\(M_S\)` ): es el modelo que asume que cada observación tiene sus propios parámetros, es decir, estima  `\(n\)`-parámetros.
+
+--
+
+  -  El modelo saturado describe perfectamente los datos: mejor "fit" posible, pero el menos "parsimonioso".
+
+--
+
+  - Si `\(\vect{\beta}_{S}\)` son los estimadores MLE para este modelo, la likelihood maximizada del modelo es `\(\mathcal{L}_{S}: \mathcal{L}(\vect{\beta}_{S} | \vect{y})\)`.
+
+--
+
+  - `\(\mathcal{L}_{S}\)` es mayor que la likelihood de cualquier otro modelo para los mismos datos, asumiendo misma distribución y misma función de enlace.
+  
+--
+
+
+```r
+# modelo saturado 
+id = seq(1:length(affairsdata$everaffair_d))
+logit_affairs_sex_sat &lt;-  glm(everaffair_d ~ factor(id) , family=binomial(link="logit"), 
+                              data=affairsdata)
+
+ll_sat &lt;- logLik(logit_affairs_sex_sat); print(c(Likelihood=exp(ll_sat[1]), log_likelihood=ll_sat[1]))
+```
+
+```
+##     Likelihood log_likelihood 
+##   1.000000e+00  -1.743274e-09
+```
+
+---
+## Modelo "nulo"
+
+
+- .bold[Modelo nulo] ( `\(M_N\)` ): es el modelo en el que todas las observaciones son descritas por un único parámetro, correspondiente a la media/probabilidad incondicional. 
+
+--
+
+  -  El modelo nulo tiene el peor "fit" posible pero es el más "parsimonioso".
+
+--
+
+  - Si `\(\beta_{0}\)` es el parámetro estimado via MLE para este modelo, la likelihood maximizada del modelo es `\(\mathcal{L}_{N}: \mathcal{L}(\beta_{0} | \vect{y})\)`.
+
+--
+
+  - `\(\mathcal{L}_{N}\)` es menor que la likelihood de cualquier otro modelo para los mismos datos, asumiendo misma distribución y misma función de enlace.
+  
+&lt;br&gt;
+--
+
+
+```r
+# modelo nulo 
+logit_affairs_sex_null &lt;- glm(everaffair_d ~ 1 , family=binomial(link="logit"), data=affairsdata)
+
+ll_null &lt;- logLik(logit_affairs_sex_null); print(c(Likelihood=exp(ll_null[1]), log_likelihood=ll_null[1]))
+```
+
+```
+##     Likelihood log_likelihood 
+##  2.206742e-147  -3.376885e+02
+```
+
+---
+## Modelo nulo, modelo saturado y modelo de interés, `\(M_1\)` 
+
+.center[
+![dev](models.png)
+]
+
+---
+## Test de Likelihood ratio 
+
+--
+
+El modelo nulo y el modelo saturado sirven como referencia para evaluar el fit de otros modelos.
+
+--
+
+- El .bold[likelihood ratio test] (LR) corresponde a la ratio entre la likelihood maximizada entre el modelo saturado -- `\(\mathcal{L}_{S}\)` -- y la likelihood maximizada de un modelo dado, `\(\mathcal{L}_{M_1}\)`
+
+&lt;br&gt;
+
+`$$\text{LR}: \frac{\mathcal{L}_{M_1}}{\mathcal{L}_{S}}$$`
+
+&lt;br&gt;
+--
+
+- A partir de `\(LR\)` obtenemos los .bold[log-likelihood ratio] como sigue:
+
+--
+&lt;br&gt;
+
+`$$\log \text{LR} : \log \frac{\mathcal{L}_{M_1}}{\mathcal{L}_{S}} = \log\mathcal{L}_{M_1} - \log \mathcal{L}_{S} \leq 0$$`
+
+---
+## Residual Deviance y Null Deviance
+
+A su vez, para facilitar la inferencia, el log-likelihood ratio viene re-expresado como "Deviance".
+--
+ Hay dos tipos de deviance involucrados en la evaluación del fit de un modelo:
+
+--
+
+- .bold[Residual Deviance: ] `\(\quad D = -2 \cdot  \log \text{LR} = -2 \cdot (\log\mathcal{L}_{M_1} - \log \mathcal{L}_{S})\)`
+
+ - Mide ajuste del modelo `\(M_1\)`
+
+--
+
+- .bold[Null Deviance: ] `\(\quad D_{N} = -2 \cdot  \log \text{LR} = 2 \cdot (\log\mathcal{L}_{0} - \log \mathcal{L}_{S})\)`
+
+  - Mide cuanto es posible explicar (análogo a "varianza total"*)
+
+&lt;br&gt;
+--
+
+.bold[Sampling distribution de la Residual Deviance:]
+
+`$$D \sim \chi^{2}(\hat{D},\text{df = }n-k), \quad \text{ k es el número de parámetros en modelo } M_1$$`
+&lt;br&gt;
+--
+
+- Un valor alto de `\(D\)` (y p-value bajo) indica problemas de ajuste
+ 
+- Un valor bajo de `\(D\)` (y p-value alto) indica que los parámetros extra del `\(M_{S}\)` son innecesarios.
+ 
+
+---
+## Residual Deviance y Null Deviance
+
+.center[
+![dev](deviances.png)
+]
+
+---
+## Residual Deviance: ejemplo empírico
+
+
+```
+##                     Estimate Std. Error    z value   Pr(&gt;|z|)
+## (Intercept)      0.149861306 0.82300610  0.1820902 0.85551198
+## ym               0.037699456 0.01813912  2.0783503 0.03767711
+## factor(sex)male  0.249972343 0.19690565  1.2695032 0.20426166
+## rate            -0.411820264 0.50252200 -0.8195069 0.41249725
+## I(rate^2)       -0.008931688 0.07364745 -0.1212763 0.90347221
+```
+
+```
+## [1] "Null Deviance: 675.377 Residual Deviance: 632.21"
+```
+
+&lt;br&gt;
+--
+
+.bold[Residual deviance]:
+
+```r
+D &lt;- -2*(logLik(logit_affairs)[1] - logLik(logit_affairs_sex_sat)[1]); D
+```
+
+```
+## [1] 632.2095
+```
+
+```r
+#pvalue
+df &lt;- length(logit_affairs$fitted.values) - logit_affairs$rank
+pvalue = 1 - pchisq(D,df); pvalue
+```
+
+```
+## [1] 0.1474395
+```
+
+
+
+
+---
+## Comparación entre modelos via Deviance
+
+-  Supongamos que `\(M_1\)` es un modelo dado y `\(M_0\)` es un sub-modelo: `\(M_0 \subset M_1\)`
+
+--
+
+- Podemos usar la Deviance para testear si los parámetros extra en `\(M_1\)` significativamente mejoran el fit del modelo, respecto al modelo más simple `\(M_0\)`.
+
+&lt;br&gt;
+--
+
+`\begin{align}
+D_{01} &amp;= \\ 
+&amp;= -2 \cdot (\log\mathcal{L}_{0} - \log \mathcal{L}_{1}) \\
+&amp;= -2 \cdot \{ (\log\mathcal{L}_{0} - \log \mathcal{L}_{S}) -   (\log\mathcal{L}_{1} - \log \mathcal{L}_{S}) \} \\
+  &amp;= D_{0} - D_{1}
+\end{align}`
+
+&lt;br&gt;
+--
+
+.bold[Sampling distribution de la Deviance entre M0 y M1:]
+
+`$$D_{01} \sim \chi^{2}(\hat{D}_{01},\text{df = }k1-k0), \quad \text{ k1 y k0 es el número de parámetros en M1 y M0 respectivamente}$$`
+
+--
+
+- Un valor alto de `\(D_{01}\)` (y p-value bajo) indica que el modelo más simple tiene un ajuste significativamente más pobre que el más complejo.
+
+---
+## Comparación entre modelos via Deviance: ejemplo empírico
+
+.pull-left[
+.bold[M0]
+
+```
+##                    Estimate Std. Error
+## (Intercept)      0.23664899 0.40705428
+## ym               0.03775502 0.01813476
+## factor(sex)male  0.25206250 0.19618073
+## rate            -0.47185722 0.08719513
+```
+
+```
+## [1] "log-likelihood: -316.112"
+```
+]
+.pull-right[
+.bold[M1]
+
+```
+##                     Estimate Std. Error
+## (Intercept)      0.149861306 0.82300610
+## ym               0.037699456 0.01813912
+## factor(sex)male  0.249972343 0.19690565
+## rate            -0.411820264 0.50252200
+## I(rate^2)       -0.008931688 0.07364745
+```
+
+```
+## [1] "log-likelihood: -316.105"
+```
+]
+
+El modelo más complejo es "mejor" que el modelo más simple, pero ... ¿es .bold[significativamente] mejor?
 
 --
 
 
 ```r
-ll(b0=1.2,b1=0.7,b2=0)
+D01 &lt;- logit_affairs0$deviance - logit_affairs$deviance
+
+#pvalue
+df &lt;- logit_affairs$rank - logit_affairs0$rank
+pvalue = 1 - pchisq(D01,df); pvalue
 ```
 
 ```
-## [1] -3001.423
+## [1] 0.9034976
 ```
+
+--
+
+.bold[Respuesta:] el modelo más complejo no es significativamente mejor.
+ 
 ---
-## Likelihood del modelo M
+## Pseudo - `\(R^2\)`
 
-En nuestro ejemplo empírico: `\(\ln \frac{p_{i}}{ 1 - p_{i}}    = \beta_{0} + \beta_{1}\text{male}_{i} + \beta_{2}\text{ym}_{i}\)`
+&lt;br&gt;
+--
+
+- En modelos OLS es común medir ajuste usando el coeficiente `\(R^2\)`, es decir, % de varianza explicada por el modelo.
+
+--
+
+- En GLM's la varianza no es separable de la media, por tanto no se puede descomponer.
+
+--
+
+- Existe una variedad de alternativas al `\(R^2\)`, llamadas genéricamente pseudo - `\(R^2\)`. Uno de los más comunes es:
+
+&lt;br&gt;
+--
+
+`$$\text{McFadden’s } R^{2} = 1 - \frac{D}{D_{0}} = 1 - \frac{(\log\mathcal{L}_{S} - \log \mathcal{L}_{M})}{ (\log\mathcal{L}_{S} - \log \mathcal{L}_{N})}$$`
+&lt;br&gt;
+--
+
+.bold[Intuición:]  fracción del total del "explicable" del likelihood que es explicado por el modelo `\(M\)`.
+
+  - `\(R^{2} \in [0,1]\)`, donde 0 indica el peor fit posible y 1 indica el mejor fit posible. 
+
+---
+## Pseudo - `\(R^2\)`: ejemplo empírico
+
+
+```
+##                     Estimate Std. Error    z value   Pr(&gt;|z|)
+## (Intercept)      0.149861306 0.82300610  0.1820902 0.85551198
+## ym               0.037699456 0.01813912  2.0783503 0.03767711
+## factor(sex)male  0.249972343 0.19690565  1.2695032 0.20426166
+## rate            -0.411820264 0.50252200 -0.8195069 0.41249725
+## I(rate^2)       -0.008931688 0.07364745 -0.1212763 0.90347221
+```
+
+&lt;br&gt;
+--
+
+.bold[Residual deviance]:
+
+```r
+R2 &lt;- 1 - logit_affairs$deviance/logit_affairs$null.deviance; R2
+```
+
+```
+## [1] 0.06391612
+```
+
+```r
+# versión automática
+PseudoR2(logit_affairs, which="McFadden")
+```
+
+```
+##   McFadden 
+## 0.06391612
+```
+
+---
+## Clasificación
+
+Un modelo de regresión logística puede ser utilizado como una herramienta de *clasificación*:
+
+--
+
+- Nuestra variable de interés `\(y_{i}\)` mide la ausencia o presencia de un determinado atributo. Alternativamente, se puede interpretar como la pertenencia a una determinada "clase" (0/1) 
+
+
+--
+
+
+- Nuestro modelo entrega una predicción sobre la probabilidad de dicha pertenencia: `\(p_{i} = \mathbb{P}(y_{i} = 1)\)`
+
+
+--
+
+- Podemos transformar nuestro modelo en un algoritmo de clasificación estableciendo un regla que asigne cada observación a una "clase" en función del valor estimado de `\(\hat{p}_i\)`.
+
+&lt;br&gt;
+--
+
+Específicamente:
+
+`\begin{align}
+  \hat{y}_{i} =
+  \begin{cases}
+    1  &amp; \quad \text{si } \hat{p}_{i} &gt; 1/2\\
+    0  &amp; \quad \text{si }\hat{p}_{i} &lt; 1/2
+  \end{cases}
+\end{align}`
+
+
+
+---
+## Clasificación y Confusion matrix
+
+.pull-left[
+![conf](conf_mat.png)
+]
+
+--
+
+.pull-right[
+- .bold[Accuracy]: % Clasificación correcta, (TP+TN)/total 
+
+- .bold[Misclassification Rate]: % Clasificación incorrecta, (FP+FN)/total
+
+- .bold[True Positive Rate] o "Sensitivity": TP/(TP+FN) 
+
+- .bold[False Positive Rate]: FP/(FP+TN) 
+
+- .bold[True Negative Rate] o "Specificity": TN/(FP+TN)
+
+- .bold[Precision]: TP/(TP+FP) 
+
+- .bold[Prevalence]: (TP+FN)/total 
+]
+
+&lt;br&gt;
+--
+
+- Podemos evaluar la capacidad predictiva de un modelo usando estas métricas de clasificación
+
+- Podemos usar estas métricas para comparar diferentes modelos
+
+---
+## Clasificación y Confusion matrix: ejemplo empírico
+
+
+```r
+p_hat &lt;- predict(logit_affairs, type = "response")
+y_hat &lt;- if_else(p_hat&gt;0.5,1,0)
+#confussion matrix
+conf_mat &lt;- confusionMatrix(factor(y_hat),factor(logit_affairs$model$everaffair_d), dnn = c("Prediction", "True value"))
+```
+
+
+```
+##           True value
+## Prediction   0   1
+##          0 438 137
+##          1  13  13
+```
+
+```
+##       Accuracy          Kappa  AccuracyLower  AccuracyUpper   AccuracyNull 
+##          0.750          0.080          0.714          0.785          0.750 
+## AccuracyPValue  McnemarPValue 
+##          0.522          0.000
+```
+
+```
+##          Sensitivity          Specificity       Pos Pred Value 
+##                0.971                0.087                0.762 
+##       Neg Pred Value            Precision               Recall 
+##                0.500                0.762                0.971 
+##                   F1           Prevalence       Detection Rate 
+##                0.854                0.750                0.729 
+## Detection Prevalence    Balanced Accuracy 
+##                0.957                0.529
+```
+
+
+---
+class: inverse, center, middle
+
+## Predicción y el problema de "overfitting" 
+
+
+---
+## Overfitting
+
+.bold[Desafíos para el desarrollo de un modelo predictivo]
+
+--
+
+- El modelo debe predecir adecuadamente los datos (bajo sesgo)
+
+--
+
+- El modelo debe ser parsimonioso (pocos parámetros)
+
+--
+
+- Debe tener un desempeño consistente en diferentes muestras (baja varianza)
+
+&lt;br&gt;
+--
+.bold[Problema: trade-off entre sesgo y varianza]
+
+.center[
+![overfitting](underfit_right_overfit.png)
+]
+
+
+---
+## Information Criteria
+
+--
+
+
+- Information Criteria fueron desarrollados con el fin de prevenir problemas de over-fitting.
+
+
+--
+
+
+- Information Criteria miden la capacidad predictiva de un modelo pero incluyen una .bold[penalty] por el número de parámetros.
+
+--
+
+- .bold[Intuición]: entre dos modelos con "similar" capacidad preferimos el más parsimonioso (menos parámetros).
+
+
+--
+
+- Ventaja sobre .bold[Deviance] y .bold[LRT]: Information Criteria pueden comparar modelos no-anidados. 
+
+&lt;br&gt;
+--
+
+.pull-left[
+.center[Forma general,]
+]
+
+.pull-righ[
+`\(IC: \overbrace{-2 \log \mathcal{L}_{M_1}}^{\text{fit}} + \underbrace{k \cdot q}_{\text{parsimonia}}\)`
+
+]
+
+--
+
+- `\(\mathcal{L}_{M_1}\)` es la likelihood maximizada del modelo `\(M_1\)`
+- `\(k\)` es el número de parámetros del modelo `\(M_1\)`
+- `\(q\)` es una constante que "penaliza" la cantidad de parámetros
+
+---
+## Information Criteria: AIC y BIC
+
+
+Dos Information Criteria son especialmente relevantes:
+
+--
+
+
+.bold[Akaike Information Criterion (AIC)]
+
+.content-box-blue[
+`$$\text{AIC} =  -2\log \mathcal{L}_{M_1} + 2k$$`
+]
+
+--
+
+
+.bold[Bayesian Information Criterion (BIC)] 
+
+.content-box-blue[
+`$$\text{BIC} =  -2\log \mathcal{L}_{M_1} +  \log(n)k$$`
+]
+
+--
+
+- Un número más bajo en AIC y BIC indica mejor ajuste
+
+--
+
+- Por lo general `\(2 &lt; \log(n)\)`, por tanto BIC tiende a preferir modelos más simples comparado con AIC
+
+
+
+
+---
+## Information Criteria, AIC y BIC: ejemplo empírico
+
+.pull-left[
+.bold[M0]
+
+```
+##                     Estimate Std. Error
+## (Intercept)       0.15392342 0.42235014
+## ym                0.02151079 0.02128940
+## factor(child)yes  0.40748669 0.28317859
+## rate             -0.46156942 0.08716552
+```
+]
+.pull-right[
+.bold[M1]
+
+```
+##                  Estimate Std. Error
+## (Intercept)  -0.266307697 1.23046679
+## ym            0.323852015 0.34131053
+## rate         -0.440911381 0.29923262
+## I(ym^2)      -0.017675977 0.01850644
+## ym:rate      -0.024816327 0.08519081
+## rate:I(ym^2)  0.001767463 0.00468650
+```
+]
+
+¿Más .bold[complejo] mejor?
+
+--
+
+
+```r
+inf_crit &lt;- function(m) { aic = -2*logLik(m)[1] + 2*m$rank
+  bic = -2*logLik(m)[1] + log(length(m$fitted.values))*m$rank
+  return(c(AIC=aic,BIC=bic))
+}
+```
+
 --
 
 .pull-left[
 
 ```
-##              Estimate Std. Error
-## (Intercept) -1.608587 0.18327371
-## ym           0.058822 0.01724147
-```
-
-```
-## [1] "log-likelihood: -331.75"
+##      AIC      BIC 
+## 639.7727 657.3671
 ```
 ]
 .pull-right[
 
 ```
-##                    Estimate Std. Error
-## (Intercept)     -1.71395429 0.20633183
-## ym               0.05842959 0.01727402
-## factor(sex)male  0.22157111 0.19064190
-```
-
-```
-## [1] "log-likelihood: -331.074"
+##      AIC      BIC 
+## 640.3737 666.7653
 ```
 ]
 
+.bold[Respuesta:] el modelo más simple es preferible. 
+--
+ *(nota: pueden usar funciones `AIC()` y `BIC()` en `R`)
+
+&lt;style type="text/css"&gt;
+.pull-right ~ * { clear: unset; }
+.pull-right + * { clear: both; }
+&lt;/style&gt;
+
+
+---
+## In-sample vs out-of-sample
+
+&lt;br&gt;
 --
 
+- Information criteria penaliza la complejidad del modelo para prevenir "over-fitting".
+--
+ Todavía hay un problema ...
 
-```r
-# log-likelihood modelos
-ll_m0 &lt;- ll(b0=-1.608587,b1=0.058822,b2=0)
-ll_m1 &lt;- ll(b0=-1.71395429,b1=0.05842959,b2=0.22157111)
-print(paste0("ll modelo 0: ",ll_m0,"ll modelo 1: ",ll_m1))
-```
+&lt;br&gt;
+--
 
-```
-## [1] "ll modelo 0: -331.750092041096ll modelo 1: -331.074096822558"
-```
+- Todos los estadísticos que hemos visto (incluyendo AIC y BIC) evalúan los modelos en la .bold[misma muestra] en que son estimados
+  
+  - No conocemos el desempeño del modelo .bold[fuera de la muestra]. Riesgo de "over-fitting".
+
+&lt;br&gt;  
+--
+
+- Evaluación de un modelo fuera de muestra se conoce como .bold[cross-validación].
+
+ - Herramienta estándar para evaluación de modelos predictivos.
+
+---
+## In-sample vs out-of-sample
+
+&lt;br&gt;
+
+.center[
+![cross](https://miro.medium.com/max/1224/1*hPDx1TYs9oMrbZRf-VYSUw.jpeg)
+]
+
+---
+## Cross-Validation
 
 --
 
-El modelo más complejo es "mejor" que el modelo más simple, pero ...
+.img-right[![churros](churros.png)]
+
+- Principio básico de cross-validation: .bold["no double dipping!"]
+
 --
- ¿Es .bold[signicativamente mejor]?
+
+  - estima el modelo en un dataset (training set)
+
+--
+
+  - evalúa el modelo en un dataset distinto (test set)
+
+&lt;br&gt;
+
+.pull-left[
+![train_test](train_test.png)
+
+]
+
+---
+## k-fold cross-Validation
+
+.img-right-top[
+![kfold](kfold_cv.gif)
+
+]
+
+.bold[Algoritmo:]
+--
+
+- (1) Divide los datos en `\(k\)` grupos (folds) del mismo tamaño. 
+
+  - (1.1) Reserva la `\(i\)`-fold como test set.
+
+  - (1.2) Ajusta el modelo en las restantes `\(k-1\)` folds (training set). 
+
+&lt;br&gt;
+--
+- (2) Usa el modelo ajustado en el training set `\(i\)` (1.2) para predecir el outcome de interés en el test set (1.1)
+  
+  - (2.1) Calcula una medida de error predictivo ("test error"), `\(E_{i}\)`
+
+&lt;br&gt;
+--
+- (3) Repite (1) y (2) `\(k\)`-veces, produciendo `\(\{E_{1}, E_{2}, \dots , E_{k}\}\)`
+
+
+--
+- (4) Calcula el .bold[k-fold cross-validation error] promediando el error a través de las `\(k\)`-folds.:
+
+`$$\text{CV-error} =  \frac{1}{k} \sum_{i=1}^{k} E_{i}$$`
+---
+## k-fold cross-Validation: ejemplo empírico
+
+.pull-left[
+.bold[M0]
+
+```
+##                     Estimate Std. Error
+## (Intercept)       0.15392342 0.42235014
+## ym                0.02151079 0.02128940
+## factor(child)yes  0.40748669 0.28317859
+## rate             -0.46156942 0.08716552
+```
+]
+.pull-right[
+.bold[M1]
+
+```
+##                  Estimate Std. Error
+## (Intercept)  -0.266307697 1.23046679
+## ym            0.323852015 0.34131053
+## rate         -0.440911381 0.29923262
+## I(ym^2)      -0.017675977 0.01850644
+## ym:rate      -0.024816327 0.08519081
+## rate:I(ym^2)  0.001767463 0.00468650
+```
+]
+
+&lt;br&gt;
+
+¿Más .bold[complejo] mejor?
+--
+ Usando funciones paquete `caret()` 
  
 
+```r
+# especifica tipo de cross-validation
+ctrl &lt;- trainControl(method = "repeatedcv", number = 10, savePredictions = TRUE)
+
+# cross-valida M0
+cv_logit_affairs0 &lt;- train(factor(everaffair_d) ~ ym + factor(child) + rate,  data=affairsdata, method="glm", family="binomial", trControl = ctrl)
+
+# cross-valida M1
+cv_logit_affairs1 &lt;- train(factor(everaffair_d) ~ factor(child)*ym*rate +  factor(child)*I(ym^2)*rate,  data=affairsdata, method="glm", family="binomial", trControl = ctrl)
+```
+
 ---
-## Likelihood del model "saturado"
+## k-fold cross-Validation: ejemplo empírico
 
-`$$\newcommand{\vect}[1]{\boldsymbol{#1}}$$`
-
-- .bold[Modelo saturado] ( `\(M_S\)` ): es el modelo que asume que cada observación tiene sus propios parámetros, es decir, estima  `\(n\)`-parámetros, `\(\vect{\beta}_{S}\)`. El modelo saturado describe perfectamente los datos: mejor "fit" posible, pero el menos "parsimonioso".
-
---
-
-  - La log-likelihood de este modelo es `\(\ell\ell_{S}: \ell\ell(\vect{\beta}_{S} | \vect{y})\)`, donde `\(\ell\ell_{S}\)` es mayor que la likelihood de cualquier otro modelo para los mismos datos, asumiendo misma distribución y misma función de enlace.
-  
-&lt;br&gt;
---
-
+.pull-left[
+.bold[M0]
 
 ```r
-# modelo saturado 
-id = seq(1:length(affairsdata$everaffair_d))
-logit_affairs_sex_sat &lt;-  glm(everaffair_d ~ factor(id) , family=binomial(link="logit"), 
-                              data=affairsdata)
-
-ll_sat &lt;- logLik(logit_affairs_sex_sat); ll_sat
+confusionMatrix(cv_logit_affairs0)
 ```
 
 ```
-## 'log Lik.' -1.743274e-09 (df=601)
+## Cross-Validated (10 fold, repeated 1 times) Confusion Matrix 
+## 
+## (entries are percentual average cell counts across resamples)
+##  
+##           Reference
+## Prediction    0    1
+##          0 72.2 23.5
+##          1  2.8  1.5
+##                             
+##  Accuracy (average) : 0.7371
 ```
+]
 
---
-
-Prácticamente, `\(\ell\ell_{S}=0\)`. ¿Por qué?
-
----
-## Likelihood del model "nulo"
-
-
-- .bold[Modelo nulo] ( `\(M_0\)` ): es el modelo que asume que cada observación tiene sus propios parámetros, es decir, estima  `\(n\)`-parámetros, `\(\vect{\beta}_{0}\)`. El modelo saturado describe perfectamente los datos: mejor "fit" posible, pero el menos "parsimonioso".
-
---
-
-  - La log-likelihood de este modelo es `\(\ell\ell_{0}: \ell\ell(\beta_{0} | \vect{y})\)`, donde `\(\ell\ell_{0}\)` es menor que la likelihood de cualquier otro modelo.
-  
-&lt;br&gt;
---
-
+.pull-right[
+.bold[M1]
 
 ```r
-# modelo saturado 
-id = seq(1:length(affairsdata$everaffair_d))
-logit_affairs_sex_sat &lt;-  glm(everaffair_d ~ factor(id) , family=binomial(link="logit"), 
-                              data=affairsdata)
-
-ll_sat &lt;- logLik(logit_affairs_sex_sat); ll_sat
+confusionMatrix(cv_logit_affairs1)
 ```
 
 ```
-## 'log Lik.' -1.743274e-09 (df=601)
+## Cross-Validated (10 fold, repeated 1 times) Confusion Matrix 
+## 
+## (entries are percentual average cell counts across resamples)
+##  
+##           Reference
+## Prediction    0    1
+##          0 71.4 22.6
+##          1  3.7  2.3
+##                             
+##  Accuracy (average) : 0.7371
 ```
+]
 
---
+&lt;style type="text/css"&gt;
+.pull-right ~ * { clear: unset; }
+.pull-right + * { clear: both; }
+&lt;/style&gt;
 
-Prácticamente, `\(\ell\ell_{S}=0\)`. ¿Por qué?
-
-
----
-## Likelihood ratio
-
-`\begin{align}
-&amp;\text{LR}: \frac{\mathcal{L}_{S}}{\mathcal{L}_{M}}  \implies  \\ \\
-&amp;\log \text{LR} : \log \frac{\mathcal{L}_{S}}{\mathcal{L}_{M}} = \log\mathcal{L}_{S} - \log \mathcal{L}_{M} 
-\end{align}`
-
-
-`\begin{align}
-\text{Deviance} &amp;: 2 \log \text{LR} \\
-&amp;: 2 (\log\mathcal{L}_{S} - \log \mathcal{L}_{M} )
-\end{align}`
-
-
----
-## Null Deviance y Residual Deviance
-
-`\begin{align}
-\log \bigg(\frac{\mathcal{L_S}}{} \bigg)
-\end{align}`
-
-
-Los modelos nulo y saturado sirven como referencia para evaluar el ajuste de un modelo. 
-
-- `\(\text{Deviance}: -2(\ell\ell_{M} - \ell\ell_{S})\)`, o "residual deviance"
-
-- `\(\text{Null Deviance}: -2(\ell\ell_{M} - \ell\ell_{0})\)`, o "residual deviance"
 
 ---
 class: inverse, center, middle

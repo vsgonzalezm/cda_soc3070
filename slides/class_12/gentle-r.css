@@ -107,6 +107,13 @@ strong {
   position: absolute;
 }
 
+.img-right-top{
+  height: 300px;
+  width: 300px;
+  top: 24%;
+  left: 65%;
+  position: absolute;
+}
 
 .img-right-small{
   height: 130px;
