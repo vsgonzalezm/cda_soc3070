@@ -582,21 +582,17 @@ conf_mat &lt;- confusionMatrix(factor(y_hat),factor(logit_affairs$model$everaffa
 ```
 
 ```
-##       Accuracy          Kappa  AccuracyLower  AccuracyUpper   AccuracyNull 
-##          0.750          0.080          0.714          0.785          0.750 
-## AccuracyPValue  McnemarPValue 
-##          0.522          0.000
+##       Accuracy          Kappa  AccuracyLower  AccuracyUpper   AccuracyNull AccuracyPValue  McnemarPValue 
+##          0.750          0.080          0.714          0.785          0.750          0.522          0.000
 ```
 
 ```
-##          Sensitivity          Specificity       Pos Pred Value 
-##                0.971                0.087                0.762 
-##       Neg Pred Value            Precision               Recall 
-##                0.500                0.762                0.971 
-##                   F1           Prevalence       Detection Rate 
-##                0.854                0.750                0.729 
-## Detection Prevalence    Balanced Accuracy 
-##                0.957                0.529
+##          Sensitivity          Specificity       Pos Pred Value       Neg Pred Value            Precision 
+##                0.971                0.087                0.762                0.500                0.762 
+##               Recall                   F1           Prevalence       Detection Rate Detection Prevalence 
+##                0.971                0.854                0.750                0.729                0.957 
+##    Balanced Accuracy 
+##                0.529
 ```
 
 
@@ -927,10 +923,10 @@ confusionMatrix(cv_logit_affairs0)
 ##  
 ##           Reference
 ## Prediction    0    1
-##          0 72.2 23.5
-##          1  2.8  1.5
+##          0 73.5 24.0
+##          1  1.5  1.0
 ##                             
-##  Accuracy (average) : 0.7371
+##  Accuracy (average) : 0.7454
 ```
 ]
 
@@ -948,8 +944,8 @@ confusionMatrix(cv_logit_affairs1)
 ##  
 ##           Reference
 ## Prediction    0    1
-##          0 71.4 22.6
-##          1  3.7  2.3
+##          0 71.5 22.8
+##          1  3.5  2.2
 ##                             
 ##  Accuracy (average) : 0.7371
 ```

@@ -153,7 +153,7 @@ $$\text{logit}(p_{i}) = \ln \frac{p_{i}}{1 - p_{i}} = \beta_{0} + \beta_{1} x_{i
 
 --
 
-- El efecto marginal de $\beta_{k}$ sobre el logit de la probabilidad de éxito está dado por:
+- El efecto marginal de $x_{k}$ sobre el logit de la probabilidad de éxito está dado por:
 
 
 .pull-left[
@@ -453,6 +453,7 @@ class: inverse, center, middle
 
 ---
 ## Efectos marginales sobre la probabilidad de éxito
+
 
 Dado el siguiente modelo de regresión logística: 
 
