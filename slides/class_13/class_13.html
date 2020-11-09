@@ -669,9 +669,9 @@ Considera la situación en que `\(i\)` y `\(i^{´}\)` son dos observaciones con 
  Las odds de observar `\(j\)` en vez de `\(J\)` son:
 
 
-- `\(p_{i}/(p_{iJ}) = e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i1}}  \dots (e^{\beta_{jk}})^{c}\)`
+- `\(p_{ij}/(p_{iJ}) = e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i1}}  \dots (e^{\beta_{jk}})^{c}\)`
 
-- `\(p_{j}/(p_{iJ}) = e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i^{´}1}}  \dots (e^{\beta_{jk}})^{c+1}\)`
+- `\(p_{i^{´}j}/(p_{i^{´}J}) = e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i^{´}1}}  \dots (e^{\beta_{jk}})^{c+1}\)`
 
 
 &lt;br&gt;
@@ -680,7 +680,7 @@ Considera la situación en que `\(i\)` y `\(i^{´}\)` son dos observaciones con 
 El ratio de las odd de éxito entre `\(i^{´}\)` e `\(i\)` está dado por:
 
 `\begin{align}
-\frac{p_{i^{´}}/p_{i^{´}J}}{p_{i}/p_{iJ}} &amp;= \frac{e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i^{´}1}}  \dots (e^{\beta_{jk}})^{c+1}}{e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i1}}  \dots (e^{\beta_{jk}})^{c}} = e^{\beta_{jk}}
+\frac{p_{i^{´}j}/p_{i^{´}J}}{p_{ij}/p_{iJ}} &amp;= \frac{e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i^{´}1}}  \dots (e^{\beta_{jk}})^{c+1}}{e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i1}}  \dots (e^{\beta_{jk}})^{c}} = e^{\beta_{jk}}
 \end{align}`
 
 &lt;br&gt;
@@ -900,13 +900,13 @@ donde
 
 
 .pull-left[
-Analizando `$$\frac{\partial p_{ij}}{\partial x_{k}} = p_{j} \cdot \bigg(\beta_{jk} - \sum^{J}_{j=1}p_{j} \cdot \beta_{jk}\bigg)$$`
+Analizando `$$\frac{\partial p_{ij}}{\partial x_{k}} = p_{ij} \cdot \bigg(\beta_{jk} - \sum^{J}_{j=1}p_{ij} \cdot \beta_{jk}\bigg)$$`
 ]
 
 --
 
 .pull-right[
-podemos notar que  `\(\sum^{J}_{j=1}p_{j} \cdot \beta_{jk} \equiv \overline{\beta_{jk}}, \quad\)` el "efecto promedio de" `\(x_k\)`. Se desprende que:
+podemos notar que  `\(\sum^{J}_{j=1}p_{ij} \cdot \beta_{jk} \equiv \overline{\beta_{jk}}, \quad\)` el "efecto promedio de" `\(x_k\)`. Se desprende que:
 ]
 
 &lt;br&gt;
@@ -952,7 +952,7 @@ En nuestro ejemplo: `\(\ln \frac{p_{ij}}{p_{iJ}} = \beta_{j0} + \beta_{j1}\text{
   
   
 .pull-left[
-  `\(p_{ij} =\frac{\beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}{1 + \sum^{J-1}_{j=1}  \beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}\)`
+  `$$p_{ij} =\frac{e^{\beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}}{1 + \sum^{J-1}_{j=1} e^{\beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}}$$`
       
 &lt;br&gt;      
 
@@ -981,7 +981,7 @@ summary(mlogit_vote_sq_sex)$coefficients
 
 
 .pull-left[
-`$$p_{ij} =\frac{\beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}{1 + \sum^{J-1}_{j=1}  \beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}$$`
+`$$p_{ij} =\frac{e^{\beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}}{1 + \sum^{J-1}_{j=1} e^{\beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}}$$`
 
 ![](class_13_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
 ]

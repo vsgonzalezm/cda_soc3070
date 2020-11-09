@@ -626,9 +626,9 @@ Considera la situación en que $i$ y $i^{´}$ son dos observaciones con $x_{k}=c
  Las odds de observar $j$ en vez de $J$ son:
 
 
-- $p_{i}/(p_{iJ}) = e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i1}}  \dots (e^{\beta_{jk}})^{c}$
+- $p_{ij}/(p_{iJ}) = e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i1}}  \dots (e^{\beta_{jk}})^{c}$
 
-- $p_{j}/(p_{iJ}) = e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i^{´}1}}  \dots (e^{\beta_{jk}})^{c+1}$
+- $p_{i^{´}j}/(p_{i^{´}J}) = e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i^{´}1}}  \dots (e^{\beta_{jk}})^{c+1}$
 
 
 <br>
@@ -637,7 +637,7 @@ Considera la situación en que $i$ y $i^{´}$ son dos observaciones con $x_{k}=c
 El ratio de las odd de éxito entre $i^{´}$ e $i$ está dado por:
 
 \begin{align}
-\frac{p_{i^{´}}/p_{i^{´}J}}{p_{i}/p_{iJ}} &= \frac{e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i^{´}1}}  \dots (e^{\beta_{jk}})^{c+1}}{e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i1}}  \dots (e^{\beta_{jk}})^{c}} = e^{\beta_{jk}}
+\frac{p_{i^{´}j}/p_{i^{´}J}}{p_{ij}/p_{iJ}} &= \frac{e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i^{´}1}}  \dots (e^{\beta_{jk}})^{c+1}}{e^{\beta_{j0}} \cdot e^{\beta_{j1} x_{i1}}  \dots (e^{\beta_{jk}})^{c}} = e^{\beta_{jk}}
 \end{align}
 
 <br>
@@ -823,13 +823,13 @@ $$p_{ij} =\frac{e^{\beta_{j0} + \beta_{j1}x_{1i} + \dots + \beta_{jk}x_{ki}}}{1 
 
 
 .pull-left[
-Analizando $$\frac{\partial p_{ij}}{\partial x_{k}} = p_{j} \cdot \bigg(\beta_{jk} - \sum^{J}_{j=1}p_{j} \cdot \beta_{jk}\bigg)$$
+Analizando $$\frac{\partial p_{ij}}{\partial x_{k}} = p_{ij} \cdot \bigg(\beta_{jk} - \sum^{J}_{j=1}p_{ij} \cdot \beta_{jk}\bigg)$$
 ]
 
 --
 
 .pull-right[
-podemos notar que  $\sum^{J}_{j=1}p_{j} \cdot \beta_{jk} \equiv \overline{\beta_{jk}}, \quad$ el "efecto promedio de" $x_k$. Se desprende que:
+podemos notar que  $\sum^{J}_{j=1}p_{ij} \cdot \beta_{jk} \equiv \overline{\beta_{jk}}, \quad$ el "efecto promedio de" $x_k$. Se desprende que:
 ]
 
 <br>
@@ -875,7 +875,7 @@ En nuestro ejemplo: $\ln \frac{p_{ij}}{p_{iJ}} = \beta_{j0} + \beta_{j1}\text{st
   
   
 .pull-left[
-  $p_{ij} =\frac{\beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}{1 + \sum^{J-1}_{j=1}  \beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}$
+  $$p_{ij} =\frac{e^{\beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}}{1 + \sum^{J-1}_{j=1} e^{\beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}}$$
       
 <br>      
 ```{r}
@@ -916,7 +916,7 @@ predictions %>% filter(str_detect(quant, "^p")) %>% separate(quant,sep="_", into
 
 
 .pull-left[
-$$p_{ij} =\frac{\beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}{1 + \sum^{J-1}_{j=1}  \beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}$$
+$$p_{ij} =\frac{e^{\beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}}{1 + \sum^{J-1}_{j=1} e^{\beta_{j0} + \beta_{j1}\text{statusquo}_{i} + \beta_{j2}\text{male}_{i}}}$$
 
 ```{r, echo=FALSE, fig.width=6, fig.height=5}
 predictions %>% filter(str_detect(quant, "^p")) %>% separate(quant,sep="_", into=c("quant","vote")) %>%
