@@ -811,7 +811,7 @@ Después de varios pasos, obtenemos:
 
 <br>
 .content-box-yellow[
-$$\frac{\partial p_{ij}}{\partial x_{k}} = p_{ij} \cdot \bigg(\beta_{jk} - \sum^{J}_{j=1}p_{ij} \cdot \beta_{jk}\bigg)$$
+$$\frac{\partial p_{ij}}{\partial x_{k}} = p_{ij} \cdot \bigg(\beta_{jk} - \sum^{J-1}_{j=1}p_{ij} \cdot \beta_{jk}\bigg)$$
 ]
 
 <br>
@@ -823,13 +823,13 @@ $$p_{ij} =\frac{e^{\beta_{j0} + \beta_{j1}x_{1i} + \dots + \beta_{jk}x_{ki}}}{1 
 
 
 .pull-left[
-Analizando $$\frac{\partial p_{ij}}{\partial x_{k}} = p_{ij} \cdot \bigg(\beta_{jk} - \sum^{J}_{j=1}p_{ij} \cdot \beta_{jk}\bigg)$$
+Analizando $$\frac{\partial p_{ij}}{\partial x_{k}} = p_{ij} \cdot \bigg(\beta_{jk} - \sum^{J-1}_{j=1}p_{ij} \cdot \beta_{jk}\bigg)$$
 ]
 
 --
 
 .pull-right[
-podemos notar que  $\sum^{J}_{j=1}p_{ij} \cdot \beta_{jk} \equiv \overline{\beta_{jk}}, \quad$ el "efecto promedio de" $x_k$. Se desprende que:
+podemos notar que  $\sum^{J-1}_{j=1}p_{ij} \cdot \beta_{jk} \equiv \overline{\beta_{jk}}, \quad$ el "efecto promedio de" $x_k$. Se desprende que:
 ]
 
 <br>
@@ -838,11 +838,11 @@ podemos notar que  $\sum^{J}_{j=1}p_{ij} \cdot \beta_{jk} \equiv \overline{\beta
 - El signo del efecto marginal de los predictores .bold[no necesariamente] corresponde al signo del parámetro estimado en la regresión. 
 --
 
-  - $\frac{\partial p_{ij}}{\partial x_{k}} > 0 \quad$  si  $\quad \beta_{jk} > \sum^{J}_{j=1}p_{j} \cdot \beta_{jk}$
+  - $\frac{\partial p_{ij}}{\partial x_{k}} > 0 \quad$  si  $\quad \beta_{jk} > \sum^{J-1}_{j=1}p_{j} \cdot \beta_{jk}$
   
-  - $\frac{\partial p_{ij}}{\partial x_{k}} = 0 \quad$  si  $\quad \beta_{jk} = \sum^{J}_{j=1}p_{j} \cdot \beta_{jk}$
+  - $\frac{\partial p_{ij}}{\partial x_{k}} = 0 \quad$  si  $\quad \beta_{jk} = \sum^{J-1}_{j=1}p_{j} \cdot \beta_{jk}$
 
-  - $\frac{\partial p_{ij}}{\partial x_{k}} < 0 \quad$  si  $\quad \beta_{jk} < \sum^{J}_{j=1}p_{j} \cdot \beta_{jk}$
+  - $\frac{\partial p_{ij}}{\partial x_{k}} < 0 \quad$  si  $\quad \beta_{jk} < \sum^{J-1}_{j=1}p_{j} \cdot \beta_{jk}$
 
 <br>
 --
@@ -853,7 +853,7 @@ podemos notar que  $\sum^{J}_{j=1}p_{ij} \cdot \beta_{jk} \equiv \overline{\beta
 ## Efectos marginales sobre la probabilidad de la categoría $j$
 
 .pull-left[
-si $$\frac{\partial p_{ij}}{\partial x_{k}} = p_{j} \cdot \bigg(\beta_{jk} - \sum^{J}_{j=1}p_{j} \cdot \beta_{jk}\bigg)$$
+si $$\frac{\partial p_{ij}}{\partial x_{k}} = p_{j} \cdot \bigg(\beta_{jk} - \sum^{J-1}_{j=1}p_{j} \cdot \beta_{jk}\bigg)$$
 ]
 
 --
@@ -931,7 +931,7 @@ predictions %>% filter(str_detect(quant, "^p")) %>% separate(quant,sep="_", into
 ]
 
 .pull-right[
-$$\frac{\partial p_{ij}}{\partial x_{k}} = p_{j} \cdot \bigg(\beta_{jk} - \sum^{J}_{j=1}p_{j} \cdot \beta_{jk}\bigg)$$
+$$\frac{\partial p_{ij}}{\partial x_{k}} = p_{j} \cdot \bigg(\beta_{jk} - \sum^{J-1}_{j=1}p_{j} \cdot \beta_{jk}\bigg)$$
 
 ```{r, echo=FALSE, fig.width=6, fig.height=5, warning=F}
 
