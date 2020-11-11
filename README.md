@@ -56,7 +56,7 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
 
 #### Trabajos
 
-- Trabajo 1: [`[T1]`](homework/t_1/t_1.pdf) [`[T1.Rmd]`](homework/t_1/t_1.Rmd) [`[Paper]`](https://advances.sciencemag.org/content/advances/5/7/eaau1156.full.pdf) [`[Data]`](homework/t_1/data_t_1.csv) 
+- Trabajo 1: [`[T1]`](homework/t_1/t_1.pdf) [`[T1.Rmd]`](homework/t_1/t_1.Rmd) [`[Paper]`](https://advances.sciencemag.org/content/advances/5/7/eaau1156.full.pdf) [`[Data]`](homework/t_1/data_t_1.csv) [`[Soluciones]`](homework/t_1_answers/t_1_answers.pdf)[`[Soluciones.Rmd]`](homework/t_1_answers/t_1_answers.Rmd)
 
 - Trabajo 2: [`[T2_1]`](homework/t_2/t_2_part1.pdf) [`[T2_1.Rmd]`](homework/t_2/t_2_part1.Rmd) [`[Paper]`](https://advances.sciencemag.org/content/advances/5/7/eaau1156.full.pdf) [`[Data]`](homework/t_2/data_t_2.csv) 
 
