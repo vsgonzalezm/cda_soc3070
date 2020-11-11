@@ -152,7 +152,8 @@ por tanto,
 
 $$\mathbb{P}(\text{Fair | T=RA, W=1)} = \frac{1}{1 + e^{-(\beta_{0} + \beta_{W})}}$$
 
-- $\ln \frac{\mathbb{P}(\text{Fair | T=RE1, W=1)}}{1 - \mathbb{P}(\text{Fair | T=RE1, W=0)}} = \beta_{0} +  \beta_{W} + \beta_{RE1}$
+
+- $\ln \frac{\mathbb{P}(\text{Fair | T=RE1, W=1)}}{1 - \mathbb{P}(\text{Fair | T=RE1, W=0)}} = \beta_{0} +  \beta_{W} + \beta_{RE1} + \beta_{RE1:W}$
 
 
 por tanto,
@@ -160,7 +161,7 @@ por tanto,
 
 $$\mathbb{P}(\text{Fair | T=RE1, W=1)}= \frac{1}{1 + e^{- (\beta_{0} + \beta_{W} + \beta_{RE1} + \beta_{RE1:W})}}$$
 
-- $\ln \frac{\mathbb{P}(\text{Fair | T=RE2, W=1)}}{1 - \mathbb{P}(\text{Fair | T=RE2, W=1)}} = \beta_{0} + \beta_{W} + \beta_{RE2}$
+- $\ln \frac{\mathbb{P}(\text{Fair | T=RE2, W=1)}}{1 - \mathbb{P}(\text{Fair | T=RE2, W=1)}} = \beta_{0} + \beta_{W} + \beta_{RE2} +  + \beta_{RE2:W}$
 
 
 por tanto,
