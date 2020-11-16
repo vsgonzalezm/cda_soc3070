@@ -27,9 +27,8 @@ Este repositorio contiene el material del curso SOC3070 Análisis de Datos Categ
   - Inferencia (Delta method, Monte Carlo y Bootstrap): [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_11/class_11#1) [`[Código]`](slides/class_11/class_11.Rmd)
   - Ajuste y Predicción: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_12/class_12#1) [`[Código]`](slides/class_12/class_12.Rmd)
 - Modelos de Regresión Logística Multinomial: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_13/class_13#1) [`[Código]`](slides/class_13/class_13.Rmd) 
-- Modelos de Regresión Logística Ordenada
+- Modelos de Regresión Logística Ordenada: [`[Presentación]`](https://mebucca.github.io/cda_soc3070/slides/class_14/class_14#1) [`[Código]`](slides/class_14/class_14.Rmd) 
 - Modelos de Regresión Poisson y alternativas* (Regresión Binomial Negativa)
-- Modelos Log-lineales para tablas de contingencia*
 
 ### Ayudantías
 
