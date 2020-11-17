@@ -1093,7 +1093,7 @@ $$\ln \frac{\mathbb{P}(y_{i} \leq j)}{\mathbb{P}(y_{i} > j) } = \alpha_{j} - (\b
 
 <br>
 
-- El efecto marginal de $x_{k}$ sobre el logit de la variable latente $y^{*}$  está dado por:
+- El efecto marginal de $x_{k}$ sobre la variable latente $y^{*}$  está dado por:
 
 
 .pull-left[
@@ -1634,7 +1634,7 @@ predictions %>%
 
 --
 
-- Más aún, en el caso de modelos de regresión logística multinomial, los efectos marginales no son necesariamente monotónicos (pueden cambiar de signo).
+- Más aún, en el caso de modelos de regresión logística multinomial/ordinal, los efectos marginales no son necesariamente monotónicos (pueden cambiar de signo).
 
 --
 
@@ -1668,7 +1668,7 @@ Cantidades de interes:
 $$\text{Aproximación numérica:} \quad \frac{1}{n} \sum_{i} \frac{\partial p_{ij}}{\partial x_{k}} \approx  \frac{1}{n} \sum_{i}  \frac{p_{ij}(x_{1}, \dots ,x_{k} = c + \delta) - p_{ij}(x_{1}, \dots ,x_{k} = c )}{\delta}$$
 --
 
-AME de apoyo al status-quo:
+AME de rate:
 ```{r}
 delta = 0.1
 p_hat <- predict(ologit_affairs_rate_sex, type="probs") %>% as_tibble()  %>% mutate(id = row_number()) %>% 
