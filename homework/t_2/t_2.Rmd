@@ -58,5 +58,30 @@ data_paper$LTC <- factor(data_paper$LTC, levels = c("rules","talent","luck"))
 1.4 Manipula los resultados del modelo para obtener las probabilidades esperadas de que los participantes del tratamiento RA -- tanto ganadores como perdedores -- sostengan que los resultados de la competencia se deben principalmente al "talento". Expresa formalmente las ecuaciones correspondiente a estas predicciones.
 
 
-1.5. (Bonus 1) De acuerdo al modelo estimado en 1.5., ¿cuál es _efecto_ (marginal) de edad sobre la probabilidad de que un perdedor de 20 años en el tratamiento RA atribuya los resultados al talento?
+1.5 Agrega un control por `age` al modelo estimado en 1. Presenta un `summary()` de los resultados.
+
+
+1.6. (Bonus 1) De acuerdo al modelo estimado en 1.5., ¿cuál es _efecto_ (marginal) de edad sobre la probabilidad de que un perdedor de 20 años en el tratamiento RA atribuya los resultados al talento?
+
+
+2. Usa regresión logística ordinal para estimar el modelo implícito en el panel derecho de la figura 2 (interacción entre variables `T` y `W`). Presenta un `summary()` de los resultados. Usa el siguiente orden  para la variable `LTC`: "rules", "luck", "talent" (de menos a más "meritocrático").
+
+*Para el orden de los valores puedes usar el siguiente código
+
+````{r}
+data_paper$LTC <- ordered(data_paper$LTC, levels = c("rules","luck","talent"))
+````
+
+2.1 Interpreta los coeficientes asociados a `TRE1` y  `TRE2:W`.
+
+
+2.2 Transforma e interpreta el coeficientes correspondiente a `RE1` en términos de odds-ratios acumulativas . Presenta el desarrollo formal de dicha odds-ratio.
+
+
+2.3 Manipula los resultados del modelo para obtener las probabilidades esperadas de que los participantes del tratamiento RA -- tanto ganadores como perdedores -- sostengan que los resultados de la competencia se deben principalmente al "talento". Expresa formalmente las ecuaciones correspondiente a estas predicciones.
+
+2.4 Agrega un control por `age` al modelo estimado en 2. Presenta un `summary()` de los resultados.
+
+
+2.5. (Bonus 2) De acuerdo al modelo estimado en 2.5., ¿cuál es _efecto_ (marginal) de edad sobre la probabilidad de que un perdedor de 20 años en el tratamiento RA atribuya los resultados al talento? Interpreta este resultado.
 
