@@ -41,7 +41,7 @@ data_paper %>% glimpse()
 
 1. Usa regresión logística multinomial para estimar el modelo implícito en el panel derecho de la figura 2 (interacción entre variables `T` y `W`). Presenta un `summary()` de los resultados. Usa `LTC = "rules"` como categoría de referencia en la variable dependiente.
 
-*Para fijar categoría de refencia puedes usar el siguiente código
+*Para fijar categoría de referencia puedes usar el siguiente código
 ````{r}
 data_paper$LTC <- factor(data_paper$LTC, levels = c("rules","talent","luck"))
 ````
@@ -66,7 +66,7 @@ data_paper$LTC <- factor(data_paper$LTC, levels = c("rules","talent","luck"))
 
 2. Usa regresión logística ordinal para estimar el modelo implícito en el panel derecho de la figura 2 (interacción entre variables `T` y `W`). Presenta un `summary()` de los resultados. Usa el siguiente orden  para la variable `LTC`: "rules", "luck", "talent" (de menos a más "meritocrático").
 
-*Para el orden de los valores puedes usar el siguiente código
+*Para fijar el orden de los valores puedes usar el siguiente código
 
 ````{r}
 data_paper$LTC <- ordered(data_paper$LTC, levels = c("rules","luck","talent"))
